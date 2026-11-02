@@ -139,7 +139,7 @@ public class RecipeEnricher {
                 .forEach(recipe::addDietaryLabel);
     }
 
-    private static RecipeLine toLine(RecipeIngredient line) {
+    static RecipeLine toLine(RecipeIngredient line) { // package-private: CatalogReportService reads lines the same way
         return new RecipeLine(
                 line.getIngredient(),
                 line.getAmount(),

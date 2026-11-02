@@ -1,5 +1,6 @@
 package com.forkast.backend.ingest;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +14,13 @@ public class AdminRecipeController {
 
     private final RecipeIngestService ingestService;
     private final RecipeRescoreService rescoreService;
+    private final CatalogReportService catalogReportService;
 
-    public AdminRecipeController(RecipeIngestService ingestService, RecipeRescoreService rescoreService) {
+    public AdminRecipeController(RecipeIngestService ingestService, RecipeRescoreService rescoreService,
+            CatalogReportService catalogReportService) {
         this.ingestService = ingestService;
         this.rescoreService = rescoreService;
+        this.catalogReportService = catalogReportService;
     }
 
     /**
@@ -37,5 +41,15 @@ public class AdminRecipeController {
     @PostMapping("/rescore")
     public RecipeRescoreService.Result rescore() {
         return rescoreService.rescoreAll();
+    }
+
+    /**
+     * Why recipes have no complete cost: every gap (unmatched line, unpriced
+     * ingredient, or a price that doesn't fit the line's unit), biggest fixes first.
+     * Read by data_pipeline/catalog_report.py.
+     */
+    @GetMapping("/catalog-report")
+    public CatalogReportService.Report catalogReport() {
+        return catalogReportService.report();
     }
 }

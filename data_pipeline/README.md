@@ -272,6 +272,30 @@ curl -s "http://localhost:8080/api/admin/recipe-ingredients/needs-review?size=10
 curl -s -X POST "http://localhost:8080/api/admin/recipes/reprocess" -H "X-Admin-Key: $KEY"
 ```
 
+## Cleanup: getting every recipe a complete cost
+
+`catalog_report.py` lists everything that keeps recipes from a complete cost, biggest fixes first, and writes the full list with a next step per row to `cache/catalog_gaps.csv`.
+
+```bash
+python catalog_report.py                    # summary + top 30
+python catalog_report.py --reason NO_PRICE --top 100
+```
+
+| Gap | Means | Fix |
+| --- | --- | --- |
+| `UNMATCHED` | No catalog ingredient matched the line ("paccheri") | A new row or alias in `ingredients_seed.csv` (then `find_fdc.py`, `seed_ingredients.py`), or a match in the review queue |
+| `NO_PRICE` | The ingredient has no current price | `find_product.py --only "name"` (review, then `--post` and refresh), a BLS series, or a row in `prices_seed.csv` |
+| `NO_CONVERSION` | There's a price, but it doesn't fit the line's unit ("1 bunch" with only a price per 100 g and no bunch weight) | A portion for that unit (FDC household portions), or a per-item price |
+
+`completes` is how many recipes that one fix finishes on its own, so start at the top. The loop:
+
+1. `python catalog_report.py`, then fix a batch from the top of the list.
+2. Catalog changes (new rows, aliases): `seed_ingredients.py`, then `POST /api/admin/recipes/reprocess` so saved recipes re-match.
+3. Price changes: `find_product.py --post` + `POST /api/admin/prices/refresh`, or `import_prices.py seed`. Imports re-cost recipes themselves; otherwise `POST /api/admin/prices/recalculate`.
+4. Run the report again.
+
+When it's down to rare one-off ingredients, run `POST /api/admin/recipes/rescore` and then the plan sweep (`sweep_plans.py --fresh --write-app`).
+
 ## Improving the catalog over time
 
 1. Scrape more recipes.
