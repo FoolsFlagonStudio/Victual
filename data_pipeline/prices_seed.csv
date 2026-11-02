@@ -39,3 +39,32 @@ american cheese,4.29,12 oz,16 slices
 lime,0.50,2.4 oz,one lime
 radishes,1.99,6 oz,one bunch
 masa harina,4.49,4.4 lb,Maseca bag
+# Added 2026-11 with bulk_gaps.py: new catalog rows with no good Kroger product.
+pork belly,4.99,1 lb,
+amaretti cookies,6.99,7 oz,
+anchovies,2.49,2 oz,tin in oil
+bratwurst,5.49,19 oz,5 links
+calamari,8.99,1 lb,cleaned and frozen
+chipotle peppers in adobo,1.99,7 oz,can
+dill pickles,2.99,24 oz,jar
+egg roll wrappers,2.99,16 oz,20 wrappers
+gelatin,2.49,1 oz,4 envelopes unflavored
+green plantain,0.69,9 oz,one plantain
+kiwifruit,0.50,2.6 oz,one kiwi
+littleneck clams,8.99,1 lb,about 10 clams
+white chocolate bar,3.49,4 oz,baking bar
+tortellini,3.99,9 oz,refrigerated cheese tortellini
+poppy seeds,4.99,2 oz,spice jar
+rack of lamb,17.99,1 lb,
+macadamia nuts,12.99,10 oz,
+wheat bran,4.49,16 oz,
+yellow cornmeal,2.99,32 oz,
+beef soup bones,3.99,1 lb,
+pistachios,7.99,8 oz,shelled
+bulgur,3.99,24 oz,
+wakame seaweed,4.99,2 oz,dried
+lime sherbet,3.49,48 oz,1.5 qt carton
+mung bean sprouts,1.99,12 oz,
+protein powder,24.99,2 lb,whey
+white hominy,1.99,25 oz,can
+star anise,5.99,0.6 oz,spice jar
