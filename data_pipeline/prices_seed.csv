@@ -3,3 +3,32 @@
 # Lines starting with # are ignored. size is read like a store label: 1 lb, 16 oz, 1 dozen, 12 ct.
 # Editing a price and re-running adds a new row; unchanged rows are skipped.
 ingredient,price,size,note
+# Added 2026-11 for catalog rows Kroger's API has no good priced product for at store
+# 01400513 (spices and specialty items often aren't priced online). Typical US
+# grocery prices; adjust any that look off for your area.
+dill,2.49,0.75 oz,fresh herb clamshell
+sage,2.49,0.75 oz,fresh herb clamshell
+almond flour,9.99,16 oz,blanched almond flour
+goat cheese,4.49,4 oz,plain goat cheese log
+cream of tartar,6.49,1.5 oz,spice jar
+almond extract,6.99,1 oz,pure almond extract (1 fl oz bottle)
+sea scallops,15.99,1 lb,frozen sea scallops
+fennel bulb,2.99,1 lb,one bulb is about 1 lb
+lobster tails,12.99,8 oz,two 4 oz frozen tails
+cashews,8.99,16 oz,whole roasted unsalted
+mixed berries,4.99,16 oz,frozen mixed berries
+ground cloves,6.49,0.9 oz,spice jar
+tapioca flour,5.49,20 oz,tapioca flour/starch
+pine nuts,8.99,4 oz,
+chia seeds,5.99,12 oz,
+arrowroot powder,8.99,16 oz,
+sunflower seeds,4.49,16 oz,roasted unsalted kernels
+allspice,6.49,1 oz,spice jar
+pepitas,5.99,8 oz,raw pumpkin seed kernels
+pumpkin pie spice,5.49,1.12 oz,spice jar
+ground cardamom,11.99,1.75 oz,spice jar
+microgreens,4.49,2 oz,clamshell
+mirin,4.99,10 oz,10 fl oz bottle
+oat bran,4.99,16 oz,
+lobster base,7.99,8 oz,Better Than Bouillon lobster base jar
+kale,1.99,8 oz,one bunch is about 8 oz
