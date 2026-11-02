@@ -1,0 +1,139 @@
+/* From victual-privacy-support.html. */
+
+.layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 72px 24px 96px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+  box-sizing: border-box;
+}
+.aside {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.toc {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+}
+.toc a {
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+.toc a.current {
+  background: #e9dce3;
+  font-weight: 600;
+}
+.tocTitle {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--palette-plum);
+  margin-bottom: 8px;
+}
+.content {
+  flex: 999 1 560px;
+  min-width: 0;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-margin-top: 90px;
+}
+.divided {
+  border-top: 1px solid #e6ded8;
+  padding-top: 48px;
+}
+.h1 {
+  margin: 0;
+  font: 700 40px/1.15 var(--font-ui);
+  letter-spacing: -0.5px;
+  color: var(--palette-forest);
+}
+.h1Small {
+  margin: 0;
+  font: 700 32px/1.2 var(--font-ui);
+  color: var(--palette-forest);
+}
+.h2 {
+  margin: 16px 0 0;
+  font: 600 22px/1.3 var(--font-ui);
+  color: var(--palette-forest);
+}
+.updated {
+  margin: 0;
+  font-size: 13px;
+  color: #5a5a5a;
+}
+.p,
+.list {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #3c3c3c;
+}
+.list {
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.card {
+  background: var(--palette-white);
+  border-radius: 20px;
+  padding: 28px;
+}
+.card :global(.ant-form-item-label > label) {
+  font-weight: 600;
+  font-size: 14px;
+}
+.card :global(.ant-input),
+.card :global(.ant-input-affix-wrapper) {
+  background: var(--palette-background-light);
+  border-color: #d6ccc5;
+  border-radius: 12px;
+}
+.send {
+  background: var(--palette-forest) !important;
+  color: var(--palette-background-light) !important;
+  font-weight: 600;
+  padding-inline: 28px;
+}
+.send:hover {
+  background: var(--palette-plum) !important;
+}
+.note {
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: #5a5a5a;
+}
+
+@media (max-width: 760px) {
+  .layout {
+    padding: 40px 20px 64px;
+    gap: 32px;
+  }
+  .toc {
+    position: static;
+  }
+  .h1 {
+    font-size: 32px;
+  }
+  .h1Small {
+    font-size: 26px;
+  }
+  .card {
+    padding: 20px;
+  }
+}

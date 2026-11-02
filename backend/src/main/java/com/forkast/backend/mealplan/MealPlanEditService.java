@@ -4,11 +4,13 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -32,6 +34,7 @@ import com.forkast.backend.recipe.RecipeQueryService;
 import com.forkast.backend.user.User;
 import com.forkast.backend.user.UserPreferences;
 import com.forkast.backend.user.UserPreferencesRepository;
+import com.forkast.backend.user.UserRepository;
 
 /**
  * Changes to a saved plan, each on one selection or on all of them: lock, swap,
@@ -39,14 +42,23 @@ import com.forkast.backend.user.UserPreferencesRepository;
  * and regenerate. Every change recalculates the usage cost and rebuilds the
  * grocery list.
  *
- * Past days are never changed: a selection whose first day is today or earlier
- * keeps its
- * recipe (swap and suggestions refuse it with 409, regenerate leaves it). The
+ * Past days are never changed: a selection first cooked before today keeps its
+ * recipe (swap, sides and suggestions refuse it with 409). Today's can still be
+ * swapped by hand, but regenerate leaves anything from today back alone. The
  * days, servings
  * and run of each selection stay as they are; only recipes change.
  */
 @Service
 public class MealPlanEditService {
+
+    // Sides: a lunch or dinner main that wants one (a plain roast chicken) carries
+    // a side
+    // cooked for the same servings. Swapping the main keeps its side, or draws one
+    // if the new
+    // main wants one; a main that's a whole meal drops it. setSide and removeSide
+    // change it
+    // directly, and a side set that way is the user's: it stays through swaps and
+    // regenerate.
 
     private static final int SUGGESTIONS = 5;
 
@@ -57,11 +69,14 @@ public class MealPlanEditService {
     private final GroceryListService groceryListService;
     private final PlannerProperties properties;
     private final PlanGenerator generator;
+    private final UserRepository userRepository;
     private final Clock clock;
 
     public MealPlanEditService(MealPlanRepository planRepository, UserPreferencesRepository preferencesRepository,
             RecipeOptionLoader optionLoader, RecipeQueryService recipeQueryService,
-            GroceryListService groceryListService, PlannerProperties properties, Clock clock) {
+            GroceryListService groceryListService, PlannerProperties properties, UserRepository userRepository,
+            Clock clock) {
+        this.userRepository = userRepository;
         this.planRepository = planRepository;
         this.preferencesRepository = preferencesRepository;
         this.optionLoader = optionLoader;
@@ -132,6 +147,7 @@ public class MealPlanEditService {
         }
 
         assign(selection, recipe, generator.price(run, chosen, household(edit)));
+        keepOrDrawSide(edit, selection, run, chosen);
         return finish(edit);
     }
 
@@ -184,8 +200,140 @@ public class MealPlanEditService {
             // recipe
             PlanSelection selection = selectionAt(edit.plan, pick.run());
             assign(selection, edit.loaded.recipes().get(pick.recipe().id()), pick);
+            if (selection.isSideChosen()) {
+                continue; // the user's side stays with whatever main comes up
+            }
+            if (pick.side() != null) {
+                selection.assignSide(edit.loaded.recipes().get(pick.side().recipe().id()),
+                        pick.side().portionMultiplier(), pick.side().cost());
+            } else {
+                selection.clearSide();
+            }
         }
         edit.plan.recordGeneration(seed, Instant.now(clock));
+        return finish(edit);
+    }
+
+    // ---------- sides ----------
+
+    /**
+     * Sets a selection's side: recipeId, or null to draw one as generation would.
+     * The side can't be one of the plan's mains.
+     */
+    @Transactional
+    public MealPlanDetailResponse setSide(UUID userId, UUID planId, UUID selectionId, UUID recipeId) {
+        Edit edit = start(userId, planId);
+        PlanSelection selection = requireSelection(edit.plan, selectionId);
+        requireNotStarted(edit, selection);
+        SlotRun run = runOf(selection);
+        if (recipeId != null) {
+            Recipe recipe = recipeQueryService.requireVisible(userId, recipeId); // 404 if restricted
+            if (recipeIdsIn(edit.plan).contains(recipeId)) {
+                throw ApiException.conflict("That recipe is already a main in this plan.");
+            }
+            GeneratedPlan.Side side = generator.priceSide(run, edit.loaded.optionOf().apply(recipe), household(edit));
+            selection.chooseSide(recipe, side.portionMultiplier(), side.cost());
+        } else {
+            Set<UUID> exclude = recipeIdsIn(edit.plan);
+            if (selection.getSideRecipe() != null) {
+                exclude.add(selection.getSideRecipe().getId());
+            }
+            selection.clearSide();
+            GeneratedPlan.Side side = generator
+                    .drawSide(run, edit.loaded.options(), exclude, sideIdsIn(edit.plan), room(edit), household(edit),
+                            new Random(ThreadLocalRandom.current().nextLong()))
+                    .orElseThrow(() -> ApiException.conflict("No side fits this meal."));
+            // asked for a side, so it's theirs even though we picked which one
+            selection.chooseSide(edit.loaded.recipes().get(side.recipe().id()), side.portionMultiplier(),
+                    side.cost());
+        }
+        return finish(edit);
+    }
+
+    @Transactional
+    public MealPlanDetailResponse removeSide(UUID userId, UUID planId, UUID selectionId) {
+        Edit edit = start(userId, planId);
+        PlanSelection selection = requireSelection(edit.plan, selectionId);
+        requireNotStarted(edit, selection);
+        selection.clearSide();
+        return finish(edit);
+    }
+
+    /** Sides that could go with a selection's main, best first, within the budget first. */
+    @Transactional(readOnly = true)
+    public List<SuggestionResponse> sideSuggestions(UUID userId, UUID planId, UUID selectionId) {
+        Edit edit = start(userId, planId);
+        PlanSelection selection = requireSelection(edit.plan, selectionId);
+        requireNotStarted(edit, selection);
+        BigDecimal current = orZero(selection.getSideEstimatedCost());
+        Set<UUID> exclude = recipeIdsIn(edit.plan);
+        if (selection.getSideRecipe() != null) {
+            exclude.add(selection.getSideRecipe().getId());
+        }
+        BigDecimal room = room(edit);
+        BigDecimal roomWithout = room == null ? null : room.add(current);
+        return generator.suggestSides(runOf(selection), edit.loaded.options(), exclude, roomWithout,
+                household(edit), SUGGESTIONS * 2).stream()
+                .map(s -> new SuggestionResponse(
+                        MealPlanDetailResponse.PlanRecipe.from(edit.loaded.recipes().get(s.recipe().id())),
+                        selection.getServings(), s.cost(), s.cost().subtract(current)))
+                .toList();
+    }
+
+    // ---------- add a meal ----------
+
+    /**
+     * Puts a recipe on one day and slot, eaten that day only. Creates the week's
+     * plan (empty but
+     * for this meal) when there isn't one yet. The slot must be free (swap the meal
+     * that's there
+     * instead) and the day not over. The meal is locked, so regenerating keeps the
+     * user's pick.
+     */
+    @Transactional
+    public MealPlanDetailResponse addMeal(UUID userId, LocalDate date, MealSlot slot, UUID recipeId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> ApiException.notFound("User not found."));
+        UserPreferences preferences = preferencesRepository.findByUserId(userId)
+                .orElseThrow(() -> ApiException.unprocessable("Set up your preferences before planning meals."));
+        LocalDate today = LocalDate.now(clock.withZone(user.getZoneId()));
+        if (date.isBefore(today)) {
+            throw ApiException.badRequest("That day is already over.");
+        }
+        LocalDate weekStart = date.with(TemporalAdjusters.previousOrSame(preferences.getPlanStartDay()));
+        MealPlan plan = planRepository.findByUserIdAndWeekStartDate(userId, weekStart).orElse(null);
+        if (plan == null) {
+            BigDecimal budget = preferences.getWeeklyBudget() != null && preferences.getWeeklyBudget().signum() > 0
+                    ? preferences.getWeeklyBudget()
+                    : null;
+            plan = new MealPlan(user, weekStart, budget, PlanSource.MANUAL);
+            plan.setMealPrepMode(preferences.isPrefersMealPrep());
+            plan = planRepository.save(plan);
+        }
+        boolean taken = plan.getPlannedMeals().stream()
+                .anyMatch(m -> m.getMealDate().equals(date) && m.getMealSlot() == slot);
+        if (taken) {
+            throw ApiException.conflict("There's already a meal there. Swap it instead.");
+        }
+        Recipe recipe = recipeQueryService.requireVisible(userId, recipeId); // 404 if restricted
+        if (recipeIdsIn(plan).contains(recipeId)) {
+            throw ApiException.conflict("That recipe is already in this plan.");
+        }
+
+        RecipeOptionLoader.Loaded loaded = optionLoader.load(userId, preferences, weekStart, user.getZoneId());
+        Edit edit = new Edit(plan, preferences, today, loaded);
+        RecipeOption option = loaded.optionOf().apply(recipe);
+        int position = plan.getSelections().stream().filter(s -> s.getMealSlot() == slot)
+                .mapToInt(PlanSelection::getPosition).max().orElse(0) + 1;
+        SlotRun run = new SlotRun(slot, position, List.of(date), null, false);
+        GeneratedPlan.Pick priced = generator.price(run, option, household(edit));
+
+        PlanSelection selection = new PlanSelection(slot, position, date, 1);
+        selection.assignRecipe(recipe, priced.servings(), priced.portionMultiplier(),
+                recipe.getCostPerServing() == null ? null : priced.cost());
+        selection.lock();
+        plan.addSelection(selection);
+        selection.addMeal(date, slot, false);
+        keepOrDrawSide(edit, selection, run, option);
         return finish(edit);
     }
 
@@ -282,6 +430,41 @@ public class MealPlanEditService {
                 .orElseThrow();
     }
 
+    /**
+     * After the main changes: a side the user picked stays; otherwise a main
+     * that's a whole meal drops its side, and one that wants a side
+     * keeps the one it has, or gets one drawn within what's left of the budget.
+     */
+    private void keepOrDrawSide(Edit edit, PlanSelection selection, SlotRun run, RecipeOption main) {
+        if (selection.isSideChosen()) {
+            return; // the user picked it: it stays whatever the main is
+        }
+        if (!PlanGenerator.wantsSide(run, main)) {
+            selection.clearSide();
+            return;
+        }
+        if (selection.getSideRecipe() != null) {
+            return;
+        }
+        generator.drawSide(run, edit.loaded.options(), recipeIdsIn(edit.plan), sideIdsIn(edit.plan), room(edit),
+                household(edit), new Random(ThreadLocalRandom.current().nextLong()))
+                .ifPresent(side -> selection.assignSide(edit.loaded.recipes().get(side.recipe().id()),
+                        side.portionMultiplier(), side.cost()));
+    }
+
+    /** What's left of the plan's budget, or null when it has none. */
+    private static BigDecimal room(Edit edit) {
+        BigDecimal budget = edit.plan.getBudgetTarget();
+        return budget == null ? null : budget.subtract(usage(edit.plan));
+    }
+
+    private static Set<UUID> sideIdsIn(MealPlan plan) {
+        Set<UUID> ids = new HashSet<>();
+        plan.getSelections().stream().filter(s -> s.getSideRecipe() != null)
+                .forEach(s -> ids.add(s.getSideRecipe().getId()));
+        return ids;
+    }
+
     private static Set<UUID> recipeIdsIn(MealPlan plan) {
         Set<UUID> ids = new HashSet<>();
         plan.getSelections().forEach(s -> ids.add(s.getRecipe().getId()));
@@ -289,7 +472,7 @@ public class MealPlanEditService {
     }
 
     private static BigDecimal usage(MealPlan plan) {
-        return plan.getSelections().stream().map(s -> orZero(s.getEstimatedCost()))
+        return plan.getSelections().stream().map(s -> orZero(s.getTotalCost()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -297,9 +480,14 @@ public class MealPlanEditService {
         return value == null ? BigDecimal.ZERO : value;
     }
 
+    /**
+     * Swaps and sides: a meal first cooked on an earlier day is fixed (its
+     * leftovers are in the fridge), but today's can still change, since it may not
+     * be cooked yet. Regenerate is stricter and leaves today alone too.
+     */
     private static void requireNotStarted(Edit edit, PlanSelection selection) {
-        if (selection.hasStarted(edit.today)) {
-            throw ApiException.conflict("That meal has already started, so it can't be changed.");
+        if (selection.getStartDate().isBefore(edit.today)) {
+            throw ApiException.conflict("That meal was first cooked on an earlier day, so it can't be changed.");
         }
     }
 

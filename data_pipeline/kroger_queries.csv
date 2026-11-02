@@ -1,0 +1,49 @@
+# Kroger search words for ingredients whose name alone finds the wrong product
+# ("dill" -> dill relish). find_product.py searches these words instead of the
+# name and scores products against them. Rerun with --requery to search every
+# ingredient listed here again.
+ingredient,query
+dry white wine,pinot grigio white wine
+dry red wine,cabernet sauvignon red wine
+dill,fresh dill
+sage,fresh sage
+chives,fresh chives
+mint,fresh mint
+orange zest,navel oranges
+almond flour,simple truth almond meal flour
+cranberries,fresh cranberries
+ground cloves,ground cloves
+tapioca flour,tapioca starch
+raisins,kroger seedless raisins zip bag
+pine nuts,pine nuts
+chia seeds,chia seeds
+coconut oil,coconut oil cooking
+arrowroot powder,arrowroot
+goat cheese,goat cheese log
+sunflower seeds,sunflower kernels
+cream of tartar,cream of tartar
+allspice,ground allspice
+pepitas,pepitas
+pumpkin pie spice,pumpkin pie spice
+ground cardamom,ground cardamom
+bourbon,kentucky straight bourbon whiskey
+mixed berries,frozen mixed berries
+blackberries,fresh blackberries
+american cheese,american cheese singles
+almond extract,almond extract
+microgreens,micro greens
+mirin,mirin
+oat bran,oat bran
+sea scallops,sea scallops
+fennel bulb,fennel
+figs,fresh figs
+lobster tails,lobster tail
+lobster base,better than bouillon lobster
+cornstarch,corn starch
+corn tortilla,white corn tortillas
+cashews,cashews
+greek yogurt,plain nonfat greek yogurt
+kale,chopped kale
+corn syrup,karo light corn syrup
+sun-dried tomatoes,sun dried tomatoes
+masa harina,maseca masa harina

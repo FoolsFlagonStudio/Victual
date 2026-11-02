@@ -18,6 +18,8 @@ import com.forkast.backend.ingest.SlotScores;
  * @param fitPenalty     from RecipeFitEvaluator against the user's per-meal
  *                       targets
  * @param lastServed     the user's most recent time eating it, or null
+ * @param sideScore      0 to 100; offered as a side at 50 or more
+ * @param needsSide      a main that wants a side next to it (MealComposition)
  */
 public record RecipeOption(
         UUID id,
@@ -29,5 +31,22 @@ public record RecipeOption(
         boolean costComplete,
         double fitPenalty,
         boolean favorite,
-        LocalDate lastServed) {
+        LocalDate lastServed,
+        int sideScore,
+        boolean needsSide) {
+
+    /** Offered as a side at this side score or more. */
+    public static final int SIDE_FITS = 50;
+
+    /** Without side information: never a side, never wants one. */
+    public RecipeOption(UUID id, int baseServings, SlotScores slots, BigDecimal calories, int mealPrepScore,
+            BigDecimal costPerServing, boolean costComplete, double fitPenalty, boolean favorite,
+            LocalDate lastServed) {
+        this(id, baseServings, slots, calories, mealPrepScore, costPerServing, costComplete, fitPenalty, favorite,
+                lastServed, 0, false);
+    }
+
+    public boolean isSide() {
+        return sideScore >= SIDE_FITS;
+    }
 }

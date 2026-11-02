@@ -102,6 +102,9 @@ public class Recipe {
     @Column(name = "dinner_score", nullable = false)
     private int dinnerScore = 0;
 
+    @Column(name = "side_score", nullable = false)
+    private int sideScore = 0;
+
     @Column(name = "cost_per_serving", precision = 8, scale = 2)
     private BigDecimal costPerServing;
 
@@ -354,6 +357,15 @@ public class Recipe {
 
     public int getDinnerScore() {
         return dinnerScore;
+    }
+
+    /** 0 to 100 from SlotClassifier; offered as a side to a main at 50 or more. */
+    public int getSideScore() {
+        return sideScore;
+    }
+
+    public void setSideScore(int sideScore) {
+        this.sideScore = requireScore(sideScore, "sideScore");
     }
 
     /** Sets all three slot scores at once, after classification. */

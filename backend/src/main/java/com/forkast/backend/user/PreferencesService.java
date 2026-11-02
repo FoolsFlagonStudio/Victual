@@ -1,5 +1,6 @@
 package com.forkast.backend.user;
 
+import java.time.DayOfWeek;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -86,6 +87,12 @@ public class PreferencesService {
         preferences.setPlanStartDay(request.planStartDay());
         preferences.setPrefersMealPrep(Boolean.TRUE.equals(request.prefersMealPrep()));
         preferences.setLeftoversForLunch(Boolean.TRUE.equals(request.leftoversForLunch()));
+        preferences.setAutoPlanEnabled(!Boolean.FALSE.equals(request.autoPlanEnabled()));
+        // the night before the start day is the default, so it's stored as null and
+        // follows the start day if that changes
+        DayOfWeek autoDay = request.autoPlanDay();
+        preferences.setAutoPlanDay(
+                autoDay == null || autoDay == request.planStartDay().minus(1) ? null : autoDay);
 
         // 3. Dietary labels: every id must exist
         Set<UUID> ids = request.dietaryLabelIds() == null ? Set.of() : request.dietaryLabelIds();

@@ -1,0 +1,55 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font: var(--type-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Type styles from the Figma type sheet. Use on any element: <p className="type-small"> */
+.type-brand { font: var(--type-brand); }
+.type-h1 { font: var(--type-h1); }
+.type-h2 { font: var(--type-h2); }
+.type-h3 { font: var(--type-h3); }
+.type-body { font: var(--type-body); }
+.type-small { font: var(--type-small); }
+.type-caption { font: var(--type-caption); }
+.type-button { font: var(--type-button); letter-spacing: var(--tracking-button); text-transform: uppercase; }
+.type-input { font: var(--type-input); letter-spacing: var(--tracking-input); }
+.type-body-small { font: var(--type-body-small); }
+.type-social { font: var(--type-social); }
+.type-fine { font: var(--type-fine); }
+.type-display { font: var(--type-display); }
+.type-title { font: var(--type-title); }
+.type-lead { font: var(--type-lead); }
+.type-option { font: var(--type-option); }
+.type-label { font: var(--type-label); }
+.type-field { font: var(--type-field); letter-spacing: var(--tracking-field); }
+.type-button-large { font: var(--type-button-large); letter-spacing: var(--tracking-button-large); text-transform: uppercase; }
+
+h1, h2, h3, p {
+  margin: 0;
+}
+h1 { font: var(--type-h1); color: var(--color-text-strong); }
+h2 { font: var(--type-h2); color: var(--color-text-strong); }
+h3 { font: var(--type-h3); color: var(--color-text-strong); }

@@ -3,7 +3,12 @@
     python find_product.py                     # search for every ingredient with no row yet
     python find_product.py --only "olive oil"  # search again for these (comma-separated)
     python find_product.py --only "olive oil" --query "extra virgin olive oil"
+    python find_product.py --requery           # search again for everything in kroger_queries.csv
+    python find_product.py --off "dill,mint"   # switch off every product row for these
     python find_product.py --post              # send kroger_products.csv to the backend
+
+kroger_queries.csv holds search words for names that find the wrong thing on their own
+("dill" finds dill relish, so it searches "fresh dill"). Every search uses them.
 
 Searching adds the best match for each ingredient to kroger_products.csv and writes the
 top 5 to cache/kroger_candidates.csv. Review kroger_products.csv: fix a wrong product by
@@ -36,6 +41,7 @@ from common import CACHE_DIR, PIPELINE_DIR, post_json
 CATALOG_PATH = PIPELINE_DIR / "ingredients_seed.csv"
 MAPPING_PATH = PIPELINE_DIR / "kroger_products.csv"
 CANDIDATES_PATH = Path(CACHE_DIR) / "kroger_candidates.csv"
+QUERIES_PATH = PIPELINE_DIR / "kroger_queries.csv"
 SEARCH_CACHE = Path(CACHE_DIR) / "kroger" / "search"
 MAPPING_FIELDS = ["ingredient", "product_id",
                   "label", "size", "sold_by", "price", "active"]
@@ -45,6 +51,10 @@ SKIP = {"water"}          # free, never priced
 # Kroger categories that are almost never a cooking ingredient
 UNLIKELY_CATEGORIES = {"beverages", "snacks",
                        "candy", "beer, wine & spirits", "adult beverage"}
+# Kroger categories that are never food ("mint" shouldn't be mouthwash): dropped outright
+NOT_FOOD_WORDS = ("health", "beauty", "personal care", "pet", "cleaning", "household",
+                  "baby", "pharmacy", "garden", "office", "home decor", "kitchen & dining")
+SEARCH_LIMIT = 50         # Kroger's maximum; the first 10 are often unpriced at the store
 SEARCH_DELAY_SECONDS = 0.3
 POST_BATCH_SIZE = 500     # the backend's limit per call
 
@@ -54,6 +64,20 @@ POST_BATCH_SIZE = 500     # the backend's limit per call
 def catalog_names():
     with open(CATALOG_PATH, newline="", encoding="utf-8") as f:
         return [row["name"].strip().lower() for row in csv.DictReader(f) if row["name"].strip()]
+
+
+def read_queries(known):
+    """{ingredient: search words} from kroger_queries.csv (lines starting with # are notes)."""
+    if not QUERIES_PATH.exists():
+        return {}
+    with open(QUERIES_PATH, newline="", encoding="utf-8") as f:
+        lines = [line for line in f if line.strip() and not line.lstrip().startswith("#")]
+    queries = {r["ingredient"].strip().lower(): r["query"].strip()
+               for r in csv.DictReader(lines) if r["query"].strip()}
+    unknown = sorted(set(queries) - known)
+    if unknown:
+        sys.exit(f"kroger_queries.csv names not in the catalog: {', '.join(unknown)}")
+    return queries
 
 
 def read_mapping():
@@ -96,35 +120,43 @@ def validate(rows, known):
 # ---------- choosing ----------
 
 def words(text):
-    return {re.sub(r"(es|s)$", "", w) for w in re.findall(r"[a-z]+", text.lower())}
+    # plural and singular end up the same: oranges/orange -> orang, tomatoes/tomato -> tomato
+    return {re.sub(r"e$", "", re.sub(r"(es|s)$", "", w)) for w in re.findall(r"[a-z]+", text.lower())}
 
 
-def score(ingredient, product):
-    """Higher is better (compared in order); None when the store has no price for it."""
+def score(ingredient, product, term=None):
+    """Higher is better (compared in order); None when the store has no price for it or
+    it isn't food. term is the search words when they differ from the name ("fresh dill"):
+    the name's words count first, so "dill" still beats "dill pickle chips"."""
     item = kroger.first_priced_item(product)
     if item is None:
+        return None
+    categories = {c.lower() for c in product.get("categories") or []}
+    if any(word in c for c in categories for word in NOT_FOOD_WORDS):
         return None
     label = kroger.clean_label(product.get("description")).lower()
     brand = (product.get("brand") or "").lower()
     name_words = words(ingredient)
+    term_words = words(term or ingredient)
     label_words = words(label)
     matched = len(name_words & label_words)
+    term_matched = len(term_words & label_words)
     # words that make it a different product: "parmesan ... knots", "crispy ... rings"
-    extra = len(label_words - name_words - words(brand))
+    extra = len(label_words - name_words - term_words - words(brand))
     store_brand = 1 if brand == "kroger" else 0
-    organic_penalty = -1 if "organic" in label and "organic" not in ingredient else 0
-    categories = {c.lower() for c in product.get("categories") or []}
+    wanted = ingredient + " " + (term or "")
+    organic_penalty = -1 if "organic" in label and "organic" not in wanted else 0
     category_penalty = -2 if categories & UNLIKELY_CATEGORIES else 0
-    return (matched, organic_penalty + category_penalty, -extra, store_brand)
+    return (matched, organic_penalty + category_penalty, -extra, term_matched, store_brand)
 
 
 def search_cached(ingredient, term, refresh):
     SEARCH_CACHE.mkdir(parents=True, exist_ok=True)
     path = SEARCH_CACHE / \
-        (re.sub(r"[^a-z0-9]+", "_", term.lower()).strip("_") + ".json")
+        (re.sub(r"[^a-z0-9]+", "_", term.lower()).strip("_") + f"__{SEARCH_LIMIT}.json")
     if path.exists() and not refresh:
         return json.loads(path.read_text(encoding="utf-8"))
-    results = kroger.search(term)
+    results = kroger.search(term, limit=SEARCH_LIMIT)
     path.write_text(json.dumps(results, indent=2), encoding="utf-8")
     time.sleep(SEARCH_DELAY_SECONDS)
     return results
@@ -148,11 +180,14 @@ def as_row(ingredient, product):
 
 # ---------- commands ----------
 
-def find(only, query):
+def find(only, query, requery=False):
     known = set(catalog_names())
     mapping = read_mapping()
     validate(mapping, known)
+    queries = read_queries(known)
 
+    if requery:
+        only = ",".join(queries)
     if only:
         targets = [n.strip().lower() for n in only.split(",") if n.strip()]
         unknown = [t for t in targets if t not in known]
@@ -170,14 +205,15 @@ def find(only, query):
         f"Searching Kroger store {kroger.LOCATION_ID} for {len(targets)} ingredients...")
     candidates, no_match = [], []
     for ingredient in targets:
+        term = query or queries.get(ingredient) or ingredient
         try:
-            results = search_cached(
-                ingredient, query or ingredient, refresh=bool(only))
+            results = search_cached(ingredient, term, refresh=bool(only))
         except RuntimeError as e:
             print(f"  {ingredient:<24} search failed: {e}")
             no_match.append(ingredient)
             continue
-        scored = [(score(ingredient, p), i, p) for i, p in enumerate(results)]
+        # scored against the search words, so "fresh dill" prefers fresh over relish
+        scored = [(score(ingredient, p, term), i, p) for i, p in enumerate(results)]
         priced = sorted([s for s in scored if s[0] is not None],
                         key=lambda s: tuple(-x for x in s[0]) + (s[1],))
         for rank, (_, _, product) in enumerate(priced[:5], start=1):
@@ -211,6 +247,24 @@ def find(only, query):
     if no_match:
         print(f"No priced match for {len(no_match)}: {', '.join(no_match)}")
         print("Try --only \"<name>\" --query \"<other words>\", or leave them for prices_seed.csv.")
+
+
+def switch_off(names):
+    """Set active=false on every product row for these ingredients (a wrong pick with no
+    better one yet). After --post the backend stops pricing them; use prices_seed.csv."""
+    known = set(catalog_names())
+    targets = [n.strip().lower() for n in names.split(",") if n.strip()]
+    unknown = [t for t in targets if t not in known]
+    if unknown:
+        sys.exit(f"Not in the catalog: {', '.join(unknown)}")
+    mapping = read_mapping()
+    count = 0
+    for r in mapping:
+        if r["ingredient"] in targets and (r.get("active") or "true") == "true":
+            r["active"] = "false"
+            count += 1
+    write_mapping(mapping)
+    print(f"Switched off {count} rows for {len(targets)} ingredients. --post to send it.")
 
 
 def post(dry_run):
@@ -250,16 +304,21 @@ def main():
         "--only", help="comma-separated ingredient names to search again")
     parser.add_argument(
         "--query", help="search words to use instead of the name (one ingredient)")
+    parser.add_argument("--requery", action="store_true",
+                        help="search again for every ingredient in kroger_queries.csv")
+    parser.add_argument("--off", help="comma-separated ingredients to switch every product off for")
     parser.add_argument("--post", action="store_true",
                         help="send kroger_products.csv to the backend")
     parser.add_argument("--dry-run", action="store_true",
                         help="with --post: print, don't send")
     args = parser.parse_args()
 
-    if args.post:
+    if args.off:
+        switch_off(args.off)
+    elif args.post:
         post(args.dry_run)
     else:
-        find(args.only, args.query)
+        find(args.only, args.query, args.requery)
 
 
 if __name__ == "__main__":

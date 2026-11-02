@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.forkast.backend.diet.DietaryLabel;
 import com.forkast.backend.diet.DietaryLabelRepository;
+import com.forkast.backend.ingest.SlotScores;
+import com.forkast.backend.mealplan.MealSlot;
 import com.forkast.backend.recipe.Recipe;
 import com.forkast.backend.recipe.RecipeRepository;
 
@@ -79,6 +81,16 @@ class RecipeSpecificationsIntegrationTest {
         assertThat(found).isNotEmpty().allSatisfy(recipe -> assertThat(recipe.getCostPerServing())
                 .isNotNull()
                 .isLessThanOrEqualTo(new BigDecimal("3.00")));
+    }
+
+    @Test
+    void mealFilterKeepsRecipesThatFitAnyChosenMeal() {
+        List<Recipe> found = recipeRepository.findAll(RecipeSpecifications.matching(new RecipeSearchCriteria(
+                null, Set.of(), null, null, null, null, Set.of(MealSlot.LUNCH, MealSlot.DINNER), false)));
+
+        assertThat(found).isNotEmpty().allSatisfy(recipe -> assertThat(
+                recipe.getLunchScore() >= SlotScores.FITS || recipe.getDinnerScore() >= SlotScores.FITS).isTrue());
+        assertThat(found.size()).isLessThan((int) recipeRepository.count());
     }
 
     @Test

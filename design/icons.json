@@ -1,0 +1,130 @@
+{
+  "$description": "Lucide icon choices from the Figma icon sheet, keyed by what they mean in the app. `node design/build-tokens.mjs` turns this into src/theme/icons.ts in both apps.",
+
+  "tabBar": {
+    "home": "House",
+    "plan": "CalendarDays",
+    "groceries": "ShoppingBasket",
+    "recipes": "BookOpen",
+    "profile": "User"
+  },
+  "navigation": {
+    "back": "ChevronLeft",
+    "next": "ChevronRight",
+    "collapse": "ChevronUp",
+    "dropdown": "ChevronDown",
+    "close": "X",
+    "overflow": "EllipsisVertical",
+    "notification": "Bell",
+    "search": "Search",
+    "filters": "SlidersVertical",
+    "sortAsc": "ArrowUp",
+    "sortDesc": "ArrowDown",
+    "layoutGrid": "LayoutGrid",
+    "layoutList": "List"
+  },
+  "actions": {
+    "increase": "Plus",
+    "decrease": "Minus",
+    "favorite": "HeartPlus",
+    "favorited": "Heart",
+    "share": "Share2",
+    "unlocked": "LockOpen",
+    "locked": "Lock",
+    "regenerate": "RefreshCw",
+    "swapSuggestion": "Shuffle",
+    "swapMeal": "Repeat",
+    "edit": "Pencil",
+    "remove": "Trash",
+    "check": "CircleCheck",
+    "generate": "Sparkles",
+    "externalLink": "SquareArrowOutUpRight",
+    "undo": "RotateCcw"
+  },
+  "mealTypes": {
+    "breakfast": "Coffee",
+    "lunch": "Sandwich",
+    "dinner": "Utensils",
+    "cookMode": "ChefHat"
+  },
+  "recipeStats": {
+    "totalTime": "Clock",
+    "servings": "Users",
+    "costPerServing": "DollarSign",
+    "calories": "Flame",
+    "protein": "Dumbbell",
+    "quick": "Zap"
+  },
+  "cooking": {
+    "stepTimer": "Timer",
+    "play": "Play",
+    "pause": "Pause",
+    "resetTimer": "RotateCcw",
+    "rateUp": "ThumbsUp",
+    "rateDown": "ThumbsDown",
+    "done": "PartyPopper"
+  },
+  "groceryAisles": {
+    "produce": "Carrot",
+    "meat": "Drumstick",
+    "seafood": "Fish",
+    "dairy": "Milk",
+    "eggs": "EggFried",
+    "bakery": "Wheat",
+    "frozen": "Snowflake",
+    "pantry": "Package",
+    "other": "ShoppingCart",
+    "store": "Store",
+    "location": "MapPinned"
+  },
+  "diet": {
+    "vegan": "Leaf",
+    "vegetarian": "Sprout",
+    "lowCarb": "Salad",
+    "nutAllergy": "NutOff",
+    "glutenAllergy": "WheatOff",
+    "lactoseIntolerance": "MilkOff",
+    "eggAllergy": "EggOff",
+    "fishAllergy": "FishOff",
+    "soyAllergy": "BeanOff",
+    "shellfishAllergy": "ShrimpOff",
+    "sesameAllergy": "Torus"
+  },
+  "budget": {
+    "budget": "Wallet",
+    "savings": "PiggyBank",
+    "underBudget": "TrendingDown",
+    "overBudget": "TrendingUp",
+    "history": "ChartColumn"
+  },
+  "account": {
+    "email": "Mail",
+    "password": "LockKeyhole",
+    "showPassword": "Eye",
+    "hidePassword": "EyeClosed",
+    "logout": "LogOut",
+    "changeAvatar": "Camera",
+    "privacyPolicy": "Shield",
+    "terms": "FileText"
+  },
+  "settings": {
+    "settings": "Settings",
+    "lightMode": "Sun",
+    "darkMode": "Moon",
+    "systemMode": "MonitorCog",
+    "units": "RulerDimensionLine",
+    "help": "CircleQuestionMark",
+    "sendFeedback": "MessageSquareCheck",
+    "autoGenerateTime": "CalendarClock"
+  },
+  "systemStates": {
+    "offline": "WifiOff",
+    "warning": "TriangleAlert",
+    "error": "CircleAlert",
+    "info": "BadgeInfo",
+    "loading": "Loader",
+    "imagePlaceholder": "Image",
+    "noResults": "SearchX",
+    "noPlanYet": "CalendarX"
+  }
+}

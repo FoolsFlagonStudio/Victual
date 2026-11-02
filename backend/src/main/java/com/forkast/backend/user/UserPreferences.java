@@ -87,6 +87,15 @@ public class UserPreferences {
     @Column(name = "leftovers_for_lunch", nullable = false)
     private boolean leftoversForLunch = false;
 
+    /** The weekly job makes next week's plan automatically */
+    @Column(name = "auto_plan_enabled", nullable = false)
+    private boolean autoPlanEnabled = true;
+
+    /** The day it does (at generate-at, local time); null = the night before planStartDay */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auto_plan_day", length = 10)
+    private DayOfWeek autoPlanDay;
+
     // ---------- timestamps ----------
 
     @CreationTimestamp
@@ -241,6 +250,28 @@ public class UserPreferences {
 
     public void setLeftoversForLunch(boolean leftoversForLunch) {
         this.leftoversForLunch = leftoversForLunch;
+    }
+
+    public boolean isAutoPlanEnabled() {
+        return autoPlanEnabled;
+    }
+
+    public void setAutoPlanEnabled(boolean autoPlanEnabled) {
+        this.autoPlanEnabled = autoPlanEnabled;
+    }
+
+    /** The stored day, or null for the night before the plan start day. */
+    public DayOfWeek getAutoPlanDay() {
+        return autoPlanDay;
+    }
+
+    /** The day the plan is actually made: the stored one, or the day before the start day. */
+    public DayOfWeek getEffectiveAutoPlanDay() {
+        return autoPlanDay != null ? autoPlanDay : planStartDay.minus(1);
+    }
+
+    public void setAutoPlanDay(DayOfWeek autoPlanDay) {
+        this.autoPlanDay = autoPlanDay;
     }
 
     public Map<MealSlot, Integer> getMealSlots() {

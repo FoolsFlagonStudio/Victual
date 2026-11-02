@@ -272,6 +272,33 @@ curl -s "http://localhost:8080/api/admin/recipe-ingredients/needs-review?size=10
 curl -s -X POST "http://localhost:8080/api/admin/recipes/reprocess" -H "X-Admin-Key: $KEY"
 ```
 
+## Cleanup: getting every recipe a complete cost
+
+**Fast path for the long tail:** `python bulk_gaps.py build` turns every UNMATCHED name in the last report into `bulk_review.csv` with a suggested action (alias of an existing row, new row with FDC food, tags and a Kroger product, or skip). Review it in a spreadsheet, `python bulk_gaps.py apply`, then `python finish_round.py`, which runs seed, product post, hand prices, price refresh, reprocess, recalculate and the report in one go (`--from N` resumes after a failure).
+
+
+`catalog_report.py` lists everything that keeps recipes from a complete cost, biggest fixes first, and writes the full list with a next step per row to `cache/catalog_gaps.csv`.
+
+```bash
+python catalog_report.py                    # summary + top 30
+python catalog_report.py --reason NO_PRICE --top 100
+```
+
+| Gap | Means | Fix |
+| --- | --- | --- |
+| `UNMATCHED` | No catalog ingredient matched the line ("paccheri") | A new row or alias in `ingredients_seed.csv` (then `find_fdc.py`, `seed_ingredients.py`), or a match in the review queue |
+| `NO_PRICE` | The ingredient has no current price | `find_product.py --only "name"` (review, then `--post` and refresh), a BLS series, or a row in `prices_seed.csv` |
+| `NO_CONVERSION` | There's a price, but it doesn't fit the line's unit ("1 bunch" with only a price per 100 g and no bunch weight) | A portion for that unit (FDC household portions), or a per-item price |
+
+`completes` is how many recipes that one fix finishes on its own, so start at the top. The loop:
+
+1. `python catalog_report.py`, then fix a batch from the top of the list.
+2. Catalog changes (new rows, aliases): `seed_ingredients.py`, then `POST /api/admin/recipes/reprocess` so saved recipes re-match.
+3. Price changes: `find_product.py --post` + `POST /api/admin/prices/refresh`, or `import_prices.py seed`. Imports re-cost recipes themselves; otherwise `POST /api/admin/prices/recalculate`.
+4. Run the report again.
+
+When it's down to rare one-off ingredients, run `POST /api/admin/recipes/rescore` and then the plan sweep (`sweep_plans.py --fresh --write-app`).
+
 ## Improving the catalog over time
 
 1. Scrape more recipes.
@@ -287,3 +314,17 @@ curl -s -X POST "http://localhost:8080/api/admin/recipes/reprocess" -H "X-Admin-
 4. Re-run `find_fdc.py` and `seed_ingredients.py` for catalog changes, then `POST /api/admin/recipes/reprocess`.
 
 Planned for the next catalog pass: cooked rice, pasta and grains ("cooked white rice" currently matches raw rice, inflating calories); white wine, pecorino, capers, olives, pine nuts, molasses and canned green chiles; aliases for pasta shapes (paccheri, pappardelle, pastina). "cooking oil" was resolved through the review queue and is already an alias of vegetable oil. Find cooked lines with `select ri.raw_text, i.name from recipe_ingredients ri join ingredients i on i.id = ri.ingredient_id where ri.raw_text ilike '%cooked%';`.
+
+## Default recipe counts (plan sweep)
+
+`sweep_plans.py` finds good default "recipes per week" for each budget. For every set of meals (breakfast / lunch / dinner), count per meal (1 to 5) and household size (1, 2, 4), it generates real plans through the API with no budget pressure, so the grocery total is what a typical week with that setting costs. Then, for each budget from $40 to $300, it picks the setting with the most recipes whose typical week still fits with 15% headroom (more dinners and lunches win ties). Onboarding uses the result to prefill "How many recipes would you like?" until the user changes a count.
+
+It needs the backend running and a verified app account used only for this (its preferences are overwritten; it makes and deletes plans for a week in 2031). Put `SWEEP_EMAIL` and `SWEEP_PASSWORD` in `.env`.
+
+```bash
+python sweep_plans.py --households 2 --max-count 4 --seeds 1   # quick look, a few minutes
+python sweep_plans.py --write-app                               # full sweep (~1,300 plans), then copy into the app
+python sweep_plans.py --from-csv --headroom 0.9 --write-app     # re-pick from the last results without re-running
+```
+
+`--mode floor` uses a $1 budget instead (the cheapest week), but that's a poor guide: squeezed, the planner leans on recipes with incomplete prices or mostly pantry staples, so everything looks nearly free. Raw runs go to `sweep_results_typical.csv` (or `sweep_results.csv` for floor mode, git-ignored); the picks to `plan_defaults.json` and, with `--write-app`, `mobile/src/onboarding/plan-defaults.json`. Re-run it after a big recipe import or price refresh.

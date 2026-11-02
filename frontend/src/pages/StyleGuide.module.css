@@ -1,0 +1,97 @@
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg) var(--space-xxxl);
+  display: grid;
+  gap: var(--space-xxxl);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.section {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--space-lg);
+}
+
+.swatch {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.chip {
+  height: 72px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.typeRow {
+  display: grid;
+  gap: var(--space-xs);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.typeRow > :first-child {
+  color: var(--color-muted);
+}
+
+.logoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
+.logoTile {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.logoTile[data-surface='light'] {
+  background: var(--palette-background-light);
+}
+
+.logoTile[data-surface='dark'] {
+  background: var(--palette-black);
+}
+
+.iconGroup {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: var(--space-sm);
+}
+
+.iconCell {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md) var(--space-xs);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  text-align: center;
+  color: var(--color-text-strong);
+}
+
+.iconCell span {
+  color: var(--color-text);
+}

@@ -2,6 +2,7 @@ package com.forkast.backend.mealplan.planner;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -38,7 +39,11 @@ import com.forkast.backend.mealplan.MealSlot;
  * unlocked pick
  * furthest over its share for the best-weighted unused candidate that's cheaper
  * per
- * serving. Stop when it fits or no swap lowers the cost.
+ * serving and fully priced (a recipe with unpriced ingredients only looks
+ * cheap). Stop when it fits or no swap lowers the cost.
+ * 5. Sides: lunch and dinner mains that want one (a plain roast chicken) get a
+ * side while
+ * it fits the budget (pairSides).
  *
  * Determinism: the same request, recipes (in the same order) and seed give the
  * same plan.
@@ -56,7 +61,17 @@ public class PlanGenerator {
     }
 
     public GeneratedPlan generate(PlanRequest request, List<RecipeOption> recipes) {
-        WeekShape shape = layout.layout(request.weekStart(), request.mealSlots(), request.leftoversForLunch());
+        return generate(request, recipes, request.weekStart());
+    }
+
+    /**
+     * A week that may have started already: only `from` (today) on is planned, so
+     * no meals or
+     * groceries for days that are over.
+     */
+    public GeneratedPlan generate(PlanRequest request, List<RecipeOption> recipes, LocalDate from) {
+        LocalDate start = from.isAfter(request.weekStart()) ? from : request.weekStart();
+        WeekShape shape = layout.layout(request.weekStart(), request.mealSlots(), request.leftoversForLunch(), start);
         return fill(shape, request, recipes);
     }
 
@@ -117,6 +132,9 @@ public class PlanGenerator {
         if (budgetTarget != null) {
             fitBudget(picks, pools, used, budgetTarget, targetPerServing, context, request.household());
         }
+
+        // 5. Sides for mains that want one, while they fit the budget
+        pairSides(picks, recipes, used, budgetTarget, request.household(), random);
 
         BigDecimal usage = usage(picks);
         int openMeals = shape.openMeals() + shortfalls.stream().mapToInt(GeneratedPlan.Shortfall::meals).sum();
@@ -311,7 +329,10 @@ public class PlanGenerator {
             }
             GeneratedPlan.Pick current = worst.get();
             SlotRun run = current.run();
+            // Only recipes whose cost is fully known: one with unpriced ingredients only
+            // looks cheaper, so swapping to it would hide the overspend instead of fixing it.
             Optional<RecipeOption> cheaper = candidatesFor(run, pools, used).stream()
+                    .filter(RecipeOption::costComplete)
                     .filter(r -> r.costPerServing().compareTo(current.recipe().costPerServing()) < 0)
                     .max(Comparator.comparingDouble(r -> scorer.weight(candidate(r, run), run, context)));
             if (cheaper.isEmpty()) {
@@ -330,9 +351,129 @@ public class PlanGenerator {
         return pick.cost().subtract(share);
     }
 
+    /** What the picks cost, sides included. */
     private static BigDecimal usage(Map<SlotRun, GeneratedPlan.Pick> picks) {
-        return picks.values().stream().map(GeneratedPlan.Pick::cost).reduce(BigDecimal.ZERO, BigDecimal::add)
+        return picks.values().stream().map(GeneratedPlan.Pick::totalCost).reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    // ---------- sides ----------
+
+    /**
+     * Gives each lunch or dinner pick whose main wants a side (RecipeOption.needsSide)
+     * one side,
+     * in run order. A side is a recipe with a side score of 50 or more that isn't
+     * one of the
+     * plan's mains, drawn by side score (favorites count double, cheaper is
+     * likelier), using
+     * a different side for each main while there are enough. A side that would put
+     * the plan
+     * over the budget target isn't added; locked picks keep the side they have.
+     */
+    private void pairSides(Map<SlotRun, GeneratedPlan.Pick> picks, List<RecipeOption> recipes, Set<UUID> used,
+            BigDecimal target, int household, Random random) {
+        List<RecipeOption> sides = sideOptions(recipes);
+        if (sides.isEmpty()) {
+            return;
+        }
+        Set<UUID> sidesUsed = new HashSet<>();
+        for (SlotRun run : new ArrayList<>(picks.keySet())) {
+            GeneratedPlan.Pick pick = picks.get(run);
+            if (pick.locked() || pick.side() != null || !wantsSide(run, pick.recipe())) {
+                continue;
+            }
+            BigDecimal room = target == null ? null : target.subtract(usage(picks));
+            Optional<GeneratedPlan.Side> side = drawSide(run, sides, used, sidesUsed, room, household, random);
+            if (side.isPresent()) {
+                picks.put(run, pick.withSide(side.get()));
+                sidesUsed.add(side.get().recipe().id());
+            }
+        }
+    }
+
+    /** True when a main in this run should get a side: lunch or dinner, and the main wants one. */
+    public static boolean wantsSide(SlotRun run, RecipeOption main) {
+        return run.slot() != MealSlot.BREAKFAST && main.needsSide();
+    }
+
+    /**
+     * One side for a run, or empty when none fits. exclude: never (the plan's
+     * mains); avoid:
+     * only if nothing else fits (sides already used). room: what's left of the
+     * budget, or null.
+     */
+    public Optional<GeneratedPlan.Side> drawSide(SlotRun run, List<RecipeOption> recipes, Set<UUID> exclude,
+            Set<UUID> avoid, BigDecimal room, int household, Random random) {
+        int servings = run.servings(household);
+        List<GeneratedPlan.Side> fits = sideOptions(recipes).stream()
+                .filter(r -> !exclude.contains(r.id()))
+                .map(r -> side(r, servings))
+                .filter(s -> room == null || s.cost().compareTo(room) <= 0)
+                .toList();
+        List<GeneratedPlan.Side> fresh = fits.stream().filter(s -> !avoid.contains(s.recipe().id())).toList();
+        List<GeneratedPlan.Side> pool = fresh.isEmpty() ? fits : fresh;
+        if (pool.isEmpty()) {
+            return Optional.empty();
+        }
+        double[] weights = new double[pool.size()];
+        double total = 0;
+        for (int i = 0; i < pool.size(); i++) {
+            weights[i] = sideWeight(pool.get(i).recipe());
+            total += weights[i];
+        }
+        double roll = random.nextDouble() * total;
+        for (int i = 0; i < weights.length; i++) {
+            roll -= weights[i];
+            if (roll < 0) {
+                return Optional.of(pool.get(i));
+            }
+        }
+        return Optional.of(pool.get(pool.size() - 1));
+    }
+
+    /**
+     * Up to `limit` sides for a run, best first (side score, then cheaper), those
+     * within `room`
+     * (null = no budget) ahead of the rest. exclude: the plan's mains and the run's
+     * current side.
+     */
+    public List<GeneratedPlan.Side> suggestSides(SlotRun run, List<RecipeOption> recipes, Set<UUID> exclude,
+            BigDecimal room, int household, int limit) {
+        int servings = run.servings(household);
+        Comparator<GeneratedPlan.Side> best = Comparator
+                .comparingDouble((GeneratedPlan.Side s) -> sideWeight(s.recipe())).reversed()
+                .thenComparing(GeneratedPlan.Side::cost);
+        List<GeneratedPlan.Side> all = sideOptions(recipes).stream()
+                .filter(r -> !exclude.contains(r.id()))
+                .map(r -> side(r, servings))
+                .sorted(best)
+                .toList();
+        List<GeneratedPlan.Side> ordered = new ArrayList<>(
+                all.stream().filter(s -> room == null || s.cost().compareTo(room) <= 0).toList());
+        all.stream().filter(s -> !ordered.contains(s)).forEach(ordered::add);
+        return ordered.stream().limit(limit).toList();
+    }
+
+    /** A recipe as a side for a run: scaled to the run's servings, with its cost. */
+    public GeneratedPlan.Side priceSide(SlotRun run, RecipeOption recipe, int household) {
+        return side(recipe, run.servings(household));
+    }
+
+    private static List<RecipeOption> sideOptions(List<RecipeOption> recipes) {
+        return recipes.stream().filter(RecipeOption::isSide).filter(r -> r.costPerServing() != null).toList();
+    }
+
+    private static double sideWeight(RecipeOption r) {
+        double cost = r.costPerServing() == null ? 0 : r.costPerServing().doubleValue();
+        return r.sideScore() * (r.favorite() ? 2.0 : 1.0) / (1.0 + cost);
+    }
+
+    private static GeneratedPlan.Side side(RecipeOption recipe, int servings) {
+        BigDecimal multiplier = BigDecimal.valueOf(servings)
+                .divide(BigDecimal.valueOf(Math.max(1, recipe.baseServings())), 3, RoundingMode.HALF_UP);
+        BigDecimal cost = recipe.costPerServing() == null ? BigDecimal.ZERO
+                : recipe.costPerServing().multiply(BigDecimal.valueOf(servings)).setScale(2, RoundingMode.HALF_UP);
+        return new GeneratedPlan.Side(recipe, multiplier, cost);
     }
 
     // ---------- picks ----------

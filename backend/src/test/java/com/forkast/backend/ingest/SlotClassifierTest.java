@@ -49,13 +49,72 @@ class SlotClassifierTest {
             "Peanut Butter Banana Smoothie       | Breakfast,Dessert,Snack | -       | 100 | 0  | 0", // a meal tag
                                                                                                       // beats dessert
             "Cucumber Sandwiches                 | Appetizer,Lunch,Snack | -         | 5   | 85 | 55",
-            "Biscuits                            | Brunch        | -                 | 90  | 25 | 10", // brunch alone
-                                                                                                       // is breakfast
+            "Biscuits                            | Brunch        | -                 | 90  | 0  | 0", // brunch alone
+                                                                                                       // is breakfast;
+                                                                                                       // a side by name
     })
     void scoresEachSlot(String name, String category, String keywords, int breakfast, int lunch, int dinner) {
         SlotScores scores = classifier.score(name, category, keywords);
 
         assertThat(scores).isEqualTo(new SlotScores(breakfast, lunch, dinner));
+    }
+
+    @ParameterizedTest(name = "{0} ({1}) is not a meal")
+    @CsvSource(delimiter = '|', nullValues = "-", value = {
+            // names that slipped through as dinners: articles, components, sweets
+            "How to Make Ghee                    | -",
+            "How To Cook Quinoa                  | Dinner",
+            "Mayo Ketchup                        | -",
+            "Lemon Curd                          | Dinner",
+            "Ranch Dressing                      | Main Course",
+            "Homemade Chicken Stock              | Soup",
+            "Garlic Butter Sauce                 | Dinner",
+            "Mango Salsa                         | -",
+            "Chocolate Almond Butter Banana Bites | Dinner",
+            "Peanut Butter Energy Balls          | -",
+            "Apple Pie                           | -",
+    })
+    void notAMealByName(String name, String category) {
+        assertThat(classifier.score(name, category, null)).isEqualTo(new SlotScores(0, 0, 0));
+    }
+
+    @ParameterizedTest(name = "{0} ({1}) -> {2}/{3}/{4}")
+    @CsvSource(delimiter = '|', nullValues = "-", value = {
+            // sides by name lose lunch and dinner, whatever they're filed under
+            "Mashed Sweet Potatoes               | Dinner        | 5   | 0  | 0",
+            "Cilantro Lime Slaw                  | -             | 5   | 0  | 0",
+            "Buttery Drop Biscuits               | Dinner        | 5   | 0  | 0",
+            // ...but a name with a protein or grain is still the dish
+            "Chicken and Biscuits                | Dinner        | 5   | 60 | 85",
+            "Chicken in Garlic Sauce             | -             | 5   | 60 | 85",
+            "Pasta with Pesto                    | -             | 5   | 60 | 85",
+            "Biscuits and Gravy                  | Breakfast     | 90  | 0  | 0",
+            "Chicken Pot Pie                     | Dinner        | 5   | 60 | 85",
+    })
+    void namesHaveTheLastWord(String name, String category, int breakfast, int lunch, int dinner) {
+        assertThat(classifier.score(name, category, null)).isEqualTo(new SlotScores(breakfast, lunch, dinner));
+    }
+
+    @ParameterizedTest(name = "{0} ({1}) side {2}")
+    @CsvSource(delimiter = '|', nullValues = "-", value = {
+            "Garlic Roasted Potatoes             | Side Dish     | 90",
+            "Creamed Spinach                     | Dinner,Side Dish | 90",
+            "Cilantro Lime Slaw                  | -             | 80",
+            "Mashed Sweet Potatoes               | Dinner        | 80",
+            "Cilantro Lime Rice                  | -             | 60",
+            "Roasted Broccoli                    | -             | 60",
+            "Greek Salad                         | Salad         | 60",
+            // not sides: mains, components, sweets, soups, breakfasts
+            "Easy Roast Chicken                  | Dinner        | 0",
+            "Chicken Fried Rice                  | Main Course   | 0",
+            "Lemon Garlic Sauce                  | Sauce         | 0",
+            "Ranch Dressing                      | Side Dish     | 0",
+            "Chocolate Chip Cookies              | Dessert       | 0",
+            "Slow Cooker Black Bean Soup         | Soup          | 0",
+            "Overnight Oats                      | Breakfast     | 0",
+    })
+    void scoresSides(String name, String category, int side) {
+        assertThat(classifier.sideScore(name, category, null)).isEqualTo(side);
     }
 
     @Test

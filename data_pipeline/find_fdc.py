@@ -180,6 +180,14 @@ def main():
         f"\nUpdated {SEED_PATH.name}. Alternatives are in {CANDIDATES_PATH}.")
     if missing:
         print("No match (edit the query column and rerun): " + ", ".join(missing))
+    # Two rows on one FDC food would import as ONE ingredient (the backend upserts
+    # by fdc_id), renaming the older one. seed_ingredients.py refuses to run until fixed.
+    clashes = [problem for problem in validate(rows) if "fdc_id" in problem]
+    if clashes:
+        print("\nSame FDC food on two rows. Pick another fdc_id from the candidates file, "
+              "or make one row an alias of the other:")
+        for problem in clashes:
+            print("  " + problem)
 
 
 if __name__ == "__main__":

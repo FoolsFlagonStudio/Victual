@@ -57,6 +57,8 @@ class MealPlanEditServiceIntegrationTest {
     private UserPreferencesRepository preferencesRepository;
     @Autowired
     private RecipeRepository recipeRepository;
+    @Autowired
+    private MealPlanRepository planRepository;
 
     private User user;
     private MealPlanDetailResponse plan;
@@ -190,19 +192,31 @@ class MealPlanEditServiceIntegrationTest {
     // ---------- past days ----------
 
     @Test
-    void aMealThatHasStartedCantBeSwappedAndRegenerateLeavesIt() {
+    void earlierDaysAreFixedButTodaysMealCanStillBeSwapped() {
         LocalDate today = LocalDate.now(ZoneId.of(user.getTimezone()));
-        MealPlanDetailResponse thisWeek = planService.generate(user.getId(),
-                today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)));
-        Selection started = thisWeek.selections().get(0); // starts Sunday, today or earlier
+        // A whole week around today, as the weekly job makes it (generate would start
+        // today). 3 dinners from 3 days ago cook on day -3, today and day +2.
+        UserPreferences preferences = preferencesRepository.findByUserId(user.getId()).orElseThrow();
+        MealPlan built = planService.build(user, preferences, today.minusDays(3), PlanSource.AUTO, 42L);
+        planRepository.saveAndFlush(built);
+        MealPlanDetailResponse week = planService.detail(user.getId(), built.getId());
 
-        assertStatus(() -> editService.swap(user.getId(), thisWeek.id(), started.id(), null), HttpStatus.CONFLICT);
-        assertStatus(() -> editService.suggestions(user.getId(), thisWeek.id(), started.id()), HttpStatus.CONFLICT);
+        Selection earlier = week.selections().stream().filter(s -> s.startDate().isBefore(today)).findFirst()
+                .orElseThrow();
+        assertStatus(() -> editService.swap(user.getId(), week.id(), earlier.id(), null), HttpStatus.CONFLICT);
+        assertStatus(() -> editService.suggestions(user.getId(), week.id(), earlier.id()), HttpStatus.CONFLICT);
 
-        boolean anyLeft = thisWeek.selections().stream().anyMatch(s -> s.startDate().isAfter(today));
-        if (anyLeft) {
-            MealPlanDetailResponse again = editService.regenerate(user.getId(), thisWeek.id());
-            assertThat(again.selections().get(0).recipe().id()).isEqualTo(started.recipe().id());
+        // tonight's dinner hasn't been cooked yet: it can still be changed
+        week.selections().stream().filter(s -> s.startDate().equals(today)).findFirst()
+                .ifPresent(tonight -> assertThat(editService.suggestions(user.getId(), week.id(), tonight.id()))
+                        .isNotNull());
+
+        // regenerate leaves everything from today back alone
+        if (week.selections().stream().anyMatch(s -> s.startDate().isAfter(today))) {
+            MealPlanDetailResponse again = editService.regenerate(user.getId(), week.id());
+            Selection kept = again.selections().stream().filter(s -> s.id().equals(earlier.id())).findFirst()
+                    .orElseThrow();
+            assertThat(kept.recipe().id()).isEqualTo(earlier.recipe().id());
         }
     }
 

@@ -54,16 +54,24 @@ public record MealPlanDetailResponse(
                 }
         }
 
+        /**
+         * estimatedCost is the main's; side and sideEstimatedCost are null when the
+         * main is a whole meal. sideChosen: the user picked the side, so it stays when
+         * the main changes.
+         */
         public record Selection(UUID id, MealSlot slot, int position, LocalDate startDate, int daysCovered,
                         LocalDate lastMealDate, int servings, BigDecimal portionMultiplier, BigDecimal estimatedCost,
-                        boolean locked, PlanRecipe recipe) {
+                        boolean locked, PlanRecipe recipe, PlanRecipe side, BigDecimal sidePortionMultiplier,
+                        BigDecimal sideEstimatedCost, boolean sideChosen) {
 
                 static Selection from(PlanSelection s) {
                         return new Selection(s.getId(), s.getMealSlot(), s.getPosition(), s.getStartDate(),
                                         s.getDaysCovered(),
                                         s.getLastMealDate(), s.getServings(), s.getPortionMultiplier(),
                                         s.getEstimatedCost(),
-                                        s.isLocked(), PlanRecipe.from(s.getRecipe()));
+                                        s.isLocked(), PlanRecipe.from(s.getRecipe()),
+                                        s.getSideRecipe() == null ? null : PlanRecipe.from(s.getSideRecipe()),
+                                        s.getSidePortionMultiplier(), s.getSideEstimatedCost(), s.isSideChosen());
                 }
         }
 
@@ -72,12 +80,14 @@ public record MealPlanDetailResponse(
 
         /** leftover = true: eaten from an earlier cook of the same selection. */
         public record Meal(MealSlot slot, UUID selectionId, UUID recipeId, String recipeName, String imageUrl,
-                        boolean leftover) {
+                        boolean leftover, UUID sideRecipeId, String sideRecipeName) {
 
                 static Meal from(PlannedMeal m) {
                         Recipe recipe = m.getRecipe();
+                        Recipe side = m.getSelection().getSideRecipe();
                         return new Meal(m.getMealSlot(), m.getSelection().getId(), recipe.getId(), recipe.getName(),
-                                        recipe.getImageUrl(), m.isLeftover());
+                                        recipe.getImageUrl(), m.isLeftover(), side == null ? null : side.getId(),
+                                        side == null ? null : side.getName());
                 }
         }
 

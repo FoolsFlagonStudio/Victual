@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.forkast.backend.favorite.FavoriteRepository;
 import com.forkast.backend.history.RecipeHistoryRepository;
 import com.forkast.backend.ingest.SlotScores;
+import com.forkast.backend.mealplan.planner.MealComposition;
 import com.forkast.backend.mealplan.planner.RecipeOption;
 import com.forkast.backend.recipe.Recipe;
 import com.forkast.backend.recipe.RecipeRepository;
@@ -86,7 +87,9 @@ public class RecipeOptionLoader {
                 r.isCostComplete(),
                 fitEvaluator.evaluate(RecipeNutrition.of(r), targets).penalty(),
                 favorites.contains(r.getId()),
-                lastServed.get(r.getId()));
+                lastServed.get(r.getId()),
+                r.getSideScore(),
+                MealComposition.needsSide(r.getName(), r.getCarbsGPerServing()));
 
         Map<UUID, Recipe> byId = new LinkedHashMap<>();
         List<RecipeOption> options = new ArrayList<>();

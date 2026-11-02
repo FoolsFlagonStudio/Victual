@@ -6,7 +6,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -33,6 +35,7 @@ import com.forkast.backend.recipe.scale.IngredientScaler;
 import com.forkast.backend.recipe.scale.ScaledAmount;
 import com.forkast.backend.recipe.search.RecipeSearchCriteria;
 import com.forkast.backend.recipe.search.RecipeSearchRequest;
+import com.forkast.backend.mealplan.MealSlot;
 import com.forkast.backend.recipe.search.RecipeSort;
 import com.forkast.backend.recipe.search.RecipeSpecifications;
 import com.forkast.backend.recipe.search.RecipeSummaryResponse;
@@ -75,9 +78,22 @@ public class RecipeQueryService {
         Set<DietaryLabel> requiredLabels = restrictionsOf(preferences);
         requiredLabels.addAll(resolveLabels(request.labels()));
 
+        Set<MealSlot> slots = EnumSet.noneOf(MealSlot.class);
+        boolean sides = false;
+        for (String meal : request.meals() == null ? List.<String>of() : request.meals()) {
+            String m = meal.trim().toUpperCase(Locale.ROOT);
+            if (m.equals("SIDE") || m.equals("SIDES")) {
+                sides = true;
+            } else if (m.equals("BREAKFAST") || m.equals("LUNCH") || m.equals("DINNER")) {
+                slots.add(MealSlot.valueOf(m));
+            } else if (!m.isEmpty()) {
+                throw ApiException.badRequest("Unknown meal '" + meal + "': use breakfast, lunch, dinner or side.");
+            }
+        }
+
         Specification<Recipe> spec = RecipeSpecifications.matching(new RecipeSearchCriteria(
                 request.q(), requiredLabels, request.minProtein(), request.maxCalories(), request.maxTime(),
-                request.maxCost()));
+                request.maxCost(), slots, sides));
 
         List<UUID> pageIds;
         long total;

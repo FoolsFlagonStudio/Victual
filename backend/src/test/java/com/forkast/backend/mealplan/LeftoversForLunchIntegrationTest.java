@@ -63,7 +63,7 @@ class LeftoversForLunchIntegrationTest {
         preferences.setHouseholdServingSize(HOUSEHOLD);
         preferences.setPlanStartDay(DayOfWeek.SUNDAY);
         preferences.setLeftoversForLunch(true);
-        preferences.replaceMealSlots(Map.of(MealSlot.DINNER, 3, MealSlot.LUNCH, 3));
+        preferences.replaceMealSlots(Map.of(MealSlot.DINNER, 4, MealSlot.LUNCH, 3));
         preferencesRepository.saveAndFlush(preferences);
         plan = planService.generate(user.getId(), FUTURE_SUNDAY);
     }
@@ -80,11 +80,18 @@ class LeftoversForLunchIntegrationTest {
         assertThat(plan.open()).isEmpty();
     }
 
+    /** Dinners that also cover a lunch (their last meal is a day after their last dinner). */
+    private List<Selection> dinnersFeedingLunch() {
+        return selections(MealSlot.DINNER).stream()
+                .filter(d -> d.lastMealDate().isAfter(d.startDate().plusDays(d.daysCovered() - 1L))).toList();
+    }
+
     @Test
-    void eachDinnerFeedsTheNextDaysLunch() {
-        for (Selection dinner : selections(MealSlot.DINNER)) {
-            LocalDate nextDay = dinner.startDate().plusDays(1);
-            Meal lunch = plan.days().stream().filter(d -> d.date().equals(nextDay)).findFirst().orElseThrow()
+    void aDinnersLeftoverLunchIsTheDayAfterItsLastDinner() {
+        assertThat(dinnersFeedingLunch()).isNotEmpty();
+        for (Selection dinner : dinnersFeedingLunch()) {
+            LocalDate lunchDay = dinner.startDate().plusDays(dinner.daysCovered());
+            Meal lunch = plan.days().stream().filter(d -> d.date().equals(lunchDay)).findFirst().orElseThrow()
                     .meals().stream().filter(m -> m.slot() == MealSlot.LUNCH).findFirst().orElseThrow();
 
             assertThat(lunch.selectionId()).isEqualTo(dinner.id());
@@ -93,20 +100,26 @@ class LeftoversForLunchIntegrationTest {
     }
 
     @Test
+    void noDishIsEatenTwiceInOneDay() {
+        assertThat(plan.days()).allSatisfy(day -> assertThat(day.meals()).extracting(Meal::selectionId)
+                .doesNotHaveDuplicates());
+    }
+
+    @Test
     void aDinnerThatFeedsLunchCooksForOneMoreMeal() {
         for (Selection dinner : selections(MealSlot.DINNER)) {
             int baseServings = recipeRepository.findById(dinner.recipe().id()).orElseThrow().getBaseServings();
+            int meals = dinner.daysCovered() + (dinnersFeedingLunch().contains(dinner) ? 1 : 0);
 
-            assertThat(dinner.servings()).isEqualTo(HOUSEHOLD * (dinner.daysCovered() + 1));
+            assertThat(dinner.servings()).isEqualTo(HOUSEHOLD * meals);
             assertThat(dinner.portionMultiplier()).isEqualByComparingTo(BigDecimal.valueOf(dinner.servings())
                     .divide(BigDecimal.valueOf(baseServings), 3, RoundingMode.HALF_UP));
-            assertThat(dinner.lastMealDate()).isAfterOrEqualTo(dinner.startDate().plusDays(1));
         }
     }
 
     @Test
     void lunchRecipesOnlyFillTheLunchesLeft() {
-        int lunchesFromDinners = selections(MealSlot.DINNER).size();
+        int lunchesFromDinners = dinnersFeedingLunch().size();
         int lunchDays = selections(MealSlot.LUNCH).stream().mapToInt(Selection::daysCovered).sum();
 
         assertThat(lunchesFromDinners + lunchDays).isEqualTo(7);

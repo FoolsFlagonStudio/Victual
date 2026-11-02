@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.forkast.backend.auth.AuthenticatedUser;
 import com.forkast.backend.common.PageResponse;
+import com.forkast.backend.mealplan.dto.AddMealRequest;
 import com.forkast.backend.mealplan.dto.GeneratePlanRequest;
 import com.forkast.backend.mealplan.dto.MealPlanDetailResponse;
 import com.forkast.backend.mealplan.dto.MealPlanSummaryResponse;
@@ -118,5 +119,45 @@ public class MealPlanController {
     public List<SuggestionResponse> suggestions(@AuthenticationPrincipal AuthenticatedUser currentUser,
             @PathVariable UUID id, @PathVariable UUID selectionId) {
         return editService.suggestions(currentUser.id(), id, selectionId);
+    }
+
+    /**
+     * Puts a recipe on one date and slot for one day, creating that week's plan
+     * when there isn't
+     * one. 409 when the slot already has a meal (swap it instead) or the recipe is
+     * already in the
+     * plan; 400 when the day is over.
+     */
+    @PostMapping("/meals")
+    @ResponseStatus(HttpStatus.CREATED)
+    public MealPlanDetailResponse addMeal(@AuthenticationPrincipal AuthenticatedUser currentUser,
+            @Valid @RequestBody AddMealRequest request) {
+        return editService.addMeal(currentUser.id(), request.date(), request.slot(), request.recipeId());
+    }
+
+    // ---------- sides ----------
+
+    /**
+     * {"recipeId": "..."} to use that recipe as the side; no body (or no recipeId)
+     * to pick one.
+     */
+    @PostMapping("/{id}/selections/{selectionId}/side")
+    public MealPlanDetailResponse setSide(@AuthenticationPrincipal AuthenticatedUser currentUser,
+            @PathVariable UUID id, @PathVariable UUID selectionId,
+            @RequestBody(required = false) SwapRequest request) {
+        return editService.setSide(currentUser.id(), id, selectionId, request == null ? null : request.recipeId());
+    }
+
+    @DeleteMapping("/{id}/selections/{selectionId}/side")
+    public MealPlanDetailResponse removeSide(@AuthenticationPrincipal AuthenticatedUser currentUser,
+            @PathVariable UUID id, @PathVariable UUID selectionId) {
+        return editService.removeSide(currentUser.id(), id, selectionId);
+    }
+
+    /** Sides that could go with this selection's main, best first, with the cost change of each. */
+    @GetMapping("/{id}/selections/{selectionId}/side-suggestions")
+    public List<SuggestionResponse> sideSuggestions(@AuthenticationPrincipal AuthenticatedUser currentUser,
+            @PathVariable UUID id, @PathVariable UUID selectionId) {
+        return editService.sideSuggestions(currentUser.id(), id, selectionId);
     }
 }

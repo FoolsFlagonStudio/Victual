@@ -22,6 +22,7 @@ import com.forkast.backend.mealplan.GroceryListItem;
 import com.forkast.backend.mealplan.MealPlan;
 import com.forkast.backend.mealplan.MealPlanRepository;
 import com.forkast.backend.mealplan.PlanSelection;
+import com.forkast.backend.recipe.Recipe;
 import com.forkast.backend.recipe.RecipeIngredient;
 
 /**
@@ -91,18 +92,24 @@ public class GroceryListService {
         plan.setCosts(plan.getUsageCost(), built.isEmpty() ? null : groceryCost, plan.getOpenMeals());
     }
 
-    /** Each selection's lines, scaled by its portion multiplier. */
+    /** Each selection's lines (and its side's), scaled by their portion multipliers. */
     static List<RecipeLine> scaledLines(MealPlan plan) {
         List<RecipeLine> lines = new ArrayList<>();
         for (PlanSelection selection : plan.getSelections()) {
-            for (RecipeIngredient ri : selection.getRecipe().getIngredients()) {
-                BigDecimal amount = ri.getAmount() == null ? null
-                        : ri.getAmount().multiply(selection.getPortionMultiplier());
-                lines.add(new RecipeLine(ri.getIngredient(), amount, unitOf(ri.getUnit()), ri.getPrepNote(),
-                        ri.isOptional()));
+            addScaled(lines, selection.getRecipe(), selection.getPortionMultiplier());
+            if (selection.getSideRecipe() != null && selection.getSidePortionMultiplier() != null) {
+                addScaled(lines, selection.getSideRecipe(), selection.getSidePortionMultiplier());
             }
         }
         return lines;
+    }
+
+    private static void addScaled(List<RecipeLine> lines, Recipe recipe, BigDecimal multiplier) {
+        for (RecipeIngredient ri : recipe.getIngredients()) {
+            BigDecimal amount = ri.getAmount() == null ? null : ri.getAmount().multiply(multiplier);
+            lines.add(new RecipeLine(ri.getIngredient(), amount, unitOf(ri.getUnit()), ri.getPrepNote(),
+                    ri.isOptional()));
+        }
     }
 
     /**
@@ -111,8 +118,15 @@ public class GroceryListService {
      */
     static int unlisted(MealPlan plan) {
         int count = 0;
+        List<Recipe> recipes = new ArrayList<>();
         for (PlanSelection selection : plan.getSelections()) {
-            for (RecipeIngredient ri : selection.getRecipe().getIngredients()) {
+            recipes.add(selection.getRecipe());
+            if (selection.getSideRecipe() != null) {
+                recipes.add(selection.getSideRecipe());
+            }
+        }
+        for (Recipe recipe : recipes) {
+            for (RecipeIngredient ri : recipe.getIngredients()) {
                 RecipeLine line = new RecipeLine(ri.getIngredient(), ri.getAmount(), unitOf(ri.getUnit()),
                         ri.getPrepNote(), ri.isOptional());
                 if (line.countsTowardNutrition() && line.ingredient() == null) {

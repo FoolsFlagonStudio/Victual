@@ -4,7 +4,7 @@ A mobile meal planner that builds your weekly recipes and grocery list around yo
 
 Users set a weekly budget, household size, dietary restrictions, and optional calorie/macro targets. Each week Forkast generates a meal plan and an aggregated grocery list priced to fit that budget.
 
-> **Status:** early development. The backend data model, Flyway migrations, authentication, user preferences, and the recipe data pipeline are complete: a 153-ingredient catalog from USDA FoodData Central, and scraped recipes with parsed ingredients, nutrition, dietary labels, meal-prep and meal-slot scores. Recipe search, scaled detail and favorites are live, and every recipe has an estimated cost per serving from weekly Kroger prices. The meal plan generator is live: weekly plans that fit the budget and per-meal limits, a grocery list priced in whole packages, locking and swapping meals, and a job that makes each user's plan the night before their week starts. The frontend and mobile app have not been started.
+> **Status:** early development. The backend data model, Flyway migrations, authentication, user preferences, and the recipe data pipeline are complete: a 153-ingredient catalog from USDA FoodData Central, and scraped recipes with parsed ingredients, nutrition, dietary labels, meal-prep and meal-slot scores. Recipe search, scaled detail and favorites are live, and every recipe has an estimated cost per serving from weekly Kroger prices. The meal plan generator is live: weekly plans that fit the budget and per-meal limits, a grocery list priced in whole packages, locking and swapping meals, and a job that makes each user's plan the night before their week starts. The mobile app has every designed screen built; it uses the live API for auth, preferences and recipes, and still simulates meal plans on the device until it's wired to the generator's routes. The marketing site is built.
 
 ## How It Fits Together
 
@@ -28,8 +28,9 @@ recipe-scrapers  ── POST ──▶  parse, match, classify   ◀── REST 
 | ---------------- | ------------------------------------------------------------- | -------------------------------------------------- |
 | `backend/`       | Spring Boot API                                               | [backend/README.md](backend/README.md)             |
 | `data_pipeline/` | Python catalog builder and recipe scraper                     | [data_pipeline/README.md](data_pipeline/README.md) |
-| `frontend/`      | Marketing website with app info and App Store links (planned) | [frontend/README.md](frontend/README.md)           |
-| `mobile/`        | React Native app (planned)                                    | [mobile/README.md](mobile/README.md)               |
+| `frontend/`      | Marketing website with app info and App Store links           | [frontend/README.md](frontend/README.md)           |
+| `mobile/`        | Expo / React Native app                                       | [mobile/README.md](mobile/README.md)               |
+| `design/`        | Shared design tokens, icon choices and logo files (Victual)   | [design/brand/README.md](design/brand/README.md)   |
 
 ## Tech Stack
 
@@ -37,11 +38,15 @@ recipe-scrapers  ── POST ──▶  parse, match, classify   ◀── REST 
 | -------------- | -------------------------------------------------------------------------------------------------- |
 | Backend        | Java, Spring Boot 4.1, Spring Data JPA, Hibernate 7, Flyway, Maven, JUnit 5 + AssertJ              |
 | Database       | PostgreSQL 17 on Supabase (used as a plain database only), `pg_trgm` for fuzzy ingredient matching |
-| Mobile         | React Native (planned)                                                                             |
-| Website        | Vite + TypeScript (planned)                                                                        |
+| Mobile         | React Native, Expo (SDK 58), Expo Router, TypeScript, Lucide icons                                 |
+| Website        | Vite, React, TypeScript, Ant Design, Lucide icons                                                  |
 | Data pipeline  | Python, `recipe-scrapers`, `requests`                                                              |
 | Nutrition data | USDA FoodData Central                                                                              |
 | Price data     | Kroger Products API (one store, refreshed weekly), BLS average prices, hand-entered seed prices    |
+
+## Deploying
+
+Render (API), Supabase (database), Resend (email) and Vercel (site): see [DEPLOY.md](DEPLOY.md).
 
 ## Roadmap
 
@@ -55,13 +60,16 @@ recipe-scrapers  ── POST ──▶  parse, match, classify   ◀── REST 
 - [x] Recipe endpoints (search with fit flags, scaled detail, favorites)
 - [x] Pricing (Kroger + BLS prices, recipe cost per serving, weekly refresh)
 - [x] Meal plan generator and grocery list (weekly job, lock and swap, pantry staples)
-- [ ] Mobile app
-- [ ] Marketing website
+- [x] Shared design system (tokens, fonts, logo, icons) for web and mobile
+- [x] Mobile app screens (auth, onboarding, home, plan, groceries, recipes, profile, cook mode, budget)
+- [ ] Mobile app wired to the meal plan and grocery routes
+- [x] Marketing website (landing, privacy, terms, support)
 
 ## Stretch Features
 
 Ideas deliberately left out of v1:
 
+- **Sign in with Google and Apple.** First stretch goal. The buttons are already built in the app behind `features.socialSignIn`; the backend needs endpoints that verify Google/Apple identity tokens and issue Victual tokens.
 - **Per-slot day selection.** Let a meal slot cover only some days (e.g. lunches on weekdays only). In v1 every included slot covers all 7 days of the plan.
 - **Push notifications.** v1 generates each user's plan automatically before their plan start day; a push notification when it's ready comes later.
 - **Regional prices.** v1 prices everything from one Kroger store; letting users pick a store or ZIP code comes later.

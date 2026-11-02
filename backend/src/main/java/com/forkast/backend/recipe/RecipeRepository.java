@@ -19,6 +19,10 @@ public interface RecipeRepository extends JpaRepository<Recipe, UUID>, JpaSpecif
     @Query("select r.id from Recipe r")
     List<UUID> findAllIds();
 
+    /** Every recipe with its lines and their ingredients, in one query (the catalog report). */
+    @Query("select distinct r from Recipe r left join fetch r.ingredients ri left join fetch ri.ingredient")
+    List<Recipe> findAllWithIngredients();
+
     /**
      * Loads a page of recipes with their labels in one query, instead of one query
      * per recipe.

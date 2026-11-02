@@ -77,20 +77,44 @@ class WeekLayoutTest {
     }
 
     @Test
-    void dinnerCoversTheNextDaysLunchAndLunchFillsTheRest() {
-        WeekShape shape = layout.layout(SUNDAY, Map.of(MealSlot.LUNCH, 3, MealSlot.DINNER, 3), true);
+    void dinnerLeftoversAreTheLunchAfterTheLastDinnerAndLunchFillsTheRest() {
+        // 4 dinners: Sun-Mon, Tue-Wed, Thu-Fri, Sat
+        WeekShape shape = layout.layout(SUNDAY, Map.of(MealSlot.LUNCH, 3, MealSlot.DINNER, 4), true);
 
         List<SlotRun> dinners = shape.runs().stream().filter(r -> r.slot() == MealSlot.DINNER).toList();
-        assertThat(dinners).extracting(SlotRun::leftoverLunch).containsExactly(day(1), day(4), day(6));
-        assertThat(dinners.get(0).meals()).isEqualTo(4); // 3 dinners + Monday's lunch
-        assertThat(dinners.get(0).servings(2)).isEqualTo(8);
+        // Tue, Thu, Sat lunches; Saturday's dinner would feed next Sunday, outside the week
+        assertThat(dinners).extracting(SlotRun::leftoverLunch).containsExactly(day(2), day(4), day(6), null);
+        assertThat(dinners.get(0).meals()).isEqualTo(3); // 2 dinners + Tuesday's lunch
+        assertThat(dinners.get(0).servings(2)).isEqualTo(6);
 
         List<LocalDate> lunchDays = shape.runs().stream()
                 .filter(r -> r.slot() == MealSlot.LUNCH)
                 .flatMap(r -> r.dates().stream())
                 .toList();
-        assertThat(lunchDays).containsExactly(day(0), day(2), day(3), day(5));
+        assertThat(lunchDays).containsExactly(day(0), day(1), day(3), day(5));
         assertThat(shape.openMeals()).isZero();
+    }
+
+    @Test
+    void theSameDishIsNeverLunchAndDinnerOnOneDay() {
+        for (int dinnersCount = 1; dinnersCount <= 7; dinnersCount++) {
+            WeekShape shape = layout.layout(SUNDAY, Map.of(MealSlot.LUNCH, 3, MealSlot.DINNER, dinnersCount), true);
+            for (SlotRun dinner : shape.runs()) {
+                if (dinner.leftoverLunch() != null) {
+                    assertThat(dinner.dates()).doesNotContain(dinner.leftoverLunch());
+                    assertThat(dinner.leftoverLunch()).isBeforeOrEqualTo(dinner.cookDate().plusDays(2));
+                }
+            }
+        }
+    }
+
+    @Test
+    void aThreeDayDinnerIsTooOldForLunchAfterIt() {
+        WeekShape shape = layout.layout(SUNDAY, Map.of(MealSlot.LUNCH, 3, MealSlot.DINNER, 3), true);
+
+        SlotRun first = shape.runs().stream().filter(r -> r.slot() == MealSlot.DINNER).findFirst().orElseThrow();
+        assertThat(first.dates()).hasSize(3);
+        assertThat(first.leftoverLunch()).isNull();
     }
 
     @Test
@@ -116,5 +140,22 @@ class WeekLayoutTest {
         WeekShape shape = layout.layout(SUNDAY, Map.of(MealSlot.LUNCH, 7, MealSlot.DINNER, 3), true);
 
         assertThat(lengths(shape, MealSlot.LUNCH)).containsExactly(1, 1, 1, 1);
+    }
+
+    @Test
+    void aWeekThatHasStartedIsLaidOutFromToday() {
+        // Friday: two days left, four dinners asked for
+        WeekShape shape = layout.layout(SUNDAY, Map.of(MealSlot.DINNER, 4), false, day(5));
+
+        assertThat(lengths(shape, MealSlot.DINNER)).containsExactly(1, 1);
+        assertThat(shape.runs()).allMatch(r -> !r.cookDate().isBefore(day(5)));
+        assertThat(shape.openMeals()).isZero();
+    }
+
+    @Test
+    void fromOnOrBeforeTheStartIsTheWholeWeek() {
+        WeekShape early = layout.layout(SUNDAY, Map.of(MealSlot.DINNER, 3), false, SUNDAY.minusDays(3));
+
+        assertThat(lengths(early, MealSlot.DINNER)).containsExactly(3, 2, 2);
     }
 }

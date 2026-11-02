@@ -69,19 +69,19 @@ public class WeeklyPlanWorker {
     // ---------- plans ----------
 
     /**
-     * Users with at least one meal slot whose plan is due at `now`, and who don't
-     * have it yet.
+     * Users with at least one meal slot and automatic plans on, whose plan is due
+     * at `now`, and who don't have it yet.
      */
     @Transactional(readOnly = true)
     public List<Due> dueUsers(Instant now) {
         List<Due> due = new ArrayList<>();
         for (UserPreferences preferences : preferencesRepository.findAllWithUser()) {
-            if (preferences.getMealSlots().isEmpty()) {
+            if (preferences.getMealSlots().isEmpty() || !preferences.isAutoPlanEnabled()) {
                 continue;
             }
             User user = preferences.getUser();
             Optional<LocalDate> week = PlanTiming.dueWeekStart(now.atZone(user.getZoneId()),
-                    preferences.getPlanStartDay(), properties.generateAt());
+                    preferences.getPlanStartDay(), properties.generateAt(), preferences.getAutoPlanDay());
             if (week.isPresent() && !planRepository.existsByUserIdAndWeekStartDate(user.getId(), week.get())) {
                 due.add(new Due(user.getId(), week.get()));
             }

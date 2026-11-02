@@ -29,6 +29,8 @@ public record PreferencesRequest(
                 @NotNull DayOfWeek planStartDay,
                 Boolean prefersMealPrep,
                 Boolean leftoversForLunch,
+                Boolean autoPlanEnabled,
+                DayOfWeek autoPlanDay,
                 Set<UUID> dietaryLabelIds,
                 @NotEmpty Map<MealSlot, @NotNull @Min(1) @Max(7) Integer> mealSlots) {
 

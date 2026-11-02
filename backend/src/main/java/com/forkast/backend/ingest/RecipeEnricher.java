@@ -78,10 +78,19 @@ public class RecipeEnricher {
                 recipe.getBaseServings(),
                 recipe.getIngredients().stream().map(RecipeEnricher::displayName).toList())));
 
-        SlotScores slots = slotClassifier.score(recipe.getName(), recipe.getCategory(), recipe.getKeywords());
-        recipe.setSlotScores(slots.breakfast(), slots.lunch(), slots.dinner());
+        classify(recipe);
 
         costFromCurrentPrices(recipe, lines);
+    }
+
+    /**
+     * Slot and side scores from the name, category and keywords alone. Also run on
+     * its own (POST /api/admin/recipes/rescore) when the classifier's rules change.
+     */
+    public void classify(Recipe recipe) {
+        SlotScores slots = slotClassifier.score(recipe.getName(), recipe.getCategory(), recipe.getKeywords());
+        recipe.setSlotScores(slots.breakfast(), slots.lunch(), slots.dinner());
+        recipe.setSideScore(slotClassifier.sideScore(recipe.getName(), recipe.getCategory(), recipe.getKeywords()));
     }
 
     /**
@@ -130,7 +139,7 @@ public class RecipeEnricher {
                 .forEach(recipe::addDietaryLabel);
     }
 
-    private static RecipeLine toLine(RecipeIngredient line) {
+    static RecipeLine toLine(RecipeIngredient line) { // package-private: CatalogReportService reads lines the same way
         return new RecipeLine(
                 line.getIngredient(),
                 line.getAmount(),

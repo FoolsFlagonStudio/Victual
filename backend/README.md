@@ -2,7 +2,7 @@
 
 Spring Boot API for Forkast. It owns all data access: recipes, ingredient matching, nutrition, pricing, dietary labels, meal plan generation, and grocery lists.
 
-> **Status:** the data model, Flyway migrations (V1 to V10), authentication, user preferences, the recipe ingestion pipeline, recipe browsing, pricing and meal planning are complete. Live endpoints: `GET /api/health`, `GET /api/dietary-labels`, the 11 `/api/auth/*` routes, `GET`/`PATCH`/`DELETE /api/users/me`, `GET`/`POST`/`PUT /api/users/me/preferences`, recipe search, detail and favorites (with cost), the 9 `/api/meal-plans/*` routes, the 2 grocery list routes, the 5 `/api/admin/*` ingestion routes and the 4 `/api/admin/prices/*` routes. Scheduled jobs refresh Kroger prices weekly and make each user's plan at 11pm the night before their plan start day. Next: a larger recipe scrape and the catalog revisit.
+> **Status:** the data model, Flyway migrations (V1 to V12), authentication, user preferences, the recipe ingestion pipeline, recipe browsing, pricing and meal planning are complete. Live endpoints: `GET /api/health`, `GET /api/dietary-labels`, the 11 `/api/auth/*` routes, `GET`/`PATCH`/`DELETE /api/users/me`, `GET`/`POST`/`PUT /api/users/me/preferences`, recipe search, detail and favorites (with cost), the 13 `/api/meal-plans/*` routes, the 2 grocery list routes, the 6 `/api/admin/*` ingestion routes and the 4 `/api/admin/prices/*` routes. Scheduled jobs refresh Kroger prices weekly and make each user's plan at 11pm on their auto-plan day (the night before their plan start day unless they pick another, or off). Next: a larger recipe scrape and the catalog revisit.
 
 ## Local Setup
 
@@ -251,6 +251,8 @@ erDiagram
 | planStartDay          | DayOfWeek               | not null, default SUNDAY; first day of each meal plan                                                   |
 | prefersMealPrep       | boolean                 | not null, default false; raises the weight of recipes' meal-prep score                                  |
 | leftoversForLunch     | boolean                 | not null, default false; each dinner also covers the next day's lunch (needs a lunch slot)              |
+| autoPlanEnabled       | boolean                 | not null, default true; the weekly job makes the coming week's plan                                    |
+| autoPlanDay           | DayOfWeek               | nullable; the day it does, at 11pm local. Null = the night before planStartDay (the response gives the effective day) |
 | mealSlots             | Map\<MealSlot, Integer> | `@ElementCollection` in `user_meal_slots`; distinct recipes per week, 1 to 7; a missing slot is skipped |
 | dietaryRestrictions   | Set\<DietaryLabel>      | M:N via `user_dietary_restrictions`                                                                     |
 | createdAt / updatedAt | Instant                 | automatic timestamps                                                                                    |
@@ -601,7 +603,11 @@ Prices come from one store, Kroger On the Rhine in Cincinnati (`01400513`), as o
 
 Every route needs a Bearer token, and someone else's plan or grocery line is a 404, like a missing one. The full design, with the decisions behind it, is in the Forkast Meal Plan Generator Plan doc.
 
-**Slot fit.** `SlotClassifier` scores every recipe 0 to 100 for breakfast, lunch and dinner from its category tags, name and keywords; it runs on ingest and reprocess. A side dish, sauce or dressing scores 0 whatever else it's tagged; desserts and snacks only when no meal tag comes with them. A meal the site names outright (Breakfast, Lunch, Dinner) gets at least 60.
+**Slot fit.** `SlotClassifier` scores every recipe 0 to 100 for breakfast, lunch and dinner from its category tags, name and keywords; it runs on ingest and reprocess. A side dish, sauce or dressing scores 0 whatever else it's tagged; desserts and snacks only when no meal tag comes with them. A meal the site names outright (Breakfast, Lunch, Dinner) gets at least 60. The name has the last word for loosely filed recipes: articles ("How to make ghee"), components ("Lemon Curd", "Ranch Dressing", "Chicken Stock"; a sauce or salsa unless the name also has a protein or grain) and sweets or snacks ("Banana Bites", pie but not pot pie) score 0, and sides by name (slaw, mashed, biscuits) can't be lunch or dinner.
+
+**Sides.** `SlotClassifier.sideScore` rates how well a recipe goes next to a main (side categories 90, sides by name 80, a vegetable, grain or salad with no protein 60; 50 or more is a side). `MealComposition` decides whether a main wants one: a plain protein (roast chicken, pork chops, salmon) or under 15 g carbs a serving, unless the name says it's a whole meal (pasta, bowls, tacos, soup...). After the budget fit, the generator gives those lunch and dinner mains a side cooked for the same servings, a different one each where it can, only while the plan stays within budget. The grocery list includes side ingredients; swapping a main keeps its side or draws one to match. `POST /api/admin/recipes/rescore` re-runs both classifiers over every recipe (needed once after V11, and after any rule change).
+
+**Weeks that have started.** Generating the current week mid-week plans from today on, so nothing is planned or bought for days that are over.
 
 **Generating** (`MealPlanService.generate`, `PlanGenerator`). The generator is plain Java fed by `RecipeOptionLoader`, so every rule is unit-tested without a database:
 
@@ -702,6 +708,11 @@ Short-lived JWT access tokens plus hashed, database-stored refresh tokens, one p
 | PATCH  | /api/meal-plans/{id}/selections/{selectionId}                                        | Bearer  | MealPlanController        | **live** (`{locked}`; the plan)                                                                                                                                                                      |
 | POST   | /api/meal-plans/{id}/selections/{selectionId}/swap                                   | Bearer  | MealPlanController        | **live** (`{recipeId}` to use it, no body to pick one; 400 if it can't fill the meal, 409 if already in the plan or the meal has started)                                                            |
 | GET    | /api/meal-plans/{id}/selections/{selectionId}/suggestions                            | Bearer  | MealPlanController        | **live** (up to 5 recipes, best first, with `estimatedCost` and `costChange`)                                                                                                                        |
+| POST   | /api/meal-plans/meals                                                                | Bearer  | MealPlanController        | **live** (`{date, slot, recipeId}`: one-day meal on an open slot, locked; creates the week's plan if needed; 409 if the slot is taken or the recipe is in the plan; 400 if the day is over) |
+| POST   | /api/meal-plans/{id}/selections/{selectionId}/side                                   | Bearer  | MealPlanController        | **live** (`{recipeId}` to use it as the side, no body to pick one; 409 if it's a main in the plan or the meal has started) |
+| DELETE | /api/meal-plans/{id}/selections/{selectionId}/side                                   | Bearer  | MealPlanController        | **live** (removes the side; the plan) |
+| GET    | /api/meal-plans/{id}/selections/{selectionId}/side-suggestions                       | Bearer  | MealPlanController        | **live** (up to 10 sides, best first, within the budget first, with `costChange`) |
+| POST   | /api/admin/recipes/rescore                                                           | API key | AdminRecipeController     | **live** (re-runs slot and side scoring on every recipe; `{checked, changed}`) |
 | GET    | /api/meal-plans/{id}/grocery-list                                                    | Bearer  | GroceryListController     | **live** (`toBuy` and `pantry` lines with packages and costs, `unlistedLines`; built on first read for older plans)                                                                                  |
 | PATCH  | /api/grocery-list-items/{id}                                                         | Bearer  | GroceryListController     | **live** (`{purchased?, needToBuy?}`; 204; `needToBuy` only for pantry staples)                                                                                                                      |
 

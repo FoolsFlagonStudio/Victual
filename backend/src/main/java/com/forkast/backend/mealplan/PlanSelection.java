@@ -83,6 +83,21 @@ public class PlanSelection {
     @Column(nullable = false)
     private boolean locked = false;
 
+    /** Cooked alongside the main for the same servings; null when the main is a whole meal. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "side_recipe_id")
+    private Recipe sideRecipe;
+
+    @Column(name = "side_portion_multiplier", precision = 6, scale = 3)
+    private BigDecimal sidePortionMultiplier;
+
+    @Column(name = "side_estimated_cost", precision = 10, scale = 2)
+    private BigDecimal sideEstimatedCost;
+
+    /** The user picked this side, so it stays when the main changes */
+    @Column(name = "side_chosen", nullable = false)
+    private boolean sideChosen = false;
+
     // ---------- timestamps ----------
 
     @CreationTimestamp
@@ -155,6 +170,43 @@ public class PlanSelection {
         return meal;
     }
 
+    /** Sets the side, scaled to this selection's servings. */
+    public void assignSide(Recipe recipe, BigDecimal portionMultiplier, BigDecimal estimatedCost) {
+        if (estimatedCost != null && estimatedCost.signum() < 0) {
+            throw new IllegalArgumentException("side estimatedCost cannot be negative");
+        }
+        this.sideRecipe = requireNonNull(recipe, "side recipe");
+        this.sidePortionMultiplier = requirePositive(portionMultiplier, "sidePortionMultiplier");
+        this.sideEstimatedCost = estimatedCost;
+        this.sideChosen = false;
+    }
+
+    /** A side the user picked: kept when the main is swapped or regenerated. */
+    public void chooseSide(Recipe recipe, BigDecimal portionMultiplier, BigDecimal estimatedCost) {
+        assignSide(recipe, portionMultiplier, estimatedCost);
+        this.sideChosen = true;
+    }
+
+    public void clearSide() {
+        this.sideRecipe = null;
+        this.sidePortionMultiplier = null;
+        this.sideEstimatedCost = null;
+        this.sideChosen = false;
+    }
+
+    public boolean isSideChosen() {
+        return sideRecipe != null && sideChosen;
+    }
+
+    /** The main's cost plus the side's. */
+    public BigDecimal getTotalCost() {
+        if (estimatedCost == null && sideEstimatedCost == null) {
+            return null;
+        }
+        BigDecimal main = estimatedCost == null ? BigDecimal.ZERO : estimatedCost;
+        return sideEstimatedCost == null ? main : main.add(sideEstimatedCost);
+    }
+
     public void lock() {
         this.locked = true;
     }
@@ -215,6 +267,18 @@ public class PlanSelection {
 
     public Recipe getRecipe() {
         return recipe;
+    }
+
+    public Recipe getSideRecipe() {
+        return sideRecipe;
+    }
+
+    public BigDecimal getSidePortionMultiplier() {
+        return sidePortionMultiplier;
+    }
+
+    public BigDecimal getSideEstimatedCost() {
+        return sideEstimatedCost;
     }
 
     /** Calendar rows by date, breakfast to dinner. */

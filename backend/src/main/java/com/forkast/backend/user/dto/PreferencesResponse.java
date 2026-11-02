@@ -24,6 +24,8 @@ public record PreferencesResponse(
                 DayOfWeek planStartDay,
                 boolean prefersMealPrep,
                 boolean leftoversForLunch,
+                boolean autoPlanEnabled,
+                DayOfWeek autoPlanDay,
                 List<DietaryLabelResponse> dietaryRestrictions,
                 Map<MealSlot, Integer> mealSlots,
                 Instant updatedAt) {
@@ -45,6 +47,8 @@ public record PreferencesResponse(
                                 preferences.getPlanStartDay(),
                                 preferences.isPrefersMealPrep(),
                                 preferences.isLeftoversForLunch(),
+                                preferences.isAutoPlanEnabled(),
+                                preferences.getEffectiveAutoPlanDay(),
                                 restrictions,
                                 Map.copyOf(preferences.getMealSlots()),
                                 preferences.getUpdatedAt());

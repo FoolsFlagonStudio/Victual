@@ -24,11 +24,15 @@ import com.forkast.backend.mealplan.MealSlot;
  * stretchRunDays (4): 2 dinners become 4 and 3. Days still uncovered (a count
  * of 1 leaves 3)
  * are reported as open.
- * - With leftovers for lunch (and both slots on), each dinner also covers the
- * lunch the day
- * after it's cooked. Lunch runs then fill only the lunch days left, and can't
+ * - With leftovers for lunch (and both slots on), a dinner also covers the lunch
+ * the day after its last dinner (never the same dish twice in a day), when that
+ * lunch is still within the freshness window: 1- and 2-day dinners feed a
+ * lunch, 3-day ones don't. Lunch runs then fill only the lunch days left, and can't
  * extend past
  * their own freshness window, so a lunch run may be shorter than planned.
+ *
+ * - A week that has already started is laid out from today on (the from
+ * overload).
  *
  * A plain class: no database, no Spring, so every case is a unit test.
  */
@@ -43,9 +47,24 @@ public class WeekLayout {
     }
 
     public WeekShape layout(LocalDate weekStart, Map<MealSlot, Integer> counts, boolean leftoversForLunch) {
+        return layout(weekStart, counts, leftoversForLunch, weekStart);
+    }
+
+    /**
+     * The same, for a week that has already started: only `from` (today) and the
+     * days after it
+     * are planned. The days before aren't laid out or counted as open; the user's
+     * counts still
+     * apply, so 4 dinners with 2 days left become 2 one-day dinners.
+     */
+    public WeekShape layout(LocalDate weekStart, Map<MealSlot, Integer> counts, boolean leftoversForLunch,
+            LocalDate from) {
         List<LocalDate> week = new ArrayList<>();
         for (int i = 0; i < MealPlan.DAYS; i++) {
-            week.add(weekStart.plusDays(i));
+            LocalDate day = weekStart.plusDays(i);
+            if (!day.isBefore(from)) {
+                week.add(day);
+            }
         }
         boolean lunchFromDinner = leftoversForLunch && counts.containsKey(MealSlot.LUNCH)
                 && counts.containsKey(MealSlot.DINNER);
@@ -69,8 +88,12 @@ public class WeekLayout {
             for (List<LocalDate> dates : grouping.groups()) {
                 LocalDate leftoverLunch = null;
                 if (slot == MealSlot.DINNER && lunchFromDinner) {
-                    LocalDate next = dates.get(0).plusDays(1);
-                    if (week.contains(next) && lunchesTaken.add(next)) {
+                    // The day after the run's last dinner, so the same dish is never lunch
+                    // and dinner on one day, and only while it's still within the freshness
+                    // window (cook day + maxRunDays - 1).
+                    LocalDate next = dates.get(dates.size() - 1).plusDays(1);
+                    boolean fresh = !next.isAfter(dates.get(0).plusDays(maxRunDays - 1L));
+                    if (fresh && week.contains(next) && lunchesTaken.add(next)) {
                         leftoverLunch = next;
                     }
                 }

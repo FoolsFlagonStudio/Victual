@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Optional;
 
 /**
@@ -13,6 +14,8 @@ import java.util.Optional;
  * due from 11pm
  * Saturday Eastern; in Los Angeles, three hours later on the same clock.
  *
+ * Users can pick another day (UserPreferences.autoPlanDay) or turn it off.
+ *
  * Only that last hour of the day counts. Once the start day itself has begun,
  * the job leaves
  * the week alone, so deleting a fresh plan doesn't make it come back.
@@ -20,6 +23,23 @@ import java.util.Optional;
 public final class PlanTiming {
 
     private PlanTiming() {
+    }
+
+    /**
+     * With the user's own plan day: from generate-at on planDay, for the next start
+     * day after it
+     * (a Wednesday plan day with a Sunday start makes the coming Sunday's week, four
+     * days early).
+     * planDay null = the night before the start day, as below.
+     */
+    public static Optional<LocalDate> dueWeekStart(ZonedDateTime localNow, DayOfWeek startDay, LocalTime generateAt,
+            DayOfWeek planDay) {
+        DayOfWeek day = planDay != null ? planDay : startDay.minus(1);
+        LocalDate today = localNow.toLocalDate();
+        if (today.getDayOfWeek() != day || localNow.toLocalTime().isBefore(generateAt)) {
+            return Optional.empty();
+        }
+        return Optional.of(today.with(TemporalAdjusters.next(startDay)));
     }
 
     /** The week to generate now, or empty when it isn't this user's time. */

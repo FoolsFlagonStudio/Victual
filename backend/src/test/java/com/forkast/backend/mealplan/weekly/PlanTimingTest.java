@@ -63,4 +63,22 @@ class PlanTimingTest {
         assertThat(PlanTiming.dueWeekStart(later.atZone(LOS_ANGELES), DayOfWeek.SUNDAY, ELEVEN_PM)).isPresent();
         assertThat(PlanTiming.dueWeekStart(later.atZone(NEW_YORK), DayOfWeek.SUNDAY, ELEVEN_PM)).isEmpty();
     }
+
+    @Test
+    void aChosenPlanDayMakesTheComingWeekEarly() {
+        // Sunday start, plans made Wednesday night: the coming Sunday's week
+        LocalDate wednesday = LocalDate.parse("2026-10-14");
+        assertThat(PlanTiming.dueWeekStart(at(wednesday, "23:10", NEW_YORK), DayOfWeek.SUNDAY, ELEVEN_PM,
+                DayOfWeek.WEDNESDAY)).contains(LocalDate.parse("2026-10-18"));
+        assertThat(PlanTiming.dueWeekStart(at(wednesday, "22:10", NEW_YORK), DayOfWeek.SUNDAY, ELEVEN_PM,
+                DayOfWeek.WEDNESDAY)).isEmpty();
+        assertThat(PlanTiming.dueWeekStart(at(SATURDAY, "23:10", NEW_YORK), DayOfWeek.SUNDAY, ELEVEN_PM,
+                DayOfWeek.WEDNESDAY)).isEmpty();
+    }
+
+    @Test
+    void noPlanDayIsTheNightBefore() {
+        assertThat(PlanTiming.dueWeekStart(at(SATURDAY, "23:30", NEW_YORK), DayOfWeek.SUNDAY, ELEVEN_PM, null))
+                .contains(SATURDAY.plusDays(1));
+    }
 }

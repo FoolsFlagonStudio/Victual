@@ -34,7 +34,7 @@ def post_json(path: str, body) -> dict:
         f"{API_URL}{path}",
         json=body,
         headers={"X-Admin-Key": require_env("FORKAST_ADMIN_KEY")},
-        timeout=120,
+        timeout=1800,  # imports re-cost every recipe, which can take minutes
     )
     if response.status_code >= 400:
         sys.exit(f"{response.status_code} from {path}: {response.text}")

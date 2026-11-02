@@ -1,0 +1,6 @@
+{
+  "note": "Placeholder: run data_pipeline/sweep_plans.py --write-app to fill this in. Until then onboarding keeps its fixed defaults. (The first sweep used floor mode, which suggested 5/5/5 for every budget, so it was left out.)",
+  "generatedAt": null,
+  "headroom": 0.85,
+  "defaults": {}
+}

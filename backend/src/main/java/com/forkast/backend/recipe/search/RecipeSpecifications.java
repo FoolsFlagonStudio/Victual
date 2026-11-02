@@ -9,6 +9,8 @@ import java.util.Set;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.forkast.backend.diet.DietaryLabel;
+import com.forkast.backend.ingest.SlotScores;
+import com.forkast.backend.mealplan.MealSlot;
 import com.forkast.backend.recipe.Recipe;
 
 import jakarta.persistence.criteria.Expression;
@@ -48,7 +50,32 @@ public final class RecipeSpecifications {
         if (criteria.maxCostPerServing() != null) {
             conditions.add(costAtMost(criteria.maxCostPerServing()));
         }
+        if ((criteria.slots() != null && !criteria.slots().isEmpty()) || criteria.sides()) {
+            conditions.add(fitsAnyMeal(criteria.slots() == null ? Set.of() : criteria.slots(), criteria.sides()));
+        }
         return Specification.allOf(conditions);
+    }
+
+    /** A side score of this or more: works next to a main (as in the planner). */
+    static final int SIDE_FITS = 50;
+
+    /** Fits at least one of these slots (score 50+), or is a side when sides is true. */
+    public static Specification<Recipe> fitsAnyMeal(Set<MealSlot> slots, boolean sides) {
+        return (root, query, cb) -> {
+            List<Predicate> any = new ArrayList<>();
+            for (MealSlot slot : slots) {
+                String field = switch (slot) {
+                    case BREAKFAST -> "breakfastScore";
+                    case LUNCH -> "lunchScore";
+                    case DINNER -> "dinnerScore";
+                };
+                any.add(cb.ge(root.<Integer>get(field), SlotScores.FITS));
+            }
+            if (sides) {
+                any.add(cb.ge(root.<Integer>get("sideScore"), SIDE_FITS));
+            }
+            return cb.or(any.toArray(new Predicate[0]));
+        };
     }
 
     /** The hard filter: the recipe must carry every one of these labels. */
