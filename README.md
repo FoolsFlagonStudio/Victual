@@ -44,6 +44,10 @@ recipe-scrapers  ── POST ──▶  parse, match, classify   ◀── REST 
 | Nutrition data | USDA FoodData Central                                                                              |
 | Price data     | Kroger Products API (one store, refreshed weekly), BLS average prices, hand-entered seed prices    |
 
+## Deploying
+
+Render (API), Supabase (database), Resend (email) and Vercel (site): see [DEPLOY.md](DEPLOY.md).
+
 ## Roadmap
 
 - [x] Repository and Spring Boot setup

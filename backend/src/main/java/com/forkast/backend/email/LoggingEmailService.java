@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-/** Development only: prints emails to the console instead of sending them. */
+/** Everywhere but prod: prints emails to the console instead of sending them. */
 @Service
-@Profile("local")
+@Profile("!prod")
 public class LoggingEmailService implements EmailService {
 
     private static final Logger log = LoggerFactory.getLogger(LoggingEmailService.class);

@@ -54,7 +54,7 @@ def main():
     parser.add_argument("--from", dest="start", type=int, default=1, help="step number to start at")
     args = parser.parse_args()
     try:
-        requests.get(f"{API_URL}/actuator/health", timeout=5)
+        requests.get(f"{API_URL}/api/health", timeout=10)
     except requests.RequestException:
         sys.exit(f"Can't reach the backend at {API_URL}. Start it first.")
 
