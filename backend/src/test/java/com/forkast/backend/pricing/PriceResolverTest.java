@@ -78,6 +78,28 @@ class PriceResolverTest {
     }
 
     @Test
+    void missingMeasureComesFromALaterStep() {
+        // Kroger sells it per item only; the seed has a price per 100 g
+        ResolvedPrice resolved = resolver.resolve(List.of(
+                price(PriceSource.KROGER, "4627", 2, null, "1.49"),
+                price(PriceSource.SEED, null, 1, "0.88", null)), NOW).orElseThrow();
+
+        assertThat(resolved.source()).isEqualTo(PriceSource.KROGER);
+        assertThat(resolved.perItem()).isEqualByComparingTo("1.49");
+        assertThat(resolved.per100g()).isEqualByComparingTo("0.88");
+    }
+
+    @Test
+    void laterStepNeverOverridesAMeasureTheWinnerHas() {
+        ResolvedPrice resolved = resolver.resolve(List.of(
+                price(PriceSource.KROGER, "4627", 2, "0.50", null),
+                price(PriceSource.SEED, null, 1, "0.10", "0.99")), NOW).orElseThrow();
+
+        assertThat(resolved.per100g()).isEqualByComparingTo("0.50");
+        assertThat(resolved.perItem()).isEqualByComparingTo("0.99");
+    }
+
+    @Test
     void recentManualPriceIsNotStale() {
         ResolvedPrice resolved = resolver.resolve(List.of(
                 price(PriceSource.MANUAL, null, 2, "0.30", null)), NOW).orElseThrow();

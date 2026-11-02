@@ -3,6 +3,7 @@ package com.forkast.backend.pricing;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -29,6 +30,9 @@ import com.forkast.backend.ingredient.PriceSource;
  * than live-max-age
  * 4. The seed price, a hand-entered estimate
  * 5. Nothing: the caller marks recipe cost incomplete
+ *
+ * A step that has only one of the two measures (Kroger sells kale "1 each", so no price
+ * per 100 g) takes the other from the first later step that has it.
  *
  * Within a step, each product counts once, with its latest price, and the
  * cheapest wins. An
@@ -63,32 +67,35 @@ public class PriceResolver {
         Instant liveCutoff = now.minus(liveMaxAge);
         Instant blsCutoff = now.minus(blsMaxAge);
 
+        // Every step's answer, in order. The first one wins; a measure it lacks (a Kroger
+        // "1 each" price has no price per 100 g) is filled from the next step that has it,
+        // so "8 oz kale" can use the seed estimate while "1 bunch kale" uses Kroger's.
+        List<Optional<ResolvedPrice>> steps = new ArrayList<>();
         // 1. Kroger, current
-        Optional<ResolvedPrice> live = cheapest(usable,
-                p -> p.getSource() == PriceSource.KROGER && !p.getRecordedAt().isBefore(liveCutoff), false);
-        if (live.isPresent()) {
-            return live;
-        }
-
+        steps.add(cheapest(usable,
+                p -> p.getSource() == PriceSource.KROGER && !p.getRecordedAt().isBefore(liveCutoff), false));
         // 2. BLS, current
-        Optional<ResolvedPrice> bls = cheapest(usable,
-                p -> p.getSource() == PriceSource.BLS && !p.getRecordedAt().isBefore(blsCutoff), false);
-        if (bls.isPresent()) {
-            return bls;
-        }
-
+        steps.add(cheapest(usable,
+                p -> p.getSource() == PriceSource.BLS && !p.getRecordedAt().isBefore(blsCutoff), false));
         // 3. The latest real price, however old
         Optional<IngredientPrice> newest = usable.stream()
                 .filter(p -> p.getSource() != PriceSource.SEED)
                 .max(Comparator.comparing(IngredientPrice::getRecordedAt));
-        if (newest.isPresent()) {
-            PriceSource source = newest.get().getSource();
-            boolean stale = newest.get().getRecordedAt().isBefore(liveCutoff);
-            return cheapest(usable, p -> p.getSource() == source, stale);
-        }
-
+        steps.add(newest.flatMap(n -> cheapest(usable, p -> p.getSource() == n.getSource(),
+                n.getRecordedAt().isBefore(liveCutoff))));
         // 4. The seed estimate
-        return cheapest(usable, p -> p.getSource() == PriceSource.SEED, false);
+        steps.add(cheapest(usable, p -> p.getSource() == PriceSource.SEED, false));
+
+        List<ResolvedPrice> found = steps.stream().flatMap(Optional::stream).toList();
+        if (found.isEmpty()) {
+            return Optional.empty();
+        }
+        ResolvedPrice first = found.get(0);
+        BigDecimal per100g = found.stream().map(ResolvedPrice::per100g).filter(Objects::nonNull)
+                .findFirst().orElse(null);
+        BigDecimal perItem = found.stream().map(ResolvedPrice::perItem).filter(Objects::nonNull)
+                .findFirst().orElse(null);
+        return Optional.of(new ResolvedPrice(per100g, perItem, first.source(), first.recordedAt(), first.stale()));
     }
 
     /**
