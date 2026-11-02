@@ -18,8 +18,8 @@ public enum Unit {
     private static final Map<String, Unit> SPELLINGS = new HashMap<>();
 
     static {
-        register(TSP, "tsp", "tsps", "teaspoon", "teaspoons");
-        register(TBSP, "tbsp", "tbsps", "tbs", "tbl", "tablespoon", "tablespoons");
+        register(TSP, "tsp", "tsps", "tspn", "teaspoon", "teaspoons");
+        register(TBSP, "tbsp", "tbsps", "tbspn", "tbs", "tbl", "tablespoon", "tablespoons");
         register(CUP, "cup", "cups", "c");
         register(FL_OZ, "fl oz", "fl. oz", "fluid ounce", "fluid ounces");
         register(PINT, "pint", "pints", "pt");

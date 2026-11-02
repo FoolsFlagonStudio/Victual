@@ -1,23 +1,23 @@
 name,query,fdc_id,fdc_description,aliases,tags,pantry
-chicken breast,chicken broilers or fryers breast skinless boneless meat only raw,171077,"Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",chicken breasts|boneless skinless chicken breast|boneless skinless chicken breasts,POULTRY,
+chicken breast,chicken broilers or fryers breast skinless boneless meat only raw,171077,"Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",chicken breasts|boneless skinless chicken breast|boneless skinless chicken breasts|chicken cutlets|chicken cutlet|thinly sliced chicken cutlets,POULTRY,
 chicken thigh,chicken broilers or fryers thigh meat only raw,173627,"Chicken, broilers or fryers, dark meat, thigh, meat only, raw",chicken thighs|boneless skinless chicken thighs|boneless chicken thighs,POULTRY,
 ground turkey,turkey ground raw,171505,"Turkey, Ground, raw",lean ground turkey,POULTRY,
-ground beef,beef ground 85% lean meat 15% fat raw,174036,"Beef, ground, 80% lean meat / 20% fat, raw",lean ground beef|minced beef,MEAT,
+ground beef,beef ground 85% lean meat 15% fat raw,174036,"Beef, ground, 80% lean meat / 20% fat, raw",lean ground beef|minced beef|ground chuck,MEAT,
 ground pork,pork ground raw,167902,"Pork, fresh, ground, raw",,MEAT,
 flank steak,beef flank steak raw,169433,"Beef, flank, steak, separable lean and fat, trimmed to 0"" fat, choice, raw",,MEAT,
 sirloin steak,beef top sirloin steak separable lean and fat choice raw,168728,"Beef, top sirloin, steak, separable lean and fat, trimmed to 1/8"" fat, choice, raw",sirloin|top sirloin,MEAT,
 chuck roast,beef chuck roast raw,169566,"Beef, chuck eye roast, boneless, America's Beef Roast, separable lean only, trimmed to 0"" fat, choice, raw",beef chuck|beef stew meat|stew meat,MEAT,
 pork tenderloin,pork fresh loin tenderloin raw,168312,"Pork, fresh, loin, tenderloin, separable lean and fat, raw",,MEAT,
 pork chop,pork fresh loin chops boneless raw,167839,"Pork, fresh, loin, top loin (chops), boneless, separable lean and fat, raw",pork chops|boneless pork chops,MEAT,
-bacon,pork cured bacon unprepared,168277,"Pork, cured, bacon, unprepared",bacon slices|bacon strips|slices bacon,MEAT,
+bacon,pork cured bacon unprepared,168277,"Pork, cured, bacon, unprepared",bacon slices|bacon strips|slices bacon|thick cut bacon|thick-cut bacon|pancetta,MEAT,
 italian sausage,sausage italian pork raw,171631,"Sausage, Italian, pork, mild, raw",italian sausages|sweet italian sausage|hot italian sausage,MEAT,
-ham,ham sliced regular,173864,"Ham, sliced, regular (approximately 11% fat)",diced ham,MEAT,
+ham,ham sliced regular,173864,"Ham, sliced, regular (approximately 11% fat)",diced ham|deli ham,MEAT,
 salmon,fish salmon atlantic farmed raw,175167,"Fish, salmon, Atlantic, farmed, raw",salmon fillet|salmon fillets,FISH,
 cod,fish cod atlantic raw,171955,"Fish, cod, Atlantic, raw",cod fillet|cod fillets,FISH,
 tilapia,fish tilapia raw,175176,"Fish, tilapia, raw",tilapia fillet|tilapia fillets,FISH,
 canned tuna,fish tuna light canned in water drained solids,173708,"Fish, tuna, light, canned in oil, drained solids",tuna|tuna in water,FISH,
 shrimp,crustaceans shrimp raw,175179,"Crustaceans, shrimp, raw",shrimps|prawns|large shrimp,SHELLFISH,
-egg,egg whole raw fresh,171287,"Egg, whole, raw, fresh",eggs|large egg|large eggs,EGG,
+egg,egg whole raw fresh,171287,"Egg, whole, raw, fresh",eggs|large egg|large eggs|egg yolk|egg yolks|hard boiled eggs|hard boiled egg|hard-boiled eggs,EGG,
 egg white,egg white raw fresh,172183,"Egg, white, raw, fresh",egg whites,EGG,
 tofu,tofu firm prepared with calcium sulfate,172475,"Tofu, raw, firm, prepared with calcium sulfate",firm tofu|extra firm tofu|extra-firm tofu,SOY,
 black beans,beans black mature seeds canned,175188,"Beans, black turtle, mature seeds, canned",black bean|canned black beans,,
@@ -27,7 +27,7 @@ white beans,beans white mature seeds canned,175204,"Beans, white, mature seeds, 
 pinto beans,beans pinto mature seeds canned,175201,"Beans, pinto, mature seeds, canned, solids and liquids",,,
 lentils,lentils raw,172420,"Lentils, raw",dried lentils|brown lentils|green lentils,,
 milk,milk whole 3.25% milkfat,171265,"Milk, whole, 3.25% milkfat, with added vitamin D",whole milk|2% milk,DAIRY,
-butter,butter salted,173410,"Butter, salted",unsalted butter|salted butter,DAIRY,
+butter,butter salted,173410,"Butter, salted",unsalted butter|salted butter|unsalted butter at room temperature|softened butter,DAIRY,
 heavy cream,cream fluid heavy whipping,170859,"Cream, fluid, heavy whipping",heavy whipping cream|whipping cream,DAIRY,
 half and half,cream fluid half and half,171255,"Cream, fluid, half and half",half-and-half,DAIRY,
 sour cream,cream sour cultured,171257,"Cream, sour, cultured",,DAIRY,
@@ -52,16 +52,16 @@ jalapeno,peppers jalapeno raw,168576,"Peppers, jalapeno, raw",jalapenos|jalapeno
 potato,potatoes flesh and skin raw,170026,"Potatoes, flesh and skin, raw",potatoes|russet potato|russet potatoes|yukon gold potatoes,,
 sweet potato,sweet potato raw,168482,"Sweet potato, raw, unprepared (Includes foods for USDA's Food Distribution Program)",sweet potatoes,,
 tomato,tomatoes red ripe raw year round average,170457,"Tomatoes, red, ripe, raw, year round average",tomatoes|roma tomatoes|cherry tomatoes,,
-diced tomatoes,tomatoes red ripe canned packed in tomato juice,170051,"Tomatoes, red, ripe, canned, packed in tomato juice",canned diced tomatoes|canned tomatoes,,
+diced tomatoes,tomatoes red ripe canned packed in tomato juice,170051,"Tomatoes, red, ripe, canned, packed in tomato juice",canned diced tomatoes|canned tomatoes|whole peeled tomatoes|whole peeled san marzano tomatoes|san marzano whole tomatoes|san marzano tomatoes,,
 crushed tomatoes,tomatoes crushed canned,170501,"Tomatoes, crushed, canned",canned crushed tomatoes,,
 tomato paste,tomato products canned paste,170459,"Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)",,,
 tomato sauce,tomato products canned sauce,170054,"Tomato products, canned, sauce",,,
 broccoli,broccoli raw,170379,"Broccoli, raw",broccoli florets,,
 cauliflower,cauliflower raw,169986,"Cauliflower, raw",cauliflower florets,,
 spinach,spinach raw,168462,"Spinach, raw",baby spinach|fresh spinach,,
-kale,kale raw,168421,"Kale, raw",,,
+kale,kale raw,168421,"Kale, raw",tuscan kale|lacinato kale,,
 romaine lettuce,lettuce cos or romaine raw,169247,"Lettuce, cos or romaine, raw",romaine|lettuce,,
-cabbage,cabbage raw,169975,"Cabbage, raw",green cabbage,,
+cabbage,cabbage raw,169975,"Cabbage, raw",green cabbage|coleslaw mix|slaw mix|shredded cabbage,,
 zucchini,squash summer zucchini includes skin raw,169291,"Squash, summer, zucchini, includes skin, raw",zucchinis,,
 mushrooms,mushrooms white raw,169251,"Mushrooms, white, raw",mushroom|white mushrooms|cremini mushrooms|button mushrooms,,
 cucumber,cucumber with peel raw,169225,"Cucumber, peeled, raw",cucumbers,,
@@ -71,54 +71,54 @@ green beans,beans snap green raw,169961,"Beans, snap, green, raw",string beans,,
 asparagus,asparagus raw,168389,"Asparagus, raw",,,
 butternut squash,squash winter butternut raw,169295,"Squash, winter, butternut, raw",,,
 avocado,avocados raw all commercial varieties,171705,"Avocados, raw, all commercial varieties",avocados,,
-lemon,lemons raw without peel,167746,"Lemons, raw, without peel",lemons,,
+lemon,lemons raw without peel,167746,"Lemons, raw, without peel",lemons|lemon zested,,
 lemon juice,lemon juice raw,167747,"Lemon juice, raw",fresh lemon juice,,
 lime,limes raw,168155,"Limes, raw",limes,,
 lime juice,lime juice raw,168156,"Lime juice, raw",fresh lime juice,,
-apple,apples raw with skin,171689,"Apples, raw, without skin",apples,,
+apple,apples raw with skin,171689,"Apples, raw, without skin",apples|granny smith apple|granny smith apples,,
 banana,bananas raw,173944,"Bananas, raw",bananas,,
 blueberries,blueberries raw,171711,"Blueberries, raw",blueberry,,
 strawberries,strawberries raw,167762,"Strawberries, raw",strawberry,,
 cilantro,coriander leaves raw,169997,"Coriander (cilantro) leaves, raw",fresh cilantro|cilantro leaves,,
-parsley,parsley fresh,170416,"Parsley, fresh",fresh parsley|flat-leaf parsley|italian parsley,,
+parsley,parsley fresh,170416,"Parsley, fresh",fresh parsley|flat-leaf parsley|italian parsley|parsley leaves and tender stems|fresh parsley leaves and tender stems,,
 basil,basil fresh,172232,"Basil, fresh",fresh basil|basil leaves,,
 all-purpose flour,wheat flour white all-purpose enriched bleached,168894,"Wheat flour, white, all-purpose, enriched, bleached",flour|all purpose flour|plain flour,GLUTEN,true
 white rice,rice white long-grain regular raw enriched,168877,"Rice, white, long-grain, regular, raw, enriched",rice|long grain white rice|jasmine rice|basmati rice,,
 brown rice,brown rice long-grain raw,169703,"Rice, brown, long-grain, raw (Includes foods for USDA's Food Distribution Program)",,,
-pasta,pasta dry enriched,169736,"Pasta, dry, enriched",spaghetti|penne|penne pasta|rigatoni|fettuccine|linguine|elbow macaroni|macaroni,GLUTEN,
+pasta,pasta dry enriched,169736,"Pasta, dry, enriched",spaghetti|penne|penne pasta|rigatoni|fettuccine|linguine|elbow macaroni|macaroni|pappardelle|ziti|bow tie pasta|bowtie pasta|farfalle|orzo,GLUTEN,
 egg noodles,noodles egg dry enriched,169731,"Noodles, egg, dry, enriched",,GLUTEN|EGG,
 rolled oats,cereals oats regular and quick not fortified dry,173904,"Cereals, oats, regular and quick, not fortified, dry",oats|old-fashioned oats|old fashioned oats|quick oats,,
-bread,bread white commercially prepared includes soft bread crumbs,174924,"Bread, white, commercially prepared (includes soft bread crumbs)",white bread|sandwich bread,GLUTEN,
-breadcrumbs,bread crumbs dry grated plain,174928,"Bread, crumbs, dry, grated, plain",bread crumbs|panko|panko breadcrumbs,GLUTEN,
+bread,bread white commercially prepared includes soft bread crumbs,174924,"Bread, white, commercially prepared (includes soft bread crumbs)",white bread|sandwich bread|baguette|day old bread|french bread|french roll,GLUTEN,
+breadcrumbs,bread crumbs dry grated plain,174928,"Bread, crumbs, dry, grated, plain",bread crumbs|panko|panko breadcrumbs|italian seasoned breadcrumbs|italian breadcrumbs,GLUTEN,
 flour tortilla,tortillas ready to bake or fry flour,175037,"Tortillas, ready-to-bake or -fry, flour, refrigerated",flour tortillas|tortillas,GLUTEN,
 corn tortilla,tortillas ready to bake or fry corn,175036,"Tortillas, ready-to-bake or -fry, corn",corn tortillas,,
 quinoa,quinoa uncooked,168874,"Quinoa, uncooked",,,
 couscous,couscous dry,169699,"Couscous, dry",,GLUTEN,
 cornstarch,cornstarch,169698,Cornstarch,corn starch,,true
 olive oil,oil olive salad or cooking,171413,"Oil, olive, salad or cooking",extra virgin olive oil|extra-virgin olive oil,,true
-vegetable oil,oil canola,172336,"Oil, canola",canola oil|neutral oil,,true
+vegetable oil,oil canola,172336,"Oil, canola",canola oil|neutral oil|oil,,true
 sesame oil,oil sesame salad or cooking,171016,"Oil, sesame, salad or cooking",toasted sesame oil,,true
 granulated sugar,sugars granulated,169655,"Sugars, granulated",sugar|white sugar,,true
-brown sugar,sugars brown,168833,"Sugars, brown",light brown sugar|dark brown sugar|packed brown sugar,,true
+brown sugar,sugars brown,168833,"Sugars, brown",light brown sugar|dark brown sugar|packed brown sugar|coconut sugar,,true
 honey,honey,169640,Honey,,HONEY,
 maple syrup,syrups maple,169661,"Syrups, maple",pure maple syrup,,
 salt,salt table,173468,"Salt, table",kosher salt|sea salt|table salt|salt and pepper|salt and black pepper|salt and ground black pepper|kosher salt and pepper,,true
-black pepper,spices pepper black,170931,"Spices, pepper, black",pepper|ground black pepper|freshly ground black pepper,,true
-water,beverages water tap drinking,173647,"Beverages, water, tap, drinking",cold water|warm water|hot water,,
+black pepper,spices pepper black,170931,"Spices, pepper, black",pepper|ground black pepper|freshly ground black pepper|steak seasoning|montreal steak seasoning|lemon pepper seasoning|lemon pepper,,true
+water,beverages water tap drinking,173647,"Beverages, water, tap, drinking",cold water|warm water|hot water|boiling water|ice|crushed ice|ice cubes,,
 soy sauce,soy sauce made from soy and wheat shoyu,174277,Soy sauce made from soy and wheat (shoyu),low-sodium soy sauce|low sodium soy sauce,SOY|GLUTEN,
 fish sauce,sauce fish ready-to-serve,174531,"Sauce, fish, ready-to-serve",,FISH,
 worcestershire sauce,sauce worcestershire,171610,"Sauce, worcestershire",,FISH,
 hoisin sauce,sauce hoisin ready-to-serve,172886,"Sauce, hoisin, ready-to-serve",,SOY,
-sriracha,sauce hot chile sriracha,171186,"Sauce, hot chile, sriracha",sriracha sauce,,
+sriracha,sauce hot chile sriracha,171186,"Sauce, hot chile, sriracha",sriracha sauce|calabrian chili paste|calabrian chilies|sambal oelek|chili garlic sauce,,
 hot sauce,sauce ready-to-serve pepper or hot,174527,"Sauce, ready-to-serve, pepper or hot",,,
 white vinegar,vinegar distilled,172237,"Vinegar, distilled",distilled white vinegar|vinegar|rice vinegar|rice wine vinegar,,true
 apple cider vinegar,vinegar cider,173469,"Vinegar, cider",cider vinegar,,true
 red wine vinegar,vinegar red wine,172240,"Vinegar, red wine",,,true
 balsamic vinegar,vinegar balsamic,172241,"Vinegar, balsamic",,,true
-mustard,mustard prepared yellow,172234,"Mustard, prepared, yellow",yellow mustard|dijon mustard|dijon,,
+mustard,mustard prepared yellow,172234,"Mustard, prepared, yellow",yellow mustard|dijon mustard|dijon|stone ground mustard|whole grain mustard,,
 mayonnaise,salad dressing mayonnaise regular,171009,"Salad dressing, mayonnaise, regular",mayo,EGG,
 ketchup,catsup,168556,Catsup,,,
-salsa,sauce salsa ready-to-serve,174524,"Sauce, salsa, ready-to-serve",,,
+salsa,sauce salsa ready-to-serve,174524,"Sauce, salsa, ready-to-serve",taco sauce,,
 marinara sauce,sauce pasta spaghetti marinara ready-to-serve,171192,"Sauce, pasta, spaghetti/marinara, ready-to-serve",pasta sauce|spaghetti sauce,,
 chicken broth,soup chicken broth ready-to-serve,174536,"Soup, chicken broth, ready-to-serve",chicken stock|low sodium chicken broth|low-sodium chicken broth,POULTRY,
 beef broth,soup beef broth bouillon consomme prepared with equal volume water,174557,"Soup, beef broth, bouillon, consomme, prepared with equal volume water",beef stock,MEAT,
@@ -130,25 +130,142 @@ almonds,nuts almonds,170567,"Nuts, almonds",sliced almonds|slivered almonds,TREE
 walnuts,nuts walnuts english,170187,"Nuts, walnuts, english",chopped walnuts,TREE_NUT,
 pecans,nuts pecans,170182,"Nuts, pecans",chopped pecans,TREE_NUT,
 cashews,nuts cashew nuts raw,170162,"Nuts, cashew nuts, raw",,TREE_NUT,
-sesame seeds,seeds sesame seeds whole dried,170150,"Seeds, sesame seeds, whole, dried",,,
+sesame seeds,seeds sesame seeds whole dried,170150,"Seeds, sesame seeds, whole, dried",everything bagel seasoning,,
 baking powder,leavening agents baking powder double-acting sodium aluminum sulfate,172803,"Leavening agents, baking powder, double-acting, sodium aluminum sulfate",,,true
 baking soda,leavening agents baking soda,175040,"Leavening agents, baking soda",,,true
 vanilla extract,vanilla extract,173471,Vanilla extract,vanilla|pure vanilla extract,,true
 chocolate chips,candies semisweet chocolate,167976,"Candies, semisweet chocolate",semisweet chocolate chips|semi-sweet chocolate chips,DAIRY,
-cocoa powder,cocoa dry powder unsweetened,169593,"Cocoa, dry powder, unsweetened",unsweetened cocoa powder,,
+cocoa powder,cocoa dry powder unsweetened,169593,"Cocoa, dry powder, unsweetened",unsweetened cocoa powder|cacao powder|raw cacao powder,,
 garlic powder,spices garlic powder,171325,"Spices, garlic powder",,,true
 onion powder,spices onion powder,171327,"Spices, onion powder",,,true
 paprika,spices paprika,171329,"Spices, paprika",smoked paprika|sweet paprika,,true
-chili powder,spices chili powder,171319,"Spices, chili powder",,,true
+chili powder,spices chili powder,171319,"Spices, chili powder",taco seasoning|taco seasoning mix,,true
 cumin,spices cumin seed,170923,"Spices, cumin seed",ground cumin,,true
-oregano,spices oregano dried,171328,"Spices, oregano, dried",dried oregano,,true
+oregano,spices oregano dried,171328,"Spices, oregano, dried",dried oregano|sicilian oregano|dried sicilian oregano,,true
 thyme,spices thyme dried,170938,"Spices, thyme, dried",dried thyme|fresh thyme,,true
 rosemary,spices rosemary dried,171333,"Spices, rosemary, dried",dried rosemary|fresh rosemary,,true
 italian seasoning,spices italian seasoning,171331,"Spices, poultry seasoning",,,true
 bay leaf,spices bay leaf,170917,"Spices, bay leaf",bay leaves,,true
 cinnamon,spices cinnamon ground,171320,"Spices, cinnamon, ground",ground cinnamon,,true
-red pepper flakes,spices pepper red or cayenne,170932,"Spices, pepper, red or cayenne",crushed red pepper|crushed red pepper flakes|cayenne pepper|cayenne,,true
-curry powder,spices curry powder,170924,"Spices, curry powder",,,true
+red pepper flakes,spices pepper red or cayenne,170932,"Spices, pepper, red or cayenne",crushed red pepper|crushed red pepper flakes|cayenne pepper|cayenne|chili flakes|chile flakes,,true
+curry powder,spices curry powder,170924,"Spices, curry powder",garam masala,,true
 turmeric,spices turmeric ground,172231,"Spices, turmeric, ground",ground turmeric,,true
 ground ginger,spices ginger ground,170926,"Spices, ginger, ground",,,true
 nutmeg,spices nutmeg ground,171326,"Spices, nutmeg, ground",ground nutmeg,,true
+dry white wine,wine table white,,,white wine|sparkling wine|champagne|dry champagne,,
+dry red wine,wine table red,,,red wine|chianti,,
+pecorino romano,cheese romano,,,pecorino|pecorino romano cheese|grated pecorino romano,DAIRY,
+dill,dill weed fresh,,,dried dill|dill weed,,
+sage,spices sage ground,,,ground sage|sage leaves|dried sage,,true
+chives,chives raw,,,chive,,
+powdered sugar,sugars powdered,,,confectioners sugar|confectioners' sugar|icing sugar,,true
+orange,oranges raw all commercial varieties,,,oranges|navel orange,,
+orange juice,orange juice raw,,,fresh orange juice|fresh squeezed orange juice,,
+orange zest,orange peel raw,,,orange peel,,
+almond flour,almond flour,,,almond meal,TREE_NUT,true
+dried cranberries,cranberries dried sweetened,,,craisins,,
+cranberries,cranberries raw,,,fresh cranberries,,
+capers,capers canned,,,,,
+instant yeast,leavening agents yeast bakers active dry,,,yeast|active dry yeast|saf instant yeast|rapid rise yeast,,true
+ground cloves,spices cloves ground,,,cloves|whole cloves,,true
+eggplant,eggplant raw,,,eggplants,,
+coconut flour,coconut flour,,,,,true
+tapioca flour,tapioca pearl dry,,,tapioca starch,,true
+raisins,raisins seedless,,,golden raisins,,
+green chiles,peppers chili green canned,,,diced green chiles|chopped green chiles|canned green chiles,,
+diced tomatoes with green chiles,tomatoes red ripe canned with green chilies,,,rotel|tomatoes with green chiles,,
+pine nuts,nuts pine nuts dried,,,pignoli nuts|pignoli,TREE_NUT,
+molasses,molasses,,,blackstrap molasses,,true
+artichoke hearts,artichokes globe or french canned,,,marinated artichoke hearts|quartered artichoke hearts,,
+pineapple,pineapple raw all varieties,,,pineapple chunks|pineapple chunks in juice|frozen pineapple,,
+almond milk,beverages almond milk unsweetened shelf stable,,,unsweetened almond milk|cashew milk,TREE_NUT,
+chia seeds,seeds chia seeds dried,,,chia seed,,true
+fennel seeds,spices fennel seed,,,fennel seed,,true
+prosciutto,ham prosciutto,,,,MEAT,
+brussels sprouts,brussels sprouts raw,,,brussel sprouts,,
+tahini,seeds sesame butter tahini,,,sesame paste,,
+yellow squash,squash summer crookneck and straightneck raw,,,summer squash,,
+olives,olives ripe canned,,,kalamata olives|black olives|green olives|sicilian green olives|sliced black olives,,
+coconut oil,oil coconut,,,,,true
+arrowroot powder,arrowroot flour,,,arrowroot starch|arrowroot,,true
+arugula,arugula raw,,,baby arugula|rocket,,
+goat cheese,cheese goat soft type,,,soft goat cheese|chevre,DAIRY,
+applesauce,applesauce canned unsweetened without added ascorbic acid,,,unsweetened applesauce,,
+ground flaxseed,seeds flaxseed,,,flaxseed|flax seeds|ground flaxseeds|flaxseed meal,,true
+ground chicken,chicken ground raw,,,,POULTRY,
+lard,lard,,,,MEAT,true
+cajun seasoning,spices poultry seasoning,,,creole seasoning|blackened seasoning,,true
+vodka,alcoholic beverage distilled all 80 proof,,,,,
+pear,pears raw,,,pears,,
+mango,mangos raw,,,mango chunks|frozen mango|frozen mango chunks,,
+bbq sauce,sauce barbecue,,,barbecue sauce,,
+cream of tartar,leavening agents cream of tartar,,,,,true
+sunflower seeds,seeds sunflower seed kernels dried,,,,,
+allspice,spices allspice ground,,,ground allspice,,true
+coriander,spices coriander seed,,,ground coriander|coriander seeds,,true
+gochujang,gochujang,,,korean chili paste,SOY,
+pepitas,seeds pumpkin and squash seed kernels dried,,,pumpkin seeds,,
+nutritional yeast,nutritional yeast,,,nutritional yeast flakes,,true
+anaheim pepper,peppers hungarian raw,,,anaheim peppers|cubanelle pepper|cubanelle peppers,,
+mint,spearmint fresh,,,fresh mint|mint leaves,,
+puff pastry,puff pastry frozen ready-to-bake,,,frozen puff pastry,GLUTEN,
+gin,alcoholic beverage distilled gin 90 proof,,,,,
+guacamole,guacamole dip,,,,,
+pumpkin puree,pumpkin canned without salt,,,pure pumpkin|canned pumpkin,,
+pumpkin pie spice,spices pumpkin pie spice,,,pumpkin spice,,true
+salami,salami cooked beef and pork,,,,MEAT,
+andouille sausage,sausage smoked link pork,,,andouille,MEAT,
+leek,leeks bulb and lower leaf-portion raw,,,leeks,,
+pizza dough,bread pizza crust,,,dough ball|pizza dough ball,GLUTEN,
+raspberries,raspberries raw,,,frozen raspberries,,
+escarole,endive raw,,,,,
+whole chicken,chicken broilers or fryers meat and skin raw,,,young chicken|whole young chicken,POULTRY,
+rotisserie chicken,chicken broilers or fryers meat and skin cooked roasted,,,cooked chicken|shredded chicken,POULTRY,
+pork shoulder,pork fresh shoulder whole raw,,,boneless pork shoulder|pork butt|boston butt,MEAT,
+pork loin,pork fresh loin whole raw,,,,MEAT,
+chicken drumsticks,chicken broilers or fryers drumstick meat and skin raw,,,chicken drumstick,POULTRY,
+evaporated milk,milk canned evaporated,,,,DAIRY,true
+baby back ribs,pork fresh backribs raw,,,pork ribs,MEAT,
+ribeye steak,beef rib eye steak boneless raw,,,ribeye|rib eye steak,MEAT,
+bourbon,alcoholic beverage distilled whiskey 86 proof,,,whiskey,,
+mixed berries,blackberries frozen unsweetened,,,frozen mixed berries,,
+blackberries,blackberries raw,,,,,
+hamburger buns,rolls hamburger or hotdog plain,,,burger buns|brioche buns|hot dog buns,GLUTEN,
+grits,cereals corn grits white regular and quick enriched dry,,,quick cooking grits,,
+pie crust,pie crust standard-type frozen ready-to-bake enriched,,,single-crust pie crust,GLUTEN,
+stuffing mix,bread stuffing dry mix,,,,GLUTEN,
+sweet chili sauce,sauce sweet and sour,,,thai sweet chili sauce,,
+corned beef,beef cured corned beef brisket raw,,,,MEAT,
+peaches,peaches yellow raw,,,peach,,
+gruyere cheese,cheese gruyere,,,gruyère cheese|gruyere,DAIRY,
+swiss cheese,cheese swiss,,,,DAIRY,
+ground cardamom,spices cardamom,,,cardamom,,true
+watermelon,watermelon raw,,,seedless watermelon,,
+almond extract,almond extract,,,,TREE_NUT,true
+american cheese,cheese pasteurized process american,,,,DAIRY,
+coconut water,nuts coconut water liquid from coconuts,,,,,
+cranberry juice,cranberry juice unsweetened,,,,,
+ancho chiles,peppers ancho dried,,,dried ancho chiles,,
+dried apricots,apricots dried sulfured uncooked,,,,,
+ghee,butter oil anhydrous,,,clarified butter,DAIRY,true
+dates,dates medjool,,,medjool dates,,
+microgreens,lettuce green leaf raw,,,,,
+mirin,wine cooking,,,rice wine,,
+oat bran,oat bran raw,,,,GLUTEN,
+orange liqueur,liqueur coffee 53 proof,,,triple sec|cointreau|grand marnier,,
+radishes,radishes raw,,,radish,,
+sea scallops,mollusks scallop mixed species raw,,,scallops,SHELLFISH,
+sweet relish,pickle relish sweet,,,relish,,
+wild rice,wild rice raw,,,wild rice blend,,
+arborio rice,rice white medium-grain raw enriched,,,,,
+kimchi,kimchi,,,,,
+enchilada sauce,sauce enchilada red,,,red enchilada sauce|green enchilada sauce,,
+fennel bulb,fennel bulb raw,,,fennel,,
+figs,figs raw,,,fresh figs,,
+sweet cherries,cherries sweet raw,,,cherries|frozen sweet cherries,,
+fontina cheese,cheese fontina,,,fontina,DAIRY,
+provolone,cheese provolone,,,provolone cheese,DAIRY,
+stout beer,alcoholic beverage beer regular all,,,beer,GLUTEN,
+lobster tails,crustaceans lobster northern raw,,,lobster,SHELLFISH,
+lobster base,soup stock fish home-prepared,,,seafood stock|seafood base,SHELLFISH,
+tarragon,spices tarragon dried,,,fresh tarragon,,

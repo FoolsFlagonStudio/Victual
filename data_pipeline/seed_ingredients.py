@@ -21,6 +21,7 @@ from common import CACHE_DIR, post_json, require_env
 
 FDC_FOODS_URL = "https://api.nal.usda.gov/fdc/v1/foods"
 SEED_PATH = Path(__file__).parent / "ingredients_seed.csv"
+EXTRA_PORTIONS_PATH = Path(__file__).parent / "portions_extra.csv"
 FDC_CACHE = Path(CACHE_DIR) / "fdc"
 FDC_IDS_PER_REQUEST = 20   # FDC's limit for the multi-food endpoint
 IMPORT_BATCH_SIZE = 50     # the backend's limit per call
@@ -152,18 +153,51 @@ def read_seed():
     blank = [r["name"] for r in rows if not (r.get("fdc_id") or "").strip()]
     if blank:
         sys.exit(f"These rows have no fdc_id yet (run find_fdc.py): {blank}")
+    # The backend upserts by fdc_id, so a shared id would rename one ingredient to the other.
+    seen, clashes = {}, []
+    for r in rows:
+        fdc_id = r["fdc_id"].strip()
+        if fdc_id in seen:
+            clashes.append(f"{fdc_id}: '{seen[fdc_id]}' and '{r['name']}'")
+        seen.setdefault(fdc_id, r["name"])
+    if clashes:
+        sys.exit("Two rows share an FDC food (pick another fdc_id from cache/fdc_candidates.csv, "
+                 "or make one an alias of the other):\n  " + "\n  ".join(clashes))
     return rows
 
 
-def build_payload(row, food):
+def read_extra_portions():
+    """{ingredient name: [portion, ...]} from portions_extra.csv (lines starting with # are notes)."""
+    if not EXTRA_PORTIONS_PATH.exists():
+        return {}
+    with EXTRA_PORTIONS_PATH.open(newline="", encoding="utf-8") as f:
+        lines = [line for line in f if line.strip() and not line.lstrip().startswith("#")]
+    extra = {}
+    for row in csv.DictReader(lines):
+        name = row["name"].strip().lower()
+        extra.setdefault(name, []).append({
+            "description": row["description"].strip()[:255],
+            "gramWeight": round(float(row["grams"]), 2),
+        })
+    return extra
+
+
+def merge_portions(fdc_portions, manual):
+    """Manual portions first (the converter takes the first match), then FDC's others."""
+    taken = {p["description"].lower() for p in manual}
+    return manual + [p for p in fdc_portions if p["description"].lower() not in taken]
+
+
+def build_payload(row, food, extra=None):
+    name = row["name"].strip().lower()
     return {
         "fdcId": int(row["fdc_id"]),
-        "name": row["name"].strip().lower(),
+        "name": name,
         "aliases": split_list(row.get("aliases")),
         "tags": split_list(row.get("tags")),
         "pantryStaple": (row.get("pantry") or "").strip().lower() == "true",
         **extract_macros(food),
-        "portions": extract_portions(food),
+        "portions": merge_portions(extract_portions(food), (extra or {}).get(name, [])),
     }
 
 
@@ -171,7 +205,11 @@ def main():
     dry_run = "--dry-run" in sys.argv
     rows = read_seed()
     foods = fetch_foods([int(r["fdc_id"]) for r in rows])
-    payloads = [build_payload(r, foods[int(r["fdc_id"])]) for r in rows]
+    extra = read_extra_portions()
+    unknown = sorted(set(extra) - {r["name"].strip().lower() for r in rows})
+    if unknown:
+        sys.exit(f"portions_extra.csv names not in ingredients_seed.csv: {unknown}")
+    payloads = [build_payload(r, foods[int(r["fdc_id"])], extra) for r in rows]
 
     no_calories = [p["name"] for p in payloads if p["caloriesPer100g"] is None]
     no_portions = [p["name"] for p in payloads if not p["portions"]]

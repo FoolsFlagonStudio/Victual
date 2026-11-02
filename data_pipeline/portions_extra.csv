@@ -1,0 +1,30 @@
+# Hand-entered portion weights for lines FDC has no portion for (catalog report:
+# NO_CONVERSION). One row = the weight in grams of ONE of that portion. The
+# description starts with the unit or size the converter looks for: "cup",
+# "medium", "can", "leaf", "sprig". seed_ingredients.py adds these to the FDC
+# portions (a manual row replaces an FDC portion with the same description).
+name,description,grams
+bay leaf,leaf,0.2
+greek yogurt,"cup",245
+marinara sauce,cup,250
+chicken thigh,"cup, shredded",140
+kale,"cup, chopped",21
+shallot,medium,44
+shallot,large,60
+thyme,sprig,0.5
+rosemary,sprig,1
+cashews,cup,137
+cinnamon,stick,2.6
+corn,"medium ear",90
+ham,"cup, diced",140
+shrimp,medium,7
+shrimp,large,10
+shrimp,extra-large,14
+shrimp,jumbo,18
+shrimp,"cup, cooked",145
+ground turkey,"cup, cooked",140
+tomato sauce,can,227
+black beans,can,425
+white beans,can,425
+crushed tomatoes,can,794
+lime,slice,7
