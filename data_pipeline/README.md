@@ -274,6 +274,9 @@ curl -s -X POST "http://localhost:8080/api/admin/recipes/reprocess" -H "X-Admin-
 
 ## Cleanup: getting every recipe a complete cost
 
+**Fast path for the long tail:** `python bulk_gaps.py build` turns every UNMATCHED name in the last report into `bulk_review.csv` with a suggested action (alias of an existing row, new row with FDC food, tags and a Kroger product, or skip). Review it in a spreadsheet, `python bulk_gaps.py apply`, then `python finish_round.py`, which runs seed, product post, hand prices, price refresh, reprocess, recalculate and the report in one go (`--from N` resumes after a failure).
+
+
 `catalog_report.py` lists everything that keeps recipes from a complete cost, biggest fixes first, and writes the full list with a next step per row to `cache/catalog_gaps.csv`.
 
 ```bash
