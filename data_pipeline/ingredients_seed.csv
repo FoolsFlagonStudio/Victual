@@ -3,7 +3,7 @@ chicken breast,chicken broilers or fryers breast skinless boneless meat only raw
 chicken thigh,chicken broilers or fryers thigh meat only raw,173627,"Chicken, broilers or fryers, dark meat, thigh, meat only, raw",chicken thighs|boneless skinless chicken thighs|boneless chicken thighs,POULTRY,
 ground turkey,turkey ground raw,171505,"Turkey, Ground, raw",lean ground turkey,POULTRY,
 ground beef,beef ground 85% lean meat 15% fat raw,174036,"Beef, ground, 80% lean meat / 20% fat, raw",lean ground beef|minced beef|ground chuck,MEAT,
-ground pork,pork ground raw,167902,"Pork, fresh, ground, raw",,MEAT,
+ground pork,pork ground raw,167902,"Pork, fresh, ground, raw",breakfast sausage|country sausage|bulk pork breakfast sausage|sage breakfast sausage|pork breakfast sausage|bulk fennel sausage,MEAT,
 flank steak,beef flank steak raw,169433,"Beef, flank, steak, separable lean and fat, trimmed to 0"" fat, choice, raw",,MEAT,
 sirloin steak,beef top sirloin steak separable lean and fat choice raw,168728,"Beef, top sirloin, steak, separable lean and fat, trimmed to 1/8"" fat, choice, raw",sirloin|top sirloin,MEAT,
 chuck roast,beef chuck roast raw,169566,"Beef, chuck eye roast, boneless, America's Beef Roast, separable lean only, trimmed to 0"" fat, choice, raw",beef chuck|beef stew meat|stew meat|top round|raw eye of round|eye of round,MEAT,
@@ -267,11 +267,10 @@ stout beer,alcoholic beverage beer regular all,168746,"Alcoholic beverage, beer,
 lobster tails,crustaceans lobster northern raw,174208,"Crustaceans, lobster, northern, raw",lobster,SHELLFISH,
 lobster base,soup stock fish home-prepared,172885,"Soup, stock, fish, home-prepared",seafood stock|seafood base,SHELLFISH,
 tarragon,spices tarragon dried,170937,"Spices, tarragon, dried",fresh tarragon,,
-beets,beets raw,,,beet|golden beets|red beet|red beets,,
-hummus,hummus commercial,,,,,
-breakfast sausage,pork sausage fresh raw,,,country sausage|bulk pork breakfast sausage|sage breakfast sausage|pork breakfast sausage|bulk fennel sausage,MEAT,
-sun-dried tomatoes,tomatoes sun-dried packed in oil drained,,,sun dried tomatoes|oil-packed sun dried tomatoes|sun dried tomatoes in oil,,
-corn syrup,syrups corn light,,,light corn syrup|dark corn syrup,,true
-masa harina,corn flour masa enriched white,,,dried masa harina for tamales,,true
-chorizo,chorizo pork and beef,,,mexican chorizo|links 3/4 lb. chorizo|links mexican chorizo ),MEAT,
-tortilla chips,snacks tortilla chips plain white corn,,,bag tortilla chips|corn tortilla chips,,
+beets,beets raw,169145,"Beets, raw",beet|golden beets|red beet|red beets,,
+hummus,hummus commercial,174289,"Hummus, commercial",,,
+sun-dried tomatoes,tomatoes sun-dried packed in oil drained,169384,"Tomatoes, sun-dried, packed in oil, drained",sun dried tomatoes|oil-packed sun dried tomatoes|sun dried tomatoes in oil,,
+corn syrup,syrups corn light,168837,"Syrups, corn, light",light corn syrup|dark corn syrup,,true
+masa harina,corn flour masa enriched white,169694,"Corn flour, masa, enriched, white",dried masa harina for tamales,,true
+chorizo,chorizo pork and beef,173859,"Sausage, pork, chorizo, link or ground, raw",mexican chorizo|links 3/4 lb. chorizo|links mexican chorizo ),MEAT,
+tortilla chips,snacks tortilla chips plain white corn,167558,"Snacks, tortilla chips, plain, white corn, salted",bag tortilla chips|corn tortilla chips,,
