@@ -6,7 +6,7 @@ export const STORE_LINKS: { appStore: string | null; googlePlay: string | null }
   googlePlay: null,
 };
 
-// TODO: use an address you control; the app's Profile > Send feedback uses the same one.
-export const SUPPORT_EMAIL = 'hello@victual.app';
+// The app's Profile > Send feedback uses the same address (mobile/src/app/(app)/(tabs)/profile.tsx).
+export const SUPPORT_EMAIL = 'evan@foolsflagon.com';
 
-export const LEGAL_UPDATED = 'October 28, 2026';
+export const LEGAL_UPDATED = 'November 2, 2026';

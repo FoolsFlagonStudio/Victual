@@ -17,7 +17,7 @@ import { useTheme, type ThemePreference } from '@/theme/themeContext';
 
 // TODO: point these at the website's real pages once it's deployed.
 const SITE = 'https://victual.app';
-const SUPPORT_EMAIL = 'hello@victual.app';
+const SUPPORT_EMAIL = 'evan@foolsflagon.com';
 
 export default function Profile() {
   const { colors, preference, setPreference } = useTheme();

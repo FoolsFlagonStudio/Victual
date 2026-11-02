@@ -8,7 +8,7 @@ import s from './Legal.module.css';
 // Privacy, terms, support and account deletion on one page (from victual-privacy-support.html).
 // /privacy, /terms, /support and /delete-account all land here, scrolled to their section.
 // The app links to these URLs, and the App Store needs the privacy and support ones.
-// DRAFT: written from what the app actually stores today. Have it reviewed before launch.
+// Written from what the app actually stores. Update it when that changes (new data, new providers).
 
 const SECTIONS = [
   { id: 'privacy', label: 'Privacy policy' },
@@ -57,10 +57,10 @@ export default function Legal() {
                 <strong>Account:</strong> your first and last name, email address, and password (stored only as a secure hash, never in plain text).
               </li>
               <li>
-                <strong>Plan settings:</strong> weekly budget, household size, which meals to plan and how many recipes for each, the day your week starts and when to plan it automatically, diets, allergies, and any calorie or macro targets.
+                <strong>Plan settings:</strong> weekly budget, household size, which meals to plan and how many recipes for each, the day your week starts and when to plan it automatically, whether to use leftovers for lunch, your time zone (so automatic plans arrive on your day), diets, allergies, and any calorie or macro targets.
               </li>
               <li>
-                <strong>What you do in the app:</strong> your meal plans, swaps and locked meals, grocery list check marks, and favorite recipes.
+                <strong>What you do in the app:</strong> your meal plans, swaps and locked meals, sides you pick, grocery list check marks, favorite recipes, and the meals you've cooked (so plans don't repeat them too often).
               </li>
               <li>
                 <strong>On your phone only:</strong> your light or dark mode choice, onboarding progress if you leave partway, and recipe ratings. These stay on your device.
@@ -83,7 +83,10 @@ export default function Legal() {
                 <strong>Supabase</strong> hosts our database, which stores the account and plan data above.
               </li>
               <li>
-                <strong>Our email provider</strong> receives your email address to deliver account emails. [Name the provider once chosen.]
+                <strong>Render</strong> runs the server the app talks to.
+              </li>
+              <li>
+                <strong>Resend</strong> receives your email address and name to deliver account emails.
               </li>
               <li>
                 <strong>Grocery price sources</strong> (store and government price data) are looked up per ingredient. No information about you is sent to them.
@@ -135,10 +138,10 @@ export default function Legal() {
           <section id="delete" className={`${s.section} ${s.divided}`}>
             <h2 className={s.h1Small}>Delete your account</h2>
             <p className={s.p}>
-              In the app, go to <strong>Profile</strong>, then <strong>Delete account</strong>, and confirm with your password. This permanently removes your account, plan settings, meal plans, grocery lists and favorites. It can't be undone.
+              In the app, go to the <strong>Profile</strong> tab, then <strong>Delete account</strong>, and confirm with your password. This permanently removes your account, plan settings, meal plans, grocery lists and favorites. It can't be undone.
             </p>
             <p className={s.p}>
-              Can't get into the app? Email <a href={`mailto:${SUPPORT_EMAIL}?subject=Delete%20my%20account`}>{SUPPORT_EMAIL}</a> from the address on your account and we'll delete it for you. [Say how long backups keep deleted data, e.g. "Backups are cleared within 30 days."]
+              Can't get into the app? Email <a href={`mailto:${SUPPORT_EMAIL}?subject=Delete%20my%20account`}>{SUPPORT_EMAIL}</a> from the address on your account and we'll delete it within 7 days and reply to confirm. Deleting from the app takes effect right away.
             </p>
           </section>
         </div>
