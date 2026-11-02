@@ -39,7 +39,8 @@ import com.forkast.backend.mealplan.MealSlot;
  * unlocked pick
  * furthest over its share for the best-weighted unused candidate that's cheaper
  * per
- * serving. Stop when it fits or no swap lowers the cost.
+ * serving and fully priced (a recipe with unpriced ingredients only looks
+ * cheap). Stop when it fits or no swap lowers the cost.
  * 5. Sides: lunch and dinner mains that want one (a plain roast chicken) get a
  * side while
  * it fits the budget (pairSides).
@@ -328,7 +329,10 @@ public class PlanGenerator {
             }
             GeneratedPlan.Pick current = worst.get();
             SlotRun run = current.run();
+            // Only recipes whose cost is fully known: one with unpriced ingredients only
+            // looks cheaper, so swapping to it would hide the overspend instead of fixing it.
             Optional<RecipeOption> cheaper = candidatesFor(run, pools, used).stream()
+                    .filter(RecipeOption::costComplete)
                     .filter(r -> r.costPerServing().compareTo(current.recipe().costPerServing()) < 0)
                     .max(Comparator.comparingDouble(r -> scorer.weight(candidate(r, run), run, context)));
             if (cheaper.isEmpty()) {

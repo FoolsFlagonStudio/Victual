@@ -21,6 +21,9 @@ overwritten and it makes and deletes plans for a week in 2031.
     python sweep_plans.py --from-csv             # re-pick defaults from the last results
     python sweep_plans.py --write-app            # also copy plan_defaults.json into the app
 
+If it stops (the computer sleeps, the backend restarts), run the same command again: it
+picks up where it left off. --fresh starts over.
+
 Each run takes a few seconds; the full sweep is about 1,300 runs (typical mode is faster
 than floor mode, which re-plans up to 3 times per run to chase the $1 budget).
 """
@@ -59,22 +62,41 @@ class Api:
         self.login()
 
     def login(self):
-        r = requests.post(f"{API_URL}/api/auth/login", json={"email": self.email, "password": self.password}, timeout=30)
+        for wait in [5, 15, 30, 60, 60, 60, 60, None]:
+            try:
+                r = requests.post(f"{API_URL}/api/auth/login", json={"email": self.email, "password": self.password},
+                                  timeout=30)
+                break
+            except (requests.ConnectionError, requests.Timeout):
+                if wait is None:
+                    sys.exit(f"Can't reach the backend at {API_URL}. Is it running?")
+                print(f"  backend unreachable, retrying login in {wait}s...")
+                time.sleep(wait)
         if r.status_code >= 400:
             sys.exit(f"Login failed ({r.status_code}): {r.text}")
         self.token = r.json()["accessToken"]
 
     def call(self, method, path, body=None, ok=(200, 201, 204)):
-        for _ in range(2):
-            r = requests.request(method, f"{API_URL}{path}", json=body, timeout=120,
-                                 headers={"Authorization": f"Bearer {self.token}"})
+        """One API call. Rides out the backend being briefly unreachable (the computer
+        slept, the backend restarted) by waiting and trying again, up to ~5 minutes."""
+        waits = [5, 15, 30, 60, 60, 60, 60]
+        for attempt in range(len(waits) + 1):
+            try:
+                r = requests.request(method, f"{API_URL}{path}", json=body, timeout=120,
+                                     headers={"Authorization": f"Bearer {self.token}"})
+            except (requests.ConnectionError, requests.Timeout) as e:
+                if attempt == len(waits):
+                    raise RuntimeError(f"{method} {path}: backend unreachable ({e.__class__.__name__})")
+                print(f"  backend unreachable, retrying in {waits[attempt]}s...")
+                time.sleep(waits[attempt])
+                continue
             if r.status_code == 401:
                 self.login()
                 continue
             if r.status_code not in ok:
                 raise RuntimeError(f"{method} {path} -> {r.status_code}: {r.text[:300]}")
             return r.json() if r.content else None
-        raise RuntimeError(f"{method} {path}: still unauthorized after logging in again")
+        raise RuntimeError(f"{method} {path}: gave up")
 
 
 def preferences(counts, household, budget, leftovers):
@@ -109,16 +131,25 @@ def run_one(api, counts, household, leftovers, mode):
         if "404" not in str(e):
             raise
         api.call("POST", "/api/users/me/preferences", body)
-    plan = api.call("POST", "/api/meal-plans/generate", {"weekStart": WEEK_START})
     try:
-        return {
-            "usage": float(plan["usageCost"] or 0),
-            "grocery": float(plan["groceryCost"] or plan["usageCost"] or 0),
-            "open": plan["openMeals"],
-            "recipes": len(plan["selections"]),
-        }
-    finally:
+        plan = api.call("POST", "/api/meal-plans/generate", {"weekStart": WEEK_START})
+    except RuntimeError as e:
+        if "409" not in str(e):
+            raise
+        # A plan left behind (a delete that never landed): clear the week and go again.
+        clear_week(api)
+        plan = api.call("POST", "/api/meal-plans/generate", {"weekStart": WEEK_START})
+    result = {
+        "usage": float(plan["usageCost"] or 0),
+        "grocery": float(plan["groceryCost"] or plan["usageCost"] or 0),
+        "open": plan["openMeals"],
+        "recipes": len(plan["selections"]),
+    }
+    try:
         api.call("DELETE", f"/api/meal-plans/{plan['id']}")
+    except RuntimeError:
+        clear_week(api)  # tried again at the start of the next run if this fails too
+    return result
 
 
 def combos(max_count):
@@ -129,20 +160,45 @@ def combos(max_count):
                 yield dict(zip(slots, counts))
 
 
+HEADER = ["meals", "breakfast", "lunch", "dinner", "household", "leftovers", "mode", "seed", "usage", "grocery", "open", "recipes"]
+
+
+def done_runs(path):
+    """Runs already in the results file, so a sweep can pick up where it stopped."""
+    if not path.exists():
+        return set()
+    return {(r["breakfast"], r["lunch"], r["dinner"], r["household"], r["seed"]) for r in csv.DictReader(path.open())}
+
+
 def sweep(args):
     api = Api()
     clear_week(api)
-    todo = [(c, h, s) for c in combos(args.max_count) for h in args.households for s in range(args.seeds)]
-    print(f"{len(todo)} plans to generate")
+    path = results_file(args.mode)
+    if args.fresh and path.exists():
+        path.unlink()
+    done = done_runs(path)
+    todo = [(c, h, s) for c in combos(args.max_count) for h in args.households for s in range(args.seeds)
+            if (str(c.get("BREAKFAST", 0)), str(c.get("LUNCH", 0)), str(c.get("DINNER", 0)), str(h), str(s)) not in done]
+    print(f"{len(todo)} plans to generate" + (f" ({len(done)} already done, picking up where it stopped)" if done else ""))
     started = time.time()
-    with results_file(args.mode).open("w", newline="") as f:
+    skipped = 0
+    in_a_row = 0
+    new_file = not path.exists()
+    with path.open("a", newline="") as f:
         out = csv.writer(f)
-        out.writerow(["meals", "breakfast", "lunch", "dinner", "household", "leftovers", "mode", "seed", "usage", "grocery", "open", "recipes"])
+        if new_file:
+            out.writerow(HEADER)
         for i, (counts, household, seed) in enumerate(todo, 1):
             try:
                 r = run_one(api, counts, household, args.leftovers, args.mode)
+                in_a_row = 0
             except RuntimeError as e:
+                skipped += 1
+                in_a_row += 1
                 print(f"  skipped {counts} x{household}: {e}")
+                if in_a_row >= 10:
+                    sys.exit("10 failures in a row: stopping. Fix the problem and run the same command again; "
+                             "it picks up where it stopped.")
                 continue
             key = "".join(LETTER[s] for s in SLOTS if s in counts)
             out.writerow([key, counts.get("BREAKFAST", 0), counts.get("LUNCH", 0), counts.get("DINNER", 0), household,
@@ -151,6 +207,8 @@ def sweep(args):
             if i % 25 == 0:
                 left = (time.time() - started) / i * (len(todo) - i)
                 print(f"  {i}/{len(todo)}, about {left / 60:.0f} min left")
+    if skipped:
+        sys.exit(f"{skipped} runs failed. Run the same command again to fill them in before picking defaults.")
 
 
 def pick_defaults(headroom, mode):
@@ -208,7 +266,8 @@ def main():
                    help="typical: no budget pressure (what a normal week costs); floor: a $1 budget (the cheapest week)")
     p.add_argument("--headroom", type=float, default=0.85,
                    help="a setting fits a budget when its cheapest week is under budget x this")
-    p.add_argument("--from-csv", action="store_true", help="skip the sweep; pick defaults from sweep_results.csv")
+    p.add_argument("--from-csv", action="store_true", help="skip the sweep; pick defaults from the results file")
+    p.add_argument("--fresh", action="store_true", help="start over instead of picking up where the last sweep stopped")
     p.add_argument("--write-app", action="store_true", help="also write the defaults into the mobile app")
     args = p.parse_args()
 
