@@ -1,5 +1,6 @@
 package com.forkast.backend.ingredient;
 
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -40,7 +41,8 @@ public final class IngredientNames {
             "boneless", "skinless", "lean", "extra-lean", "organic", "whole",
             "large", "medium", "small", "extra-large", "jumbo",
             "loosely", "firmly", "tightly", "squeezed", "fresh-squeezed", "freshly-squeezed", "pitted", "shelled",
-            "deveined", "thick-cut", "thin-cut", "store-bought", "homemade", "prepared", "plain");
+            "deveined", "thick-cut", "thin-cut", "store-bought", "homemade", "prepared", "plain",
+            "bone-in", "skin-on", "cold", "thick", "good-quality", "high-quality");
 
     private IngredientNames() {
         // static helpers only
@@ -149,13 +151,16 @@ public final class IngredientNames {
     }
 
     /**
-     * Lowercase, keep letters, digits, %, hyphens and apostrophes, collapse spaces.
+     * Lowercase, fold accents ("crème" -> "creme", "jalapeño" -> "jalapeno"), keep
+     * letters, digits, %, hyphens and apostrophes, collapse spaces.
      */
     static String normalize(String name) {
         if (name == null) {
             return "";
         }
-        return name.toLowerCase(Locale.ROOT)
+        return Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{M}", "")
+                .replace('’', '\'')
+                .toLowerCase(Locale.ROOT)
                 .replaceAll("[^a-z0-9%'\\- ]", " ")
                 .replaceAll("\\s+", " ")
                 .trim();

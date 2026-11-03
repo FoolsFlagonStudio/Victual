@@ -68,3 +68,6 @@ mung bean sprouts,1.99,12 oz,
 protein powder,24.99,2 lb,whey
 white hominy,1.99,25 oz,can
 star anise,5.99,0.6 oz,spice jar
+# Per-weight prices for items Kroger sells only by the count (see PriceResolver).
+corn tortilla,4.49,66.7 oz,80 count pack
+mint,2.49,0.75 oz,fresh herb clamshell

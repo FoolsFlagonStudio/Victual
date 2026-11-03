@@ -1,6 +1,2416 @@
 {
-  "note": "Placeholder: run data_pipeline/sweep_plans.py --write-app to fill this in. Until then onboarding keeps its fixed defaults. (The first sweep used floor mode, which suggested 5/5/5 for every budget, so it was left out.)",
-  "generatedAt": null,
+  "note": "Made by data_pipeline/sweep_plans.py (typical mode). floor = the mean grocery total for those counts.",
+  "mode": "typical",
+  "generatedAt": "2026-11-03T04:08:52+00:00",
   "headroom": 0.85,
-  "defaults": {}
+  "defaults": {
+    "B": {
+      "1": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 2
+          },
+          "floor": 16.84
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 3
+          },
+          "floor": 37.94
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 62.66
+        }
+      ],
+      "2": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 2
+          },
+          "floor": 21.18
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 4
+          },
+          "floor": 45.72
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 4
+          },
+          "floor": 45.72
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 78.84
+        }
+      ],
+      "4": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 2
+          },
+          "floor": 47.62,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 2
+          },
+          "floor": 47.62
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 2
+          },
+          "floor": 47.62
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5
+          },
+          "floor": 77.12
+        }
+      ]
+    },
+    "BD": {
+      "1": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 2
+          },
+          "floor": 83.58,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 2
+          },
+          "floor": 83.58,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 2
+          },
+          "floor": 83.58,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 2
+          },
+          "floor": 83.58
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 2
+          },
+          "floor": 83.58
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 4,
+            "DINNER": 5
+          },
+          "floor": 109.89
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 4,
+            "DINNER": 5
+          },
+          "floor": 109.89
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 4,
+            "DINNER": 5
+          },
+          "floor": 109.89
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 161.69
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 161.69
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 161.69
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 161.69
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 161.69
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 161.69
+        }
+      ],
+      "2": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 3
+          },
+          "floor": 115.95,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 3
+          },
+          "floor": 115.95,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 3
+          },
+          "floor": 115.95,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 3
+          },
+          "floor": 115.95,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 3
+          },
+          "floor": 115.95,
+          "tight": true
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 2,
+            "DINNER": 3
+          },
+          "floor": 115.95
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 3
+          },
+          "floor": 120.83
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 147.82
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 147.82
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 147.82
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 202.57
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 202.57
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 202.57
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 5
+          },
+          "floor": 202.57
+        }
+      ],
+      "4": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64,
+          "tight": true
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64,
+          "tight": true
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5,
+            "DINNER": 4
+          },
+          "floor": 130.64
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 4,
+            "DINNER": 5
+          },
+          "floor": 221.99
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 4,
+            "DINNER": 5
+          },
+          "floor": 221.99
+        }
+      ]
+    },
+    "BL": {
+      "1": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 2
+          },
+          "floor": 50.64,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 2
+          },
+          "floor": 50.64
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 2
+          },
+          "floor": 50.64
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 3
+          },
+          "floor": 78.41
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 3
+          },
+          "floor": 78.41
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2
+          },
+          "floor": 109.22
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 4
+          },
+          "floor": 129.15
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 5
+          },
+          "floor": 142.35
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 5
+          },
+          "floor": 142.35
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 171.5
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 171.5
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 171.5
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 171.5
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 171.5
+        }
+      ],
+      "2": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 2
+          },
+          "floor": 97.8,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 2
+          },
+          "floor": 97.8,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 2
+          },
+          "floor": 97.8,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 2
+          },
+          "floor": 97.8,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 2
+          },
+          "floor": 97.8
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 3
+          },
+          "floor": 104.81
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 5
+          },
+          "floor": 126.45
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 5
+          },
+          "floor": 126.45
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 5
+          },
+          "floor": 126.45
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 181.27
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 181.27
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 181.27
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 181.27
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 181.27
+        }
+      ],
+      "4": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 2
+          },
+          "floor": 117.61,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 2
+          },
+          "floor": 117.61,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 2
+          },
+          "floor": 117.61,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 2
+          },
+          "floor": 117.61,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 2
+          },
+          "floor": 117.61,
+          "tight": true
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 2
+          },
+          "floor": 117.61
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 2
+          },
+          "floor": 117.61
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 3
+          },
+          "floor": 137.82
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 4
+          },
+          "floor": 166.72
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 185.75
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 185.75
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 185.75
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 185.75
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5
+          },
+          "floor": 185.75
+        }
+      ]
+    },
+    "BLD": {
+      "1": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 110.98,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 110.98,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 110.98,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 110.98,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 110.98,
+          "tight": true
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 110.98
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 110.98
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 2,
+            "DINNER": 5
+          },
+          "floor": 151.53
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 4,
+            "DINNER": 3
+          },
+          "floor": 157.94
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 4,
+            "DINNER": 3
+          },
+          "floor": 157.94
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 4,
+            "DINNER": 5
+          },
+          "floor": 190.06
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 204.73
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 236.57
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 236.57
+        }
+      ],
+      "2": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 142.06,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 142.06,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 142.06,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 142.06,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 142.06,
+          "tight": true
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 142.06,
+          "tight": true
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 142.06,
+          "tight": true
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 142.06
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 3,
+            "LUNCH": 4,
+            "DINNER": 4
+          },
+          "floor": 153.03
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5,
+            "DINNER": 2
+          },
+          "floor": 182.34
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 5,
+            "DINNER": 2
+          },
+          "floor": 182.34
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 4,
+            "LUNCH": 5,
+            "DINNER": 4
+          },
+          "floor": 208.96
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 4,
+            "DINNER": 5
+          },
+          "floor": 231.15
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 4,
+            "DINNER": 5
+          },
+          "floor": 231.15
+        }
+      ],
+      "4": [
+        {
+          "budget": 40,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06,
+          "tight": true
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "BREAKFAST": 5,
+            "LUNCH": 2,
+            "DINNER": 2
+          },
+          "floor": 228.06
+        }
+      ]
+    },
+    "D": {
+      "1": [
+        {
+          "budget": 40,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 57.41,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 57.41,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 57.41
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "DINNER": 4
+          },
+          "floor": 68.2
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 92.79
+        }
+      ],
+      "2": [
+        {
+          "budget": 40,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 55.03,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 55.03,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 55.03
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 55.03
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 55.03
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 55.03
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 123.63
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 123.63
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 123.63
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 123.63
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 123.63
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 123.63
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 123.63
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 123.63
+        }
+      ],
+      "4": [
+        {
+          "budget": 40,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 98.44,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 98.44,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 98.44,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 98.44,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "DINNER": 2
+          },
+          "floor": 98.44
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "DINNER": 4
+          },
+          "floor": 118.41
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "DINNER": 4
+          },
+          "floor": 118.41
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "DINNER": 4
+          },
+          "floor": 118.41
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "DINNER": 4
+          },
+          "floor": 118.41
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 172.37
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 172.37
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 172.37
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 172.37
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "DINNER": 5
+          },
+          "floor": 172.37
+        }
+      ]
+    },
+    "L": {
+      "1": [
+        {
+          "budget": 40,
+          "counts": {
+            "LUNCH": 2
+          },
+          "floor": 41.02,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "LUNCH": 2
+          },
+          "floor": 41.02
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "LUNCH": 2
+          },
+          "floor": 41.02
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 79.52
+        }
+      ],
+      "2": [
+        {
+          "budget": 40,
+          "counts": {
+            "LUNCH": 2
+          },
+          "floor": 54.99,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "LUNCH": 2
+          },
+          "floor": 54.99,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "LUNCH": 2
+          },
+          "floor": 54.99
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "LUNCH": 2
+          },
+          "floor": 54.99
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "LUNCH": 2
+          },
+          "floor": 54.99
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 118.84
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 118.84
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 118.84
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 118.84
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 118.84
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 118.84
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 118.84
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 118.84
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 118.84
+        }
+      ],
+      "4": [
+        {
+          "budget": 40,
+          "counts": {
+            "LUNCH": 3
+          },
+          "floor": 73.46,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "LUNCH": 3
+          },
+          "floor": 73.46,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "LUNCH": 3
+          },
+          "floor": 73.46,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "LUNCH": 3
+          },
+          "floor": 73.46
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "LUNCH": 3
+          },
+          "floor": 73.46
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "LUNCH": 3
+          },
+          "floor": 73.46
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "LUNCH": 4
+          },
+          "floor": 119.21
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "LUNCH": 4
+          },
+          "floor": 119.21
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "LUNCH": 4
+          },
+          "floor": 119.21
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 175.71
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 175.71
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 175.71
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 175.71
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "LUNCH": 5
+          },
+          "floor": 175.71
+        }
+      ]
+    },
+    "LD": {
+      "1": [
+        {
+          "budget": 40,
+          "counts": {
+            "LUNCH": 4,
+            "DINNER": 2
+          },
+          "floor": 108.44,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "LUNCH": 4,
+            "DINNER": 2
+          },
+          "floor": 108.44,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "LUNCH": 4,
+            "DINNER": 2
+          },
+          "floor": 108.44,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "LUNCH": 4,
+            "DINNER": 2
+          },
+          "floor": 108.44,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "LUNCH": 4,
+            "DINNER": 2
+          },
+          "floor": 108.44,
+          "tight": true
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "LUNCH": 4,
+            "DINNER": 2
+          },
+          "floor": 108.44
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "LUNCH": 4,
+            "DINNER": 3
+          },
+          "floor": 119.91
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "LUNCH": 4,
+            "DINNER": 4
+          },
+          "floor": 148.58
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 4
+          },
+          "floor": 165.53
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 4
+          },
+          "floor": 165.53
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 4
+          },
+          "floor": 165.53
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 212.96
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 212.96
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 212.96
+        }
+      ],
+      "2": [
+        {
+          "budget": 40,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 132.53,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 132.53,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 132.53,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 132.53,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 132.53,
+          "tight": true
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 132.53,
+          "tight": true
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 132.53
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 3
+          },
+          "floor": 141.72
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 3
+          },
+          "floor": 141.72
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 5
+          },
+          "floor": 175.21
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 189.22
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 189.22
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 189.22
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 5
+          },
+          "floor": 189.22
+        }
+      ],
+      "4": [
+        {
+          "budget": 40,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 60,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 80,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 100,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 120,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 140,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 160,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 180,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 200,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 220,
+          "counts": {
+            "LUNCH": 3,
+            "DINNER": 2
+          },
+          "floor": 193.66,
+          "tight": true
+        },
+        {
+          "budget": 240,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 196.5
+        },
+        {
+          "budget": 260,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 196.5
+        },
+        {
+          "budget": 280,
+          "counts": {
+            "LUNCH": 2,
+            "DINNER": 3
+          },
+          "floor": 196.5
+        },
+        {
+          "budget": 300,
+          "counts": {
+            "LUNCH": 5,
+            "DINNER": 4
+          },
+          "floor": 243.28
+        }
+      ]
+    }
+  }
 }
