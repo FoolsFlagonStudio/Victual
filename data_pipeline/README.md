@@ -1,6 +1,6 @@
-# Forkast Data Pipeline
+# Victual Data Pipeline
 
-Python scripts that build Forkast's ingredient catalog from USDA FoodData Central, scrape recipe pages with [`recipe-scrapers`](https://github.com/hhursev/recipe-scrapers), and set up prices (Kroger product mapping, BLS average prices, seed prices), then send everything to the backend's admin API.
+Python scripts that build Victual's ingredient catalog from USDA FoodData Central, scrape recipe pages with [`recipe-scrapers`](https://github.com/hhursev/recipe-scrapers), and set up prices (Kroger product mapping, BLS average prices, seed prices), then send everything to the backend's admin API.
 
 > **Status:** working. The catalog has 153 ingredients, the first scrape imported 17 recipes from 2 sites, and 152 ingredients are mapped to Kroger products.
 
@@ -95,7 +95,7 @@ python scrape_recipes.py             # post (reads the cache, so the sites aren'
 
 - Checks each site's `robots.txt` and skips disallowed paths. A missing robots.txt allows everything; 401/403 or an unreachable one means the site is skipped.
 - One request at a time, 3 to 5 seconds apart per site, or the site's `Crawl-delay` if longer.
-- Identifies itself with `ForkastRecipeBot/0.1 (personal project; contact <email>)`.
+- Identifies itself with `VictualRecipeBot/0.1 (personal project; contact <email>)`.
 - Caches every page in `cache/html/`, so re-runs never download a page twice.
 - Never works around logins, paywalls or bot protection. Damn Delicious returns 403 to automated requests, so it is not used.
 - Read a site's terms of use before adding it to `urls.txt`.
