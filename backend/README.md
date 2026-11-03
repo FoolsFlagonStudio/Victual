@@ -1,6 +1,6 @@
-# Forkast Backend
+# Victual Backend
 
-Spring Boot API for Forkast. It owns all data access: recipes, ingredient matching, nutrition, pricing, dietary labels, meal plan generation, and grocery lists.
+Spring Boot API for Victual. It owns all data access: recipes, ingredient matching, nutrition, pricing, dietary labels, meal plan generation, and grocery lists.
 
 > **Status:** the data model, Flyway migrations (V1 to V12), authentication, user preferences, the recipe ingestion pipeline, recipe browsing, pricing and meal planning are complete. Live endpoints: `GET /api/health`, `GET /api/dietary-labels`, the 11 `/api/auth/*` routes, `GET`/`PATCH`/`DELETE /api/users/me`, `GET`/`POST`/`PUT /api/users/me/preferences`, recipe search, detail and favorites (with cost), the 13 `/api/meal-plans/*` routes, the 2 grocery list routes, the 6 `/api/admin/*` ingestion routes and the 4 `/api/admin/prices/*` routes. Scheduled jobs refresh Kroger prices weekly and make each user's plan at 11pm on their auto-plan day (the night before their plan start day unless they pick another, or off). Next: a larger recipe scrape and the catalog revisit.
 
@@ -366,7 +366,7 @@ Indexed on `(ingredient_id, recorded_at)`. Built with `IngredientPrice.builder(i
 
 ### mealplan
 
-A plan is a week of **selections** (recipe choices, each cooked once and eaten over one or more days) with a dated **calendar** of planned meals under them. Lock, swap and regenerate act on selections. The full design is in the Forkast Meal Plan Generator Plan doc.
+A plan is a week of **selections** (recipe choices, each cooked once and eaten over one or more days) with a dated **calendar** of planned meals under them. Lock, swap and regenerate act on selections. The full design is in the Victual Meal Plan Generator Plan doc.
 
 **MealPlan** (`meal_plans`)
 
@@ -557,7 +557,7 @@ Nutrition is never taken from the scrape; it's computed from matched `Ingredient
 
 ## Recipe Browsing
 
-Every recipe route needs a Bearer token. The full design is in the Forkast Recipe Endpoints Plan doc.
+Every recipe route needs a Bearer token. The full design is in the Victual Recipe Endpoints Plan doc.
 
 - **Hard filter:** a recipe without every label in the user's dietary restrictions never appears, in search, detail (404) or favorites (hidden, not deleted).
 - **Soft flags:** `RecipeFitEvaluator` compares per-serving nutrition with the user's **per-meal** targets and returns flags plus a sorting penalty: `OVER_MAX_CALORIES` (any amount over), `UNDER_PROTEIN_TARGET` (under 80%), `OVER_CARBS_TARGET` / `OVER_FAT_TARGET` (over 125%), `NUTRITION_INCOMPLETE`. Unset preferences raise nothing.
@@ -568,7 +568,7 @@ Every recipe route needs a Bearer token. The full design is in the Forkast Recip
 
 ## Pricing
 
-The full design and the test-run findings are in the Forkast Pricing Plan doc. The app never calls a price source while a user waits: prices are stored as `IngredientPrice` history, and recipes store their cost.
+The full design and the test-run findings are in the Victual Pricing Plan doc. The app never calls a price source while a user waits: prices are stored as `IngredientPrice` history, and recipes store their cost.
 
 **Sources.**
 
@@ -601,7 +601,7 @@ Prices come from one store, Kroger On the Rhine in Cincinnati (`01400513`), as o
 
 ## Meal Planning
 
-Every route needs a Bearer token, and someone else's plan or grocery line is a 404, like a missing one. The full design, with the decisions behind it, is in the Forkast Meal Plan Generator Plan doc.
+Every route needs a Bearer token, and someone else's plan or grocery line is a 404, like a missing one. The full design, with the decisions behind it, is in the Victual Meal Plan Generator Plan doc.
 
 **Slot fit.** `SlotClassifier` scores every recipe 0 to 100 for breakfast, lunch and dinner from its category tags, name and keywords; it runs on ingest and reprocess. A side dish, sauce or dressing scores 0 whatever else it's tagged; desserts and snacks only when no meal tag comes with them. A meal the site names outright (Breakfast, Lunch, Dinner) gets at least 60. The name has the last word for loosely filed recipes: articles ("How to make ghee"), components ("Lemon Curd", "Ranch Dressing", "Chicken Stock"; a sauce or salsa unless the name also has a protein or grain) and sweets or snacks ("Banana Bites", pie but not pot pie) score 0, and sides by name (slaw, mashed, biscuits) can't be lunch or dinner.
 
@@ -642,7 +642,7 @@ Every route needs a Bearer token, and someone else's plan or grocery line is a 4
 
 ## Authentication
 
-Short-lived JWT access tokens plus hashed, database-stored refresh tokens, one per device. The full design and its reasoning are in the Forkast Auth Plan doc.
+Short-lived JWT access tokens plus hashed, database-stored refresh tokens, one per device. The full design and its reasoning are in the Victual Auth Plan doc.
 
 | Item               | Rule                                                                                                                                         |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -729,7 +729,7 @@ Controllers stay thin (bind, validate, delegate to a service). Success responses
 - [ ] Allow more than one recipe per meal slot (main + side)? One per slot in v1; detecting recipes that need a side is listed in the Meal Plan Generator Plan doc.
 - [x] `weekStartDate` is the user's own plan start day; a plan runs 7 days from it.
 - [x] Auth adapted from the existing Express flow for mobile: emailed codes instead of links, refresh token in the body, per-device sessions, account deletion instead of deactivation.
-- [x] Meal choices stored as slot to distinct-recipes-per-week counts; per-user plan start day; meal prep is a preference that weights a per-recipe score. Full design in the Forkast Users and Preferences Plan doc.
+- [x] Meal choices stored as slot to distinct-recipes-per-week counts; per-user plan start day; meal prep is a preference that weights a per-recipe score. Full design in the Victual Users and Preferences Plan doc.
 - [x] Meal plans: `plan_selections` + dated `planned_meals` (V9) support lock, swap, multi-day recipes and leftover lunches.
 - [ ] Remember which pantry staples a user keeps, so they stop showing as "check your pantry"? Out of v1.
 - [ ] Push notifications when the weekly plan is ready? Out of v1.
@@ -739,7 +739,7 @@ Controllers stay thin (bind, validate, delegate to a service). Success responses
 - [ ] Integration tests run against Supabase; move them to Testcontainers (throwaway Postgres in Docker).
 - [ ] The review queue lists only unmatched lines; also list low-confidence fuzzy matches (score under about 0.8). "Cherry peppers" matched black pepper at 0.5+ and was never reviewed.
 - [x] Recipe prices scraped from blogs are stripped by the parser; live prices come from the pricing service.
-- [ ] Pricing follow-ups (fresh herbs in small packages, products with only a price per item, premium-brand picks, Kroger production approval) are listed in the Forkast Pricing Plan doc for the catalog revisit.
+- [ ] Pricing follow-ups (fresh herbs in small packages, products with only a price per item, premium-brand picks, Kroger production approval) are listed in the Victual Pricing Plan doc for the catalog revisit.
 - [ ] Choose a production email provider, and send emails after the transaction commits.
 - [ ] Rate-limit login and code endpoints before public launch.
 - [ ] Scheduled cleanup of expired refresh tokens and auth codes.

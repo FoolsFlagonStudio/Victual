@@ -1,4 +1,4 @@
-"""Shared config and HTTP helpers for the Forkast data pipeline."""
+"""Shared config and HTTP helpers for the Victual data pipeline."""
 import os
 import sys
 from pathlib import Path
@@ -25,11 +25,11 @@ def require_env(name: str) -> str:
 def user_agent() -> str:
     """Identifies the scraper to site owners, with a way to reach you."""
     email = require_env("SCRAPER_CONTACT_EMAIL")
-    return f"ForkastRecipeBot/0.1 (personal project; contact {email})"
+    return f"VictualRecipeBot/0.1 (personal project; contact {email})"
 
 
 def post_json(path: str, body) -> dict:
-    """POST to the Forkast admin API and return the JSON response."""
+    """POST to the Victual admin API and return the JSON response."""
     response = requests.post(
         f"{API_URL}{path}",
         json=body,

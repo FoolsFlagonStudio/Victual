@@ -1,10 +1,10 @@
-# Forkast
+# Victual
 
 A mobile meal planner that builds your weekly recipes and grocery list around your budget, macros, and dietary needs. Spring Boot backend, React Native frontend.
 
-Users set a weekly budget, household size, dietary restrictions, and optional calorie/macro targets. Each week Forkast generates a meal plan and an aggregated grocery list priced to fit that budget.
+Users set a weekly budget, household size, dietary restrictions, and optional calorie/macro targets. Each week Victual generates a meal plan and an aggregated grocery list priced to fit that budget.
 
-> **Status:** early development. The backend data model, Flyway migrations, authentication, user preferences, and the recipe data pipeline are complete: a 153-ingredient catalog from USDA FoodData Central, and scraped recipes with parsed ingredients, nutrition, dietary labels, meal-prep and meal-slot scores. Recipe search, scaled detail and favorites are live, and every recipe has an estimated cost per serving from weekly Kroger prices. The meal plan generator is live: weekly plans that fit the budget and per-meal limits, a grocery list priced in whole packages, locking and swapping meals, and a job that makes each user's plan the night before their week starts. The mobile app has every designed screen built; it uses the live API for auth, preferences and recipes, and still simulates meal plans on the device until it's wired to the generator's routes. The marketing site is built.
+> **Status:** getting ready for a closed test on Google Play. The backend, data pipeline, mobile app and marketing site are built: 811 scraped recipes with parsed ingredients, nutrition, dietary labels and meal-slot scores; a 337-ingredient catalog from USDA FoodData Central priced from Kroger, BLS and hand estimates, giving 94%+ of recipes a complete cost; weekly plans that fit the budget, with sides, leftovers, swaps and a grocery list priced in whole packages, generated automatically on each user's chosen day. The mobile app runs on the live API end to end. Hosting (Render, Supabase, Resend, Vercel) is set up in [DEPLOY.md](DEPLOY.md).
 
 ## How It Fits Together
 
