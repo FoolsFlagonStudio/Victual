@@ -21,6 +21,9 @@ Keeping the scripts thin means parsing rules live in one place, and the backend 
 | `fdc_lookup.py`              | Prints the FDC description for one or more ids, to check a hand-picked id                                                                                           |
 | `seed_ingredients.py`        | Fetches each food from FDC, extracts macros and portions, posts to the import route                                                                                 |
 | `urls.txt`                   | Recipe URLs, one per line; `#` lines are comments                                                                                                                   |
+| `collect_urls.py`            | Collects recipe URLs from the sites in `sites.txt` via their sitemaps, skipping URLs already in any `urls*.txt`; for the monthly batch                               |
+| `sites.txt`                  | The recipe sites the collector reads                                                                                                                                |
+| `urls_batch1.txt`, `urls_breakfast2.txt`, `urls_dinner3.txt` | Batches collected so far (kept so new batches never repeat them)                                                                    |
 | `urls_breakfast_lunch.txt`   | 44 Budget Bytes breakfast and lunch URLs, scraped so every meal slot has candidates                                                                                 |
 | `scrape_recipes.py`          | Fetches, caches, scrapes and posts recipes; writes a JSON log to `logs/`                                                                                            |
 | `samples/ingest_sample.json` | A hand-written batch for testing the ingest route                                                                                                                   |
@@ -85,6 +88,16 @@ All values are per 100 g. Negative values (carbs "by difference" can come out sl
 **Tags** drive dietary labels: MEAT, POULTRY, FISH, SHELLFISH, DAIRY, EGG, GLUTEN, TREE_NUT, PEANUT, SOY, HONEY, GELATIN. Broths carry POULTRY or MEAT; Worcestershire carries FISH (anchovies).
 
 ## Scraping recipes
+
+New batch (about once a month): collect URLs, review the file, then scrape it.
+
+```bash
+python collect_urls.py --sites sites.txt --per-site 40 --out urls_batch4.txt
+python scrape_recipes.py urls_batch4.txt --dry-run
+python scrape_recipes.py urls_batch4.txt
+```
+
+Or with the default `urls.txt`:
 
 ```bash
 python scrape_recipes.py --dry-run   # fetch and cache, print one payload, post nothing
