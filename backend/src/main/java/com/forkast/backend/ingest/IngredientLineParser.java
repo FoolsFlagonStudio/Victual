@@ -71,6 +71,16 @@ public class IngredientLineParser {
     private static final Pattern LEADING_OF = Pattern.compile("^of\\s+", Pattern.CASE_INSENSITIVE);
     private static final Pattern OPTIONAL = Pattern.compile(
             "\\(\\s*optional\\s*\\)|,?\\s*\\boptional\\b", Pattern.CASE_INSENSITIVE);
+    /**
+     * Lines that aren't food ("8 wooden skewers", "4 turns on a pepper grinder") or are
+     * only a garnish: kept on the recipe but optional, so they don't count toward cost or
+     * nutrition and don't hold the recipe's cost back as incomplete.
+     */
+    private static final Pattern NOT_FOOD = Pattern.compile(
+            "\\b(skewers?|cedar planks?|toothpicks?|(kitchen|butcher'?s) twine|parchment( paper)?|"
+                    + "(aluminum )?foil|pepper grinder|brine|pan drippings)\\b",
+            Pattern.CASE_INSENSITIVE);
+    private static final Pattern GARNISH = Pattern.compile("\\bgarnish(es|ing)?\\b", Pattern.CASE_INSENSITIVE);
     private static final Pattern TO_TASTE = Pattern.compile(
             ",?\\s*(?:or\\s+)?to\\s+taste\\b", Pattern.CASE_INSENSITIVE);
     private static final Pattern PARENS = Pattern.compile("\\(([^)]*)\\)");
@@ -110,7 +120,7 @@ public class IngredientLineParser {
             return ParsedLine.skipped(); // blank line or a section header like "For the sauce:"
         }
 
-        boolean optional = OPTIONAL.matcher(text).find();
+        boolean optional = OPTIONAL.matcher(text).find() || GARNISH.matcher(text).find();
         text = OPTIONAL.matcher(text).replaceAll("").trim();
         boolean toTaste = TO_TASTE.matcher(text).find();
         text = TO_TASTE.matcher(text).replaceAll("").trim();
@@ -196,6 +206,10 @@ public class IngredientLineParser {
         name = clean(name).toLowerCase(Locale.ROOT);
         if (name.isEmpty()) {
             return ParsedLine.skipped(); // nothing left to match, e.g. a stray "2"
+        }
+
+        if (NOT_FOOD.matcher(name).find()) {
+            optional = true;
         }
 
         if (amount == null && toTaste) {

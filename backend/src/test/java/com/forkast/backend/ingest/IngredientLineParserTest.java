@@ -10,6 +10,45 @@ class IngredientLineParserTest {
 
     private final IngredientLineParser parser = new IngredientLineParser();
 
+    // ---------- non-food, garnish and leading descriptors ----------
+
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "8 wooden skewers",
+            "12 medium-length wooden skewers",
+            "1 cedar plank, soaked in water for at least 30 minutes",
+            "4 turns on a pepper grinder",
+            "2 Tbsp olive brine ($0.00)",
+            "5 tablespoons seperated fat from pan drippings",
+            "8 oz. gummy worms (for garnish, $1.48)",
+            "3 whole blackberries (for your garnish)" })
+    void nonFoodAndGarnishLinesAreOptional(String raw) {
+        assertThat(parser.parse(raw).optional()).isTrue();
+    }
+
+    @Test
+    void ordinaryLineIsNotOptional() {
+        assertThat(parser.parse("2 cups chicken broth").optional()).isFalse();
+    }
+
+    @Test
+    void leadingBoneInSkinOnStaysInTheName() {
+        assertThat(parser.parse("4 bone-in, skin-on chicken thighs, about 1 1/2 pounds").name())
+                .isEqualTo("bone-in skin-on chicken thighs");
+    }
+
+    @Test
+    void leadingColdStaysInTheName() {
+        assertThat(parser.parse("5 tablespoons (70 g) cold, unsalted butter, cut into cubes").name())
+                .isEqualTo("cold unsalted butter");
+    }
+
+    @Test
+    void accentsAreFoldedNotDropped() {
+        String name = parser.parse("1 ounce crème de mûre").name();
+        assertThat(com.forkast.backend.ingredient.IngredientNames.candidates(name)).contains("creme de mure");
+    }
+
     // ---------- the cases from the plan doc's parser table ----------
 
     @Test
