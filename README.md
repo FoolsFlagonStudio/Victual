@@ -62,7 +62,9 @@ Render (API), Supabase (database), Resend (email) and Vercel (site): see [DEPLOY
 - [x] Meal plan generator and grocery list (weekly job, lock and swap, pantry staples)
 - [x] Shared design system (tokens, fonts, logo, icons) for web and mobile
 - [x] Mobile app screens (auth, onboarding, home, plan, groceries, recipes, profile, cook mode, budget)
-- [ ] Mobile app wired to the meal plan and grocery routes
+- [x] Mobile app wired to the meal plan and grocery routes
+- [x] Hosting (Render API, Supabase, Resend email, Vercel site)
+- [ ] Closed test on Google Play
 - [x] Marketing website (landing, privacy, terms, support)
 
 ## Stretch Features
@@ -73,3 +75,10 @@ Ideas deliberately left out of v1:
 - **Per-slot day selection.** Let a meal slot cover only some days (e.g. lunches on weekdays only). In v1 every included slot covers all 7 days of the plan.
 - **Push notifications.** v1 generates each user's plan automatically before their plan start day; a push notification when it's ready comes later.
 - **Regional prices.** v1 prices everything from one Kroger store; letting users pick a store or ZIP code comes later.
+- **What I have (kitchen inventory).** Track ingredients on hand ("5 yellow onions, 3 tomatoes") so the planner counts them as already paid for, which leaves room in the budget for pricier recipes and favors recipes that use things up. The risk is an inventory that goes stale, so it should mostly maintain itself:
+  - *Filled from groceries:* checking off the grocery list adds what was bought in whole packages; whatever the week's recipes don't use (2 of a 3 lb bag of onions) stays on hand automatically.
+  - *Used by cook mode:* finishing a recipe subtracts its amounts, scaled to servings.
+  - *Ages out:* each item gets a shelf life by category (produce about a week, dairy two, pantry months). Past it, the planner stops counting it until it's confirmed.
+  - *One quick check a week:* before the plan is generated, a "still have these?" list of anything uncertain, a few taps.
+  - Manual adds and edits for everything else. Pantry staples stay a simple have/don't-have, as now.
+  - Backend: a per-user inventory of catalog ingredients in grams (with source and expiry), subtracted in the planner's cost and in the grocery list; recipes that use expiring items get a scoring boost.
