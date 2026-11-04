@@ -336,15 +336,15 @@ protein powder,protein powder,173180,"Beverages, Protein powder whey based",scoo
 smoked gouda,smoked gouda,171241,"Cheese, gouda",,DAIRY,
 white hominy,white hominy,169701,"Hominy, canned, white",,,
 star anise,star anise,171316,"Spices, anise seed",whole star anise,,true
-liquid smoke,liquid smoke,,,,,true
-ginger beer,beverages carbonated ginger ale,,,cold ginger beer,,
-kombu,seaweed kelp raw,,,piece kombu|kelp,,
-cola,beverages carbonated cola regular,,,splash cola|coca-cola|coke,,
-ground coffee,beverages coffee instant regular powder,,,scoops ground coffee|coffee grounds,,true
-carne asada,beef flank steak separable lean and fat trimmed to 0 fat choice cooked broiled,,,recipe carne asada,MEAT,
-biscuits,biscuits plain or buttermilk refrigerated dough higher fat,,,batch homemade fluffy biscuits|homemade biscuits|buttermilk biscuits,GLUTEN|DAIRY,
-ranch dressing,salad dressing ranch dressing regular,,,recipe ranch dressing|ranch,DAIRY|EGG,
-tzatziki,yogurt greek plain whole milk,,,recipe tzatziki sauce|tzatziki sauce,DAIRY,
-lemon vinaigrette,salad dressing home recipe vinegar and oil,,,recipe lemon vinaigrette|vinaigrette,,
-vegan alfredo sauce,nuts cashew butter plain without salt added,,,recipe vegan alfredo sauce,TREE_NUT,
-bonito flakes,fish tuna skipjack fresh raw,,,katsuobushi,FISH,true
+liquid smoke,liquid smoke,167682,"Pectin, liquid",,,true
+ginger beer,beverages carbonated ginger ale,174846,"Beverages, carbonated, ginger ale",cold ginger beer,,
+kombu,seaweed kelp raw,168457,"Seaweed, kelp, raw",piece kombu|kelp,,
+cola,beverages carbonated cola regular,174852,"Beverages, carbonated, cola, regular",splash cola|coca-cola|coke,,
+ground coffee,beverages coffee instant regular powder,171893,"Beverages, coffee, instant, regular, powder",scoops ground coffee|coffee grounds,,true
+carne asada,beef flank steak separable lean and fat trimmed to 0 fat choice cooked broiled,169435,"Beef, flank, steak, separable lean and fat, trimmed to 0"" fat, choice, cooked, broiled",recipe carne asada,MEAT,
+biscuits,biscuits plain or buttermilk refrigerated dough higher fat,172668,"Biscuits, plain or buttermilk, refrigerated dough, higher fat",batch homemade fluffy biscuits|homemade biscuits|buttermilk biscuits,GLUTEN|DAIRY,
+ranch dressing,salad dressing ranch dressing regular,173592,"Salad dressing, ranch dressing, regular",recipe ranch dressing|ranch,DAIRY|EGG,
+tzatziki,yogurt greek plain whole milk,171304,"Yogurt, Greek, plain, whole milk",recipe tzatziki sauce|tzatziki sauce,DAIRY,
+lemon vinaigrette,salad dressing home recipe vinegar and oil,171417,"Salad dressing, home recipe, vinegar and oil",recipe lemon vinaigrette|vinaigrette,,
+vegan alfredo sauce,nuts cashew butter plain without salt added,170163,"Nuts, cashew butter, plain, without salt added",recipe vegan alfredo sauce,TREE_NUT,
+bonito flakes,fish tuna skipjack fresh raw,175156,"Fish, tuna, fresh, skipjack, raw",katsuobushi,FISH,true
