@@ -78,3 +78,12 @@ ginger beer,7.86,8 x 5 fl oz,"Walmart, 8 x 150 ml cans"
 kombu,4.98,1.76 oz,Walmart
 cola,2.01,2 l,"Walmart avg, 2 L"
 ground coffee,9.65,12 oz,Walmart avg
+# Sub-recipes the recipe links to rather than lists ("1 recipe carne asada"), priced as what
+# making one costs: typical US grocery prices, rough.
+carne asada,9.99,1 lb,flank steak plus marinade
+biscuits,2.99,16.3 oz,"about a can of refrigerated biscuits, 8 count"
+ranch dressing,2.79,16 oz,bottle
+tzatziki,3.49,16 oz,greek yogurt and cucumber
+lemon vinaigrette,3.99,12 oz,olive oil and lemon
+vegan alfredo sauce,6.99,16 oz,cashew based
+bonito flakes,6.99,1 oz,Asian market bag

@@ -26,6 +26,25 @@ class IngredientLineParserTest {
         assertThat(parser.parse(raw).optional()).isTrue();
     }
 
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "4 tablespoons chimichurri sauce or more to taste, recipe below",
+            "4 tablespoons fried rice sauce (recipe below)",
+            "4 cups meat sauce (from above)" })
+    void subRecipeListedElsewhereIsOptional(String raw) {
+        assertThat(parser.parse(raw).optional()).isTrue();
+    }
+
+    @Test
+    void containerSizeWithMetricAfterSlash() {
+        ParsedLine peas = parser.parse("1 (16-ounce / 454 g) package frozen sugar snap peas");
+        assertThat(peas.amount()).isEqualByComparingTo("16");
+        assertThat(peas.unit()).isEqualTo(Unit.OZ);
+        ParsedLine chips = parser.parse("1 (13-ounce/368g) bag tortilla chips");
+        assertThat(chips.amount()).isEqualByComparingTo("13");
+        assertThat(chips.name()).isEqualTo("tortilla chips");
+    }
+
     @Test
     void ordinaryLineIsNotOptional() {
         assertThat(parser.parse("2 cups chicken broth").optional()).isFalse();

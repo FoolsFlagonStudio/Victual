@@ -45,9 +45,12 @@ public class IngredientLineParser {
 
     private static final String CONTAINER_WORD = "(?:cans?|jars?|packages?|pkgs?|bags?|box(?:es)?|containers?|cartons?|bottles?)";
 
-    /** A container size after the count: "(15 oz) can", "(14.5-ounce) cans". */
+    /**
+     * A container size after the count: "(15 oz) can", "(14.5-ounce) cans", and with a
+     * metric restatement after a slash: "(16-ounce / 454 g) package", "(13-ounce/368g) bag".
+     */
     private static final Pattern CONTAINER = Pattern.compile(
-            "^\\(\\s*(" + NUMBER + ")\\s*-?\\s*([a-z. ]+?)\\s*\\)\\s*" + CONTAINER_WORD + "?\\s*",
+            "^\\(\\s*(" + NUMBER + ")\\s*-?\\s*([a-z. ]+?)\\s*(?:/[^)]*)?\\)\\s*" + CONTAINER_WORD + "?\\s*",
             Pattern.CASE_INSENSITIVE);
 
     /**
@@ -80,6 +83,12 @@ public class IngredientLineParser {
             "\\b(skewers?|cedar planks?|toothpicks?|(kitchen|butcher'?s) twine|parchment( paper)?|"
                     + "(aluminum )?foil|pepper grinder|brine|pan drippings)\\b",
             Pattern.CASE_INSENSITIVE);
+    /**
+     * A sub-recipe whose ingredients are listed elsewhere in the same recipe ("chimichurri,
+     * recipe below", "meat sauce (from above)"): optional, or its cost would count twice.
+     */
+    private static final Pattern SUB_RECIPE = Pattern.compile(
+            "\\b(recipe (below|above)|(from|see) (above|below))\\b", Pattern.CASE_INSENSITIVE);
     private static final Pattern GARNISH = Pattern.compile("\\bgarnish(es|ing)?\\b", Pattern.CASE_INSENSITIVE);
     private static final Pattern TO_TASTE = Pattern.compile(
             ",?\\s*(?:or\\s+)?to\\s+taste\\b", Pattern.CASE_INSENSITIVE);
@@ -120,7 +129,8 @@ public class IngredientLineParser {
             return ParsedLine.skipped(); // blank line or a section header like "For the sauce:"
         }
 
-        boolean optional = OPTIONAL.matcher(text).find() || GARNISH.matcher(text).find();
+        boolean optional = OPTIONAL.matcher(text).find() || GARNISH.matcher(text).find()
+                || SUB_RECIPE.matcher(text).find();
         text = OPTIONAL.matcher(text).replaceAll("").trim();
         boolean toTaste = TO_TASTE.matcher(text).find();
         text = TO_TASTE.matcher(text).replaceAll("").trim();

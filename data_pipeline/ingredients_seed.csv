@@ -102,7 +102,7 @@ granulated sugar,sugars granulated,169655,"Sugars, granulated",sugar|white sugar
 brown sugar,sugars brown,168833,"Sugars, brown",light brown sugar|dark brown sugar|packed brown sugar|coconut sugar,,true
 honey,honey,169640,Honey,,HONEY,
 maple syrup,syrups maple,169661,"Syrups, maple",pure maple syrup,,
-salt,salt table,173468,"Salt, table",kosher salt|sea salt|table salt|salt and pepper|salt and black pepper|salt and ground black pepper|kosher salt and pepper|hawaiian alaea sea salt,,true
+salt,salt table,173468,"Salt, table",kosher salt|sea salt|table salt|salt and pepper|salt and black pepper|salt and ground black pepper|kosher salt and pepper|hawaiian alaea sea salt|sodium citrate,,true
 black pepper,spices pepper black,170931,"Spices, pepper, black",pepper|ground black pepper|freshly ground black pepper|steak seasoning|montreal steak seasoning|lemon pepper seasoning|lemon pepper,,true
 water,beverages water tap drinking,173647,"Beverages, water, tap, drinking",cold water|warm water|hot water|boiling water|ice|crushed ice|ice cubes|cooking water|aquafaba|freshly brewed coffee,,
 soy sauce,soy sauce made from soy and wheat shoyu,174277,Soy sauce made from soy and wheat (shoyu),low-sodium soy sauce|low sodium soy sauce|tamari,SOY|GLUTEN,
@@ -341,3 +341,10 @@ ginger beer,beverages carbonated ginger ale,,,cold ginger beer,,
 kombu,seaweed kelp raw,,,piece kombu|kelp,,
 cola,beverages carbonated cola regular,,,splash cola|coca-cola|coke,,
 ground coffee,beverages coffee instant regular powder,,,scoops ground coffee|coffee grounds,,true
+carne asada,beef flank steak separable lean and fat trimmed to 0 fat choice cooked broiled,,,recipe carne asada,MEAT,
+biscuits,biscuits plain or buttermilk refrigerated dough higher fat,,,batch homemade fluffy biscuits|homemade biscuits|buttermilk biscuits,GLUTEN|DAIRY,
+ranch dressing,salad dressing ranch dressing regular,,,recipe ranch dressing|ranch,DAIRY|EGG,
+tzatziki,yogurt greek plain whole milk,,,recipe tzatziki sauce|tzatziki sauce,DAIRY,
+lemon vinaigrette,salad dressing home recipe vinegar and oil,,,recipe lemon vinaigrette|vinaigrette,,
+vegan alfredo sauce,nuts cashew butter plain without salt added,,,recipe vegan alfredo sauce,TREE_NUT,
+bonito flakes,fish tuna skipjack fresh raw,,,katsuobushi,FISH,true
