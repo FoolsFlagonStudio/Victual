@@ -6,68 +6,75 @@ ingredient,price,size,note
 # Added 2026-11 for catalog rows Kroger's API has no good priced product for at store
 # 01400513 (spices and specialty items often aren't priced online). Typical US
 # grocery prices; adjust any that look off for your area.
-dill,2.49,0.75 oz,fresh herb clamshell
-sage,2.49,0.75 oz,fresh herb clamshell
-goat cheese,4.49,4 oz,plain goat cheese log
-cream of tartar,6.49,1.5 oz,spice jar
-almond extract,6.99,1 oz,pure almond extract (1 fl oz bottle)
-sea scallops,15.99,1 lb,frozen sea scallops
+dill,1.92,0.5 oz,Walmart clamshell
+sage,1.92,0.5 oz,Walmart clamshell
+goat cheese,3.98,4 oz,Walmart log
+cream of tartar,4.14,2.75 oz,Walmart avg generic/brand
+almond extract,3.90,2 oz,"Walmart avg, 2 fl oz bottle"
+sea scallops,25.76,1 lb,Walmart frozen
 fennel bulb,2.99,1 lb,one bulb is about 1 lb
-lobster tails,12.99,8 oz,two 4 oz frozen tails
-cashews,8.99,16 oz,whole roasted unsalted
-mixed berries,4.99,16 oz,frozen mixed berries
-ground cloves,6.49,0.9 oz,spice jar
-tapioca flour,5.49,20 oz,tapioca flour/starch
-pine nuts,8.99,4 oz,
-chia seeds,5.99,12 oz,
+lobster tails,16.27,8 oz,"Walmart, 2 tails"
+cashews,9.59,16 oz,Walmart avg
+mixed berries,3.72,16 oz,Walmart frozen
+ground cloves,3.58,2 oz,Walmart avg
+tapioca flour,11.48,16 oz,Walmart
+pine nuts,10.72,4 oz,Walmart
+chia seeds,12.45,32 oz,Walmart avg
 arrowroot powder,8.99,16 oz,
-sunflower seeds,4.49,16 oz,roasted unsalted kernels
-allspice,6.49,1 oz,spice jar
-pepitas,5.99,8 oz,raw pumpkin seed kernels
-pumpkin pie spice,5.49,1.12 oz,spice jar
+sunflower seeds,2.73,16 oz,Walmart
+allspice,2.90,1.5 oz,Walmart avg
+pepitas,3.94,8 oz,Walmart
+pumpkin pie spice,3.93,1.5 oz,Walmart avg
 ground cardamom,11.99,1.75 oz,spice jar
 microgreens,4.49,2 oz,clamshell
-mirin,4.99,10 oz,10 fl oz bottle
-oat bran,4.99,16 oz,
+mirin,3.17,12 oz,"Walmart, 12 fl oz"
+oat bran,5.46,16.5 oz,Walmart
 lobster base,7.99,8 oz,Better Than Bouillon lobster base jar
-kale,1.99,8 oz,one bunch is about 8 oz
+kale,1.48,8 oz,Walmart bunch (~8 oz)
 # Per-weight prices for ingredients Kroger sells only by the item ("1 each", "16 ct"),
 # so recipes that measure them by weight or cup can still be priced.
-eggplant,1.79,1 lb,one eggplant is about 1 lb
-mango,3.99,16 oz,frozen mango chunks
-american cheese,4.29,12 oz,16 slices
-lime,0.50,2.4 oz,one lime
-radishes,1.99,6 oz,one bunch
+eggplant,1.36,1 lb,Walmart by the lb
+mango,3.42,16 oz,Walmart frozen
+american cheese,3.58,16 oz,"Walmart avg, 24 slices"
+lime,0.25,2.4 oz,"Walmart, one lime"
+radishes,2.00,6 oz,Walmart bunch (~6 oz)
 masa harina,4.49,4.4 lb,Maseca bag
 # Added 2026-11 with bulk_gaps.py: new catalog rows with no good Kroger product.
 pork belly,4.99,1 lb,
 amaretti cookies,6.99,7 oz,
-anchovies,2.49,2 oz,tin in oil
-bratwurst,5.49,19 oz,5 links
-calamari,8.99,1 lb,cleaned and frozen
-chipotle peppers in adobo,1.99,7 oz,can
-dill pickles,2.99,24 oz,jar
-egg roll wrappers,2.99,16 oz,20 wrappers
-gelatin,2.49,1 oz,4 envelopes unflavored
-green plantain,0.69,9 oz,one plantain
-kiwifruit,0.50,2.6 oz,one kiwi
+anchovies,2.47,2 oz,Walmart tin
+bratwurst,6.92,19 oz,"Walmart, 5 links"
+calamari,3.72,4 oz,Walmart frozen box
+chipotle peppers in adobo,2.78,7 oz,Walmart can
+dill pickles,2.93,24 oz,Walmart avg jar
+egg roll wrappers,2.68,16 oz,Walmart
+gelatin,2.66,1 oz,"Walmart avg, 4 envelopes"
+green plantain,0.58,9 oz,"Walmart, one plantain"
+kiwifruit,3.80,1 lb,Walmart avg
 littleneck clams,8.99,1 lb,about 10 clams
-white chocolate bar,3.49,4 oz,baking bar
-tortellini,3.99,9 oz,refrigerated cheese tortellini
-poppy seeds,4.99,2 oz,spice jar
+white chocolate bar,3.86,4 oz,Walmart avg
+tortellini,6.51,18 oz,Walmart avg
+poppy seeds,2.44,2.37 oz,Walmart
 rack of lamb,17.99,1 lb,
-macadamia nuts,12.99,10 oz,
+macadamia nuts,5.34,4 oz,Walmart
 wheat bran,4.49,16 oz,
-yellow cornmeal,2.99,32 oz,
+yellow cornmeal,3.17,24 oz,Walmart
 beef soup bones,3.99,1 lb,
-pistachios,7.99,8 oz,shelled
-bulgur,3.99,24 oz,
-wakame seaweed,4.99,2 oz,dried
-lime sherbet,3.49,48 oz,1.5 qt carton
+pistachios,11.47,12 oz,Walmart
+bulgur,2.47,12 oz,Walmart
+wakame seaweed,4.98,1.76 oz,Walmart
+lime sherbet,3.12,48 oz,"Walmart, 1.5 qt"
 mung bean sprouts,1.99,12 oz,
-protein powder,24.99,2 lb,whey
-white hominy,1.99,25 oz,can
+protein powder,34.48,24.5 oz,Walmart
+white hominy,1.28,15.5 oz,Walmart can
 star anise,5.99,0.6 oz,spice jar
 # Per-weight prices for items Kroger sells only by the count (see PriceResolver).
-corn tortilla,4.49,66.7 oz,80 count pack
-mint,2.49,0.75 oz,fresh herb clamshell
+corn tortilla,3.48,66.7 oz,"Walmart avg, 80 count"
+mint,1.92,0.5 oz,Walmart clamshell
+
+# New catalog rows (2026-11), Walmart prices
+liquid smoke,2.33,4 fl oz,Walmart
+ginger beer,7.86,8 x 5 fl oz,"Walmart, 8 x 150 ml cans"
+kombu,4.98,1.76 oz,Walmart
+cola,2.01,2 l,"Walmart avg, 2 L"
+ground coffee,9.65,12 oz,Walmart avg
