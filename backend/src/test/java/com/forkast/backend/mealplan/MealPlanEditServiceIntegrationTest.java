@@ -79,8 +79,11 @@ class MealPlanEditServiceIntegrationTest {
         return plan.selections().stream().map(s -> s.recipe().id()).collect(Collectors.toSet());
     }
 
+    /** Mains plus their sides, which is what the plan's usage cost adds up. */
     private static BigDecimal sumOfSelections(MealPlanDetailResponse plan) {
-        return plan.selections().stream().map(Selection::estimatedCost).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return plan.selections().stream()
+                .map(s -> s.sideEstimatedCost() == null ? s.estimatedCost() : s.estimatedCost().add(s.sideEstimatedCost()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private static void assertStatus(Runnable call, HttpStatus status) {
