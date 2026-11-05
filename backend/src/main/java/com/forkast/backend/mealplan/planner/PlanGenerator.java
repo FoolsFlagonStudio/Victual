@@ -96,6 +96,7 @@ public class PlanGenerator {
         // position)
         Map<SlotRun, GeneratedPlan.Pick> picks = new LinkedHashMap<>();
         Set<UUID> used = new HashSet<>();
+        IngredientOverlap overlap = new IngredientOverlap(recipes, properties);
         for (PlanRequest.LockedPick lock : request.locked()) {
             shape.runs().stream()
                     .filter(r -> r.slot() == lock.slot() && r.position() == lock.position())
@@ -103,6 +104,7 @@ public class PlanGenerator {
                     .ifPresent(run -> {
                         picks.put(run, pick(run, lock.recipe(), request.household(), true));
                         used.add(lock.recipe().id());
+                        overlap.add(lock.recipe());
                     });
         }
 
@@ -123,9 +125,10 @@ public class PlanGenerator {
                                 : "Not enough " + run.slot().name().toLowerCase() + " recipes fit the filters"));
                 continue;
             }
-            RecipeOption chosen = draw(candidates, run, context, random);
+            RecipeOption chosen = draw(candidates, run, context, random, overlap);
             picks.put(run, pick(run, chosen, request.household(), false));
             used.add(chosen.id());
+            overlap.add(chosen);
         }
 
         // 4. Fit the budget
@@ -289,11 +292,12 @@ public class PlanGenerator {
     // ---------- the draw ----------
 
     private RecipeOption draw(List<RecipeOption> candidates, SlotRun run, CandidateScorer.Context context,
-            Random random) {
+            Random random, IngredientOverlap overlap) {
         double[] weights = new double[candidates.size()];
         double total = 0;
         for (int i = 0; i < candidates.size(); i++) {
-            weights[i] = Math.max(0, scorer.weight(candidate(candidates.get(i), run), run, context));
+            RecipeOption option = candidates.get(i);
+            weights[i] = Math.max(0, scorer.weight(candidate(option, run), run, context) * overlap.factor(option));
             total += weights[i];
         }
         if (total <= 0) {

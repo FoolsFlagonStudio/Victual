@@ -2,6 +2,7 @@ package com.forkast.backend.mealplan.planner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 import com.forkast.backend.ingest.SlotScores;
@@ -20,6 +21,9 @@ import com.forkast.backend.ingest.SlotScores;
  * @param lastServed     the user's most recent time eating it, or null
  * @param sideScore      0 to 100; offered as a side at 50 or more
  * @param needsSide      a main that wants a side next to it (MealComposition)
+ * @param ingredients    its required ingredients that aren't pantry staples: what a
+ *                       plan buys in packages, so sharing them saves money
+ * @param proteins       the ones among them that are meat, poultry or seafood
  */
 public record RecipeOption(
         UUID id,
@@ -33,7 +37,22 @@ public record RecipeOption(
         boolean favorite,
         LocalDate lastServed,
         int sideScore,
-        boolean needsSide) {
+        boolean needsSide,
+        Set<UUID> ingredients,
+        Set<UUID> proteins) {
+
+    public RecipeOption {
+        ingredients = ingredients == null ? Set.of() : Set.copyOf(ingredients);
+        proteins = proteins == null ? Set.of() : Set.copyOf(proteins);
+    }
+
+    /** Without ingredient information: shares nothing. */
+    public RecipeOption(UUID id, int baseServings, SlotScores slots, BigDecimal calories, int mealPrepScore,
+            BigDecimal costPerServing, boolean costComplete, double fitPenalty, boolean favorite,
+            LocalDate lastServed, int sideScore, boolean needsSide) {
+        this(id, baseServings, slots, calories, mealPrepScore, costPerServing, costComplete, fitPenalty, favorite,
+                lastServed, sideScore, needsSide, Set.of(), Set.of());
+    }
 
     /** Offered as a side at this side score or more. */
     public static final int SIDE_FITS = 50;
