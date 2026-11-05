@@ -37,7 +37,8 @@ export const tokens = {
       "onPrimaryDisabled": "#F7F2EE",
       "selected": "#1F3326",
       "onSelected": "#F7F2EE",
-      "progressLine": "#C59DB0"
+      "progressLine": "#C59DB0",
+      "positive": "#2F5A33"
     },
     "dark": {
       "background": "#3C3C3C",
@@ -63,7 +64,8 @@ export const tokens = {
       "onPrimaryDisabled": "#A3AAA3",
       "selected": "#F7F2EE",
       "onSelected": "#1F3326",
-      "progressLine": "#C59DB0"
+      "progressLine": "#C59DB0",
+      "positive": "#9BC59D"
     }
   },
   "fonts": {

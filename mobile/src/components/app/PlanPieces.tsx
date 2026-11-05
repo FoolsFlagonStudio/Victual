@@ -372,13 +372,13 @@ export function SwapSheet({ visible, onClose, meals, initialTab, overBy }: SwapP
                       {[perServing(r), macroLine(r)].filter(Boolean).join(' · ')}
                     </Text>
                     {overBy && diff != null && -diff >= overBy ? (
-                      <Text variant="label" style={{ color: '#2F5A33', fontFamily: fontFamily('ui', 600) }}>
+                      <Text variant="label" style={{ color: colors.positive, fontFamily: fontFamily('ui', 600) }}>
                         Gets you back under budget
                       </Text>
                     ) : null}
                   </View>
                   {diff != null && Math.abs(diff) >= 0.01 ? (
-                    <Text variant="label" style={{ fontFamily: fontFamily('ui', 600), color: diff < 0 ? '#2F5A33' : colors.subtle }}>
+                    <Text variant="label" style={{ fontFamily: fontFamily('ui', 600), color: diff < 0 ? colors.positive : colors.subtle }}>
                       {diff < 0 ? '-' : '+'}
                       {money(Math.abs(diff))}
                     </Text>
