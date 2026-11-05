@@ -62,7 +62,9 @@ Render (API), Supabase (database), Resend (email) and Vercel (site): see [DEPLOY
 - [x] Meal plan generator and grocery list (weekly job, lock and swap, pantry staples)
 - [x] Shared design system (tokens, fonts, logo, icons) for web and mobile
 - [x] Mobile app screens (auth, onboarding, home, plan, groceries, recipes, profile, cook mode, budget)
-- [ ] Mobile app wired to the meal plan and grocery routes
+- [x] Mobile app wired to the meal plan and grocery routes
+- [x] Hosting (Render API, Supabase, Resend email, Vercel site)
+- [ ] Closed test on Google Play
 - [x] Marketing website (landing, privacy, terms, support)
 
 ## Stretch Features
@@ -73,3 +75,10 @@ Ideas deliberately left out of v1:
 - **Per-slot day selection.** Let a meal slot cover only some days (e.g. lunches on weekdays only). In v1 every included slot covers all 7 days of the plan.
 - **Push notifications.** v1 generates each user's plan automatically before their plan start day; a push notification when it's ready comes later.
 - **Regional prices.** v1 prices everything from one Kroger store; letting users pick a store or ZIP code comes later.
+- **What I have (kitchen inventory).** Track what's on hand, including bulk and frozen stock ("4 yellow onions" from a 3 lb bag, "6 chicken thighs, frozen"), so the planner treats it as already paid for: the budget stretches to pricier recipes, and recipes that use what you have (or what's about to go off) rank higher. The risk is an inventory that drifts, so it should mostly maintain itself:
+  - *Filled from groceries:* after checking items off, a short "what did you actually buy?" prompt confirms counts and package sizes (pre-filled from the list, so usually just a tap). Whatever the week's recipes don't use stays on hand automatically.
+  - *Used by cook mode:* finishing a recipe subtracts its amounts, scaled to servings.
+  - *Bulk and frozen:* a per-item "frozen" flag gives a long shelf life; manual adds for stock bought elsewhere.
+  - *Ages out:* each item gets a shelf life by category (produce about a week, dairy two, frozen and pantry months). Past it, the planner stops counting it until confirmed.
+  - *Shown, not hidden:* the grocery list has a "Using what you have" section listing everything the plan assumed (onions, frozen thighs), so a wrong count is caught at the store; tapping one adds it back to the list. Real cooking drifts (more garlic, a household member eats the cheese), which this and a weekly "still have these?" check cover.
+  - Backend: a per-user inventory of catalog ingredients in grams (with source, frozen flag and expiry), subtracted in the planner's cost and in the grocery list before rounding to packages.
