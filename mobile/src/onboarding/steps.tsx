@@ -153,7 +153,9 @@ export function PerWeek({ answers, update }: StepProps) {
       <Lead style={{ marginTop: 14 }}>Each meal is planned for all 7 days. Fewer recipes means more leftovers.</Lead>
       {suggestion ? (
         <Text variant="label" color="subtle" style={{ textAlign: 'center', marginTop: 8 }}>
-          {suggestion.tight ? `Kept simple to stretch $${answers.budget}` : `Suggested to fit about $${answers.budget} a week`}
+          {suggestion.tight
+            ? `Kept simple to stretch $${answers.budget}. Groceries for this usually run about $${Math.ceil(suggestion.floor / 5) * 5} a week.`
+            : `Suggested to fit about $${answers.budget} a week`}
         </Text>
       ) : null}
       <View style={{ marginTop: 24, paddingHorizontal: 12 }}>
