@@ -95,8 +95,8 @@ export default function Legal() {
 
             <H2>Your choices</H2>
             <p className={s.p}>
-              Change any plan setting or your name, email and password under Profile in the app. You can delete your account at any time (see <a href="#delete">Delete your account</a>). To ask for a copy of your data, email{' '}
-              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+              Change any plan setting or your name, email and password under Profile in the app. Clear your diet, allergy and nutrition settings there too, and remove favorites from any recipe. To delete other data without closing your account (for example your past meal plans and cooking history), or to ask for a copy of your data, email{' '}
+              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> from the address on your account and we'll handle it within 7 days. You can also delete your whole account at any time (see <a href="#delete">Delete your account</a>).
             </p>
 
             <H2>Children</H2>

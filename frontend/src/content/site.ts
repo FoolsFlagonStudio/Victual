@@ -9,4 +9,4 @@ export const STORE_LINKS: { appStore: string | null; googlePlay: string | null }
 // The app's Profile > Send feedback uses the same address (mobile/src/app/(app)/(tabs)/profile.tsx).
 export const SUPPORT_EMAIL = 'evan@foolsflagon.com';
 
-export const LEGAL_UPDATED = 'November 2, 2026';
+export const LEGAL_UPDATED = 'November 5, 2026';
