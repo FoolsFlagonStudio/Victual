@@ -89,7 +89,9 @@ class MealPlanServiceIntegrationTest {
         assertThat(plan.open()).isEmpty();
         assertThat(plan.openMeals()).isZero();
 
-        BigDecimal sum = plan.selections().stream().map(MealPlanDetailResponse.Selection::estimatedCost)
+        // usage adds each main and its side, if the draw paired one
+        BigDecimal sum = plan.selections().stream()
+                .map(s -> s.sideEstimatedCost() == null ? s.estimatedCost() : s.estimatedCost().add(s.sideEstimatedCost()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         assertThat(plan.usageCost()).isEqualByComparingTo(sum);
         assertThat(plan.groceryCost()).isNotNull(); // the grocery list is built with the plan
