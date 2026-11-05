@@ -85,6 +85,7 @@
   --color-selected: #1F3326;
   --color-on-selected: #F7F2EE;
   --color-progress-line: #C59DB0;
+  --color-positive: #2F5A33;
   color-scheme: light;
 }
 
@@ -114,6 +115,7 @@
     --color-selected: #F7F2EE;
     --color-on-selected: #1F3326;
     --color-progress-line: #C59DB0;
+    --color-positive: #9BC59D;
     color-scheme: dark;
   }
 }
@@ -143,5 +145,6 @@
   --color-selected: #F7F2EE;
   --color-on-selected: #1F3326;
   --color-progress-line: #C59DB0;
+  --color-positive: #9BC59D;
   color-scheme: dark;
 }
