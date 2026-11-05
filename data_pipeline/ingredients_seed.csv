@@ -27,7 +27,7 @@ white beans,beans white mature seeds canned,175204,"Beans, white, mature seeds, 
 pinto beans,beans pinto mature seeds canned,175201,"Beans, pinto, mature seeds, canned, solids and liquids",refried beans|can refried beans,,
 lentils,lentils raw,172420,"Lentils, raw",dried lentils|brown lentils|green lentils|dried split peas,,
 milk,milk whole 3.25% milkfat,171265,"Milk, whole, 3.25% milkfat, with added vitamin D",whole milk|2% milk|very cold buttermilk|well-shaken buttermilk|buttermilk|milk of choice|dairy-free milk|to 1 cup milk,DAIRY,
-butter,butter salted,173410,"Butter, salted",unsalted butter|salted butter|unsalted butter at room temperature|softened butter,DAIRY,
+butter,butter salted,173410,"Butter, salted",unsalted butter|salted butter|unsalted butter at room temperature|softened butter,DAIRY,true
 heavy cream,cream fluid heavy whipping,170859,"Cream, fluid, heavy whipping",heavy whipping cream|whipping cream,DAIRY,
 half and half,cream fluid half and half,171255,"Cream, fluid, half and half",half-and-half,DAIRY,
 sour cream,cream sour cultured,171257,"Cream, sour, cultured",creme fraiche|crème fraîche,DAIRY,
@@ -54,7 +54,7 @@ sweet potato,sweet potato raw,168482,"Sweet potato, raw, unprepared (Includes fo
 tomato,tomatoes red ripe raw year round average,170457,"Tomatoes, red, ripe, raw, year round average",tomatoes|roma tomatoes|cherry tomatoes|beefstake tomatoes,,
 diced tomatoes,tomatoes red ripe canned packed in tomato juice,170051,"Tomatoes, red, ripe, canned, packed in tomato juice",canned diced tomatoes|canned tomatoes|whole peeled tomatoes|whole peeled san marzano tomatoes|san marzano whole tomatoes|san marzano tomatoes|fire roasted tomatoes|whole tomatoes with juice|peeled and deseeded plum tomatoes,,
 crushed tomatoes,tomatoes crushed canned,170501,"Tomatoes, crushed, canned",canned crushed tomatoes,,
-tomato paste,tomato products canned paste,170459,"Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)",,,
+tomato paste,tomato products canned paste,170459,"Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)",,,true
 tomato sauce,tomato products canned sauce,170054,"Tomato products, canned, sauce",passata,,
 broccoli,broccoli raw,170379,"Broccoli, raw",broccoli florets|broccoli with stems,,
 cauliflower,cauliflower raw,169986,"Cauliflower, raw",cauliflower florets,,
@@ -89,7 +89,7 @@ pasta,pasta dry enriched,169736,"Pasta, dry, enriched",spaghetti|penne|penne pas
 egg noodles,noodles egg dry enriched,169731,"Noodles, egg, dry, enriched",lo mein noodles,GLUTEN|EGG,
 rolled oats,cereals oats regular and quick not fortified dry,173904,"Cereals, oats, regular and quick, not fortified, dry",oats|old-fashioned oats|old fashioned oats|quick oats,,
 bread,bread white commercially prepared includes soft bread crumbs,174924,"Bread, white, commercially prepared (includes soft bread crumbs)",white bread|sandwich bread|baguette|day old bread|french bread|french roll|pita|whole wheat pita|rolls|kaiser rolls|deli-style hard rolls|french loaf|loaf ciabatta|ciabatta|sourdough|multigrain bread|english muffins|thick slices bread|thick slices country bread|bakery-style rustic bread loaf,GLUTEN,
-breadcrumbs,bread crumbs dry grated plain,174928,"Bread, crumbs, dry, grated, plain",bread crumbs|panko|panko breadcrumbs|italian seasoned breadcrumbs|italian breadcrumbs,GLUTEN,
+breadcrumbs,bread crumbs dry grated plain,174928,"Bread, crumbs, dry, grated, plain",bread crumbs|panko|panko breadcrumbs|italian seasoned breadcrumbs|italian breadcrumbs,GLUTEN,true
 flour tortilla,tortillas ready to bake or fry flour,175037,"Tortillas, ready-to-bake or -fry, flour, refrigerated","flour tortillas|tortillas|fajita size 8"" diameter tortillas",GLUTEN,
 corn tortilla,tortillas ready to bake or fry corn,175036,"Tortillas, ready-to-bake or -fry, corn",corn tortillas,,
 quinoa,quinoa uncooked,168874,"Quinoa, uncooked",,,
@@ -100,42 +100,42 @@ vegetable oil,oil canola,172336,"Oil, canola",canola oil|neutral oil|oil|cooking
 sesame oil,oil sesame salad or cooking,171016,"Oil, sesame, salad or cooking",toasted sesame oil,,true
 granulated sugar,sugars granulated,169655,"Sugars, granulated",sugar|white sugar|coarse sugar|inch piece of yellow rock sugar,,true
 brown sugar,sugars brown,168833,"Sugars, brown",light brown sugar|dark brown sugar|packed brown sugar|coconut sugar,,true
-honey,honey,169640,Honey,,HONEY,
-maple syrup,syrups maple,169661,"Syrups, maple",pure maple syrup,,
+honey,honey,169640,Honey,,HONEY,true
+maple syrup,syrups maple,169661,"Syrups, maple",pure maple syrup,,true
 salt,salt table,173468,"Salt, table",kosher salt|sea salt|table salt|salt and pepper|salt and black pepper|salt and ground black pepper|kosher salt and pepper|hawaiian alaea sea salt|sodium citrate,,true
 black pepper,spices pepper black,170931,"Spices, pepper, black",pepper|ground black pepper|freshly ground black pepper|steak seasoning|montreal steak seasoning|lemon pepper seasoning|lemon pepper,,true
 water,beverages water tap drinking,173647,"Beverages, water, tap, drinking",cold water|warm water|hot water|boiling water|ice|crushed ice|ice cubes|cooking water|aquafaba|freshly brewed coffee,,
-soy sauce,soy sauce made from soy and wheat shoyu,174277,Soy sauce made from soy and wheat (shoyu),low-sodium soy sauce|low sodium soy sauce|tamari,SOY|GLUTEN,
-fish sauce,sauce fish ready-to-serve,174531,"Sauce, fish, ready-to-serve",,FISH,
-worcestershire sauce,sauce worcestershire,171610,"Sauce, worcestershire",,FISH,
-hoisin sauce,sauce hoisin ready-to-serve,172886,"Sauce, hoisin, ready-to-serve",oyster sauce,SOY,
-sriracha,sauce hot chile sriracha,171186,"Sauce, hot chile, sriracha",sriracha sauce|calabrian chili paste|calabrian chilies|sambal oelek|chili garlic sauce,,
-hot sauce,sauce ready-to-serve pepper or hot,174527,"Sauce, ready-to-serve, pepper or hot",buffalo sauce|chipotle sauce|frank’s redhot original,,
+soy sauce,soy sauce made from soy and wheat shoyu,174277,Soy sauce made from soy and wheat (shoyu),low-sodium soy sauce|low sodium soy sauce|tamari,SOY|GLUTEN,true
+fish sauce,sauce fish ready-to-serve,174531,"Sauce, fish, ready-to-serve",,FISH,true
+worcestershire sauce,sauce worcestershire,171610,"Sauce, worcestershire",,FISH,true
+hoisin sauce,sauce hoisin ready-to-serve,172886,"Sauce, hoisin, ready-to-serve",oyster sauce,SOY,true
+sriracha,sauce hot chile sriracha,171186,"Sauce, hot chile, sriracha",sriracha sauce|calabrian chili paste|calabrian chilies|sambal oelek|chili garlic sauce,,true
+hot sauce,sauce ready-to-serve pepper or hot,174527,"Sauce, ready-to-serve, pepper or hot",buffalo sauce|chipotle sauce|frank’s redhot original,,true
 white vinegar,vinegar distilled,172237,"Vinegar, distilled",distilled white vinegar|vinegar|rice vinegar|rice wine vinegar,,true
 apple cider vinegar,vinegar cider,173469,"Vinegar, cider",cider vinegar,,true
 red wine vinegar,vinegar red wine,172240,"Vinegar, red wine",,,true
 balsamic vinegar,vinegar balsamic,172241,"Vinegar, balsamic",balsamic glaze )|balsamic reduction|good-quality thick balsamic vinegar|thick balsamic vinegar,,true
-mustard,mustard prepared yellow,172234,"Mustard, prepared, yellow",yellow mustard|dijon mustard|dijon|stone ground mustard|whole grain mustard|coarse deli mustard|prepared coleman’s mustard,,
-mayonnaise,salad dressing mayonnaise regular,171009,"Salad dressing, mayonnaise, regular",mayo,EGG,
-ketchup,catsup,168556,Catsup,,,
+mustard,mustard prepared yellow,172234,"Mustard, prepared, yellow",yellow mustard|dijon mustard|dijon|stone ground mustard|whole grain mustard|coarse deli mustard|prepared coleman’s mustard,,true
+mayonnaise,salad dressing mayonnaise regular,171009,"Salad dressing, mayonnaise, regular",mayo,EGG,true
+ketchup,catsup,168556,Catsup,,,true
 salsa,sauce salsa ready-to-serve,174524,"Sauce, salsa, ready-to-serve",taco sauce|ranchero sauce|pico de gallo,,
 marinara sauce,sauce pasta spaghetti marinara ready-to-serve,171192,"Sauce, pasta, spaghetti/marinara, ready-to-serve",pasta sauce|spaghetti sauce|pizza sauce,,
 chicken broth,soup chicken broth ready-to-serve,174536,"Soup, chicken broth, ready-to-serve",chicken stock|low sodium chicken broth|low-sodium chicken broth|brodo,POULTRY,
 beef broth,soup beef broth bouillon consomme prepared with equal volume water,174557,"Soup, beef broth, bouillon, consomme, prepared with equal volume water",beef stock,MEAT,
 vegetable broth,soup vegetable broth ready to serve,171583,"Soup, vegetable broth, ready to serve",vegetable stock,,
 coconut milk,nuts coconut milk canned,170173,"Nuts, coconut milk, canned (liquid expressed from grated meat and water)",canned coconut milk|full-fat coconut milk|coconut cream,,
-peanut butter,peanut butter smooth style without salt,172470,"Peanut butter, smooth style, without salt",creamy peanut butter,PEANUT,
+peanut butter,peanut butter smooth style without salt,172470,"Peanut butter, smooth style, without salt",creamy peanut butter,PEANUT,true
 peanuts,peanuts all types dry-roasted without salt,173806,"Peanuts, all types, dry-roasted, without salt",,PEANUT,
 almonds,nuts almonds,170567,"Nuts, almonds",sliced almonds|slivered almonds,TREE_NUT,
 walnuts,nuts walnuts english,170187,"Nuts, walnuts, english",chopped walnuts,TREE_NUT,
 pecans,nuts pecans,170182,"Nuts, pecans",chopped pecans,TREE_NUT,
 cashews,nuts cashew nuts raw,170162,"Nuts, cashew nuts, raw",,TREE_NUT,
-sesame seeds,seeds sesame seeds whole dried,170150,"Seeds, sesame seeds, whole, dried",everything bagel seasoning|furikake,,
+sesame seeds,seeds sesame seeds whole dried,170150,"Seeds, sesame seeds, whole, dried",everything bagel seasoning|furikake,,true
 baking powder,leavening agents baking powder double-acting sodium aluminum sulfate,172803,"Leavening agents, baking powder, double-acting, sodium aluminum sulfate",,,true
 baking soda,leavening agents baking soda,175040,"Leavening agents, baking soda",,,true
 vanilla extract,vanilla extract,173471,Vanilla extract,vanilla|pure vanilla extract|peppermint extract,,true
 chocolate chips,candies semisweet chocolate,167976,"Candies, semisweet chocolate",semisweet chocolate chips|semi-sweet chocolate chips|bittersweet chocolate|chocolate for drizzling on top|high-quality chocolate,DAIRY,
-cocoa powder,cocoa dry powder unsweetened,169593,"Cocoa, dry powder, unsweetened",unsweetened cocoa powder|cacao powder|raw cacao powder,,
+cocoa powder,cocoa dry powder unsweetened,169593,"Cocoa, dry powder, unsweetened",unsweetened cocoa powder|cacao powder|raw cacao powder,,true
 garlic powder,spices garlic powder,171325,"Spices, garlic powder",,,true
 onion powder,spices onion powder,171327,"Spices, onion powder",,,true
 paprika,spices paprika,171329,"Spices, paprika",smoked paprika|sweet paprika|cajun seasoning|creole seasoning|blackened seasoning|hungarian paprika|old bay seasoning,,true

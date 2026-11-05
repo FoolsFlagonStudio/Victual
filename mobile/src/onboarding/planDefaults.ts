@@ -21,5 +21,7 @@ export function suggestedCounts(meals: MealSlot[], household: number, budget: nu
   const size = sizes.reduce((best, n) => (Math.abs(n - household) < Math.abs(best - household) ? n : best));
   const scaled = (budget / household) * size;
   const table = byHousehold[String(size)];
-  return [...table].reverse().find((e) => e.budget <= scaled) ?? table[0] ?? null;
+  const entry = [...table].reverse().find((e) => e.budget <= scaled) ?? table[0];
+  // floor is the sweep's typical grocery total for its household size; scale it back to yours
+  return entry ? { ...entry, floor: (entry.floor / size) * household } : null;
 }

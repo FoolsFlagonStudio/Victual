@@ -119,6 +119,7 @@ public class MealPlanService {
         // lower by that ratio and draw again (same seed), up to BUDGET_ATTEMPTS times.
         BigDecimal target = budget;
         MealPlan plan = null;
+        MealPlan cheapest = null;
         for (int attempt = 0; attempt < BUDGET_ATTEMPTS; attempt++) {
             PlanRequest request = new PlanRequest(weekStart, preferences.getMealSlots(),
                     Math.max(1, preferences.getHouseholdServingSize()), preferences.isLeftoversForLunch(),
@@ -137,11 +138,16 @@ public class MealPlanService {
 
             BigDecimal groceries = plan.getGroceryCost();
             if (budget == null || groceries == null || groceries.compareTo(budget) <= 0 || groceries.signum() == 0) {
-                break;
+                return plan;
+            }
+            // Over budget: a lower target can still come back dearer (packages don't
+            // shrink smoothly), so keep the cheapest list seen, not the last one.
+            if (cheapest == null || groceries.compareTo(cheapest.getGroceryCost()) < 0) {
+                cheapest = plan;
             }
             target = target.multiply(budget).divide(groceries, 2, RoundingMode.HALF_UP);
         }
-        return plan;
+        return cheapest != null ? cheapest : plan;
     }
 
     /**
