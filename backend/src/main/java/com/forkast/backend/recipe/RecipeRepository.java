@@ -24,6 +24,21 @@ public interface RecipeRepository extends JpaRepository<Recipe, UUID>, JpaSpecif
     List<Recipe> findAllWithIngredients();
 
     /**
+     * For the planner's shared-ingredient scoring, in one query: each recipe's required
+     * ingredients that aren't pantry staples, as (recipe id, ingredient id, is protein)
+     * rows. Protein means tagged meat, poultry, fish or shellfish.
+     */
+    @Query(value = """
+            select cast(ri.recipe_id as varchar), cast(ri.ingredient_id as varchar),
+                   exists (select 1 from ingredient_tags t where t.ingredient_id = ri.ingredient_id
+                           and t.tag in ('MEAT', 'POULTRY', 'FISH', 'SHELLFISH'))
+            from recipe_ingredients ri
+            join ingredients i on i.id = ri.ingredient_id
+            where ri.is_optional = false and i.pantry_staple = false
+            """, nativeQuery = true)
+    List<Object[]> findPlanningIngredients();
+
+    /**
      * Loads a page of recipes with their labels in one query, instead of one query
      * per recipe.
      */

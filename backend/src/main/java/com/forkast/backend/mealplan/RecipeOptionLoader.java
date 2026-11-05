@@ -76,6 +76,16 @@ public class RecipeOptionLoader {
         FitTargets targets = FitTargets.from(preferences);
         Set<UUID> favorites = new HashSet<>(favoriteRepository.findRecipeIdsNewestFirst(userId));
         Map<UUID, LocalDate> lastServed = lastServed(userId, weekStart, zone);
+        Map<UUID, Set<UUID>> ingredients = new HashMap<>();
+        Map<UUID, Set<UUID>> proteins = new HashMap<>();
+        for (Object[] row : recipeRepository.findPlanningIngredients()) {
+            UUID recipe = UUID.fromString(String.valueOf(row[0]));
+            UUID ingredient = UUID.fromString(String.valueOf(row[1]));
+            ingredients.computeIfAbsent(recipe, k -> new HashSet<>()).add(ingredient);
+            if (Boolean.TRUE.equals(row[2])) {
+                proteins.computeIfAbsent(recipe, k -> new HashSet<>()).add(ingredient);
+            }
+        }
 
         Function<Recipe, RecipeOption> optionOf = r -> new RecipeOption(
                 r.getId(),
@@ -89,7 +99,9 @@ public class RecipeOptionLoader {
                 favorites.contains(r.getId()),
                 lastServed.get(r.getId()),
                 r.getSideScore(),
-                MealComposition.needsSide(r.getName(), r.getCarbsGPerServing()));
+                MealComposition.needsSide(r.getName(), r.getCarbsGPerServing()),
+                ingredients.getOrDefault(r.getId(), Set.of()),
+                proteins.getOrDefault(r.getId(), Set.of()));
 
         Map<UUID, Recipe> byId = new LinkedHashMap<>();
         List<RecipeOption> options = new ArrayList<>();
