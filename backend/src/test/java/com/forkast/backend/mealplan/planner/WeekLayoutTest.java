@@ -137,9 +137,12 @@ class WeekLayoutTest {
 
     @Test
     void moreLunchRecipesThanLunchDaysUsesFewerRuns() {
+        // dinners Sun-Tue, Wed-Thu, Fri-Sat. Leftovers go to the next day's lunch while
+        // still fresh: Wed is too late for Sunday's, Friday gets Wednesday's, and
+        // Saturday's would be next week. One lunch covered leaves six.
         WeekShape shape = layout.layout(SUNDAY, Map.of(MealSlot.LUNCH, 7, MealSlot.DINNER, 3), true);
 
-        assertThat(lengths(shape, MealSlot.LUNCH)).containsExactly(1, 1, 1, 1);
+        assertThat(lengths(shape, MealSlot.LUNCH)).containsExactly(1, 1, 1, 1, 1, 1);
     }
 
     @Test
