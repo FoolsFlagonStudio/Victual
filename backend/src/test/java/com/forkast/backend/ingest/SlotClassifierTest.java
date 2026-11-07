@@ -73,6 +73,9 @@ class SlotClassifierTest {
             "Chocolate Almond Butter Banana Bites | Dinner",
             "Peanut Butter Energy Balls          | -",
             "Apple Pie                           | -",
+            "Homemade Flour Tortillas            | Dinner",
+            "Easy Pizza Dough                    | Main Course",
+            "Flaky Pie Crust                     | -",
     })
     void notAMealByName(String name, String category) {
         assertThat(classifier.score(name, category, null)).isEqualTo(new SlotScores(0, 0, 0));
@@ -90,6 +93,7 @@ class SlotClassifierTest {
             "Pasta with Pesto                    | -             | 5   | 60 | 85",
             "Biscuits and Gravy                  | Breakfast     | 90  | 0  | 0",
             "Chicken Pot Pie                     | Dinner        | 5   | 60 | 85",
+            "Beef Enchiladas with Flour Tortillas | Dinner       | 5   | 60 | 85",
     })
     void namesHaveTheLastWord(String name, String category, int breakfast, int lunch, int dinner) {
         assertThat(classifier.score(name, category, null)).isEqualTo(new SlotScores(breakfast, lunch, dinner));
