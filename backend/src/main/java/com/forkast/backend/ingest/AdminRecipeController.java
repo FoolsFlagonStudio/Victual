@@ -1,5 +1,8 @@
 package com.forkast.backend.ingest;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +21,20 @@ public class AdminRecipeController {
     private final RecipeRescoreService rescoreService;
     private final CatalogReportService catalogReportService;
     private final RecipeRemovalService removalService;
+    private final RecipeAuditService auditService;
+
+    /** Recipe ids to remove (POST /api/admin/recipes/remove). */
+    public record RemoveRequest(List<UUID> ids) {
+    }
 
     public AdminRecipeController(RecipeIngestService ingestService, RecipeRescoreService rescoreService,
-            CatalogReportService catalogReportService, RecipeRemovalService removalService) {
+            CatalogReportService catalogReportService, RecipeRemovalService removalService,
+            RecipeAuditService auditService) {
         this.ingestService = ingestService;
         this.rescoreService = rescoreService;
         this.catalogReportService = catalogReportService;
         this.removalService = removalService;
+        this.auditService = auditService;
     }
 
     /**
@@ -66,5 +76,25 @@ public class AdminRecipeController {
     public RecipeRemovalService.Result removeBySource(@RequestParam String sourceHost,
             @RequestParam(defaultValue = "false") boolean dryRun, @RequestParam(defaultValue = "false") boolean force) {
         return removalService.removeBySource(sourceHost, dryRun, force);
+    }
+
+    /**
+     * Every recipe with its category, slot and side scores, cost and ingredients, for
+     * reviewing the catalog by hand. Read by data_pipeline/meal_audit.py.
+     */
+    @GetMapping("/audit")
+    public List<RecipeAuditService.Row> audit() {
+        return auditService.rows();
+    }
+
+    /**
+     * Removes hand-picked recipes (things that aren't a meal): POST
+     * /api/admin/recipes/remove?dryRun=true with {"ids": [...]}. 409 when meal plans
+     * use them as a main, unless force=true (which deletes those plans).
+     */
+    @PostMapping("/remove")
+    public RecipeRemovalService.IdsResult removeByIds(@RequestBody RemoveRequest request,
+            @RequestParam(defaultValue = "false") boolean dryRun, @RequestParam(defaultValue = "false") boolean force) {
+        return removalService.removeByIds(request.ids(), dryRun, force);
     }
 }

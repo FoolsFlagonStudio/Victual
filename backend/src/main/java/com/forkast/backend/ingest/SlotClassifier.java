@@ -40,9 +40,10 @@ import org.springframework.stereotype.Component;
  * doesn't save them):
  * - "How to make ghee" is an article, not a meal: 0 everywhere.
  * - A name that ends in a component ("Mayo Ketchup", "Lemon Curd", "Ranch
- * Dressing", "Chicken Stock") is 0 everywhere. Names ending in a sauce, salsa or
- * pesto are too, unless they also name a protein, pasta or grain ("Chicken in
- * Garlic Sauce" is a meal).
+ * Dressing", "Chicken Stock") is 0 everywhere. Names ending in a sauce, salsa,
+ * pesto, tortillas, dough or crust are too, unless they also name a protein, pasta
+ * or grain ("Chicken in Garlic Sauce" and "Beef Enchiladas with Flour Tortillas"
+ * are meals; "Homemade Flour Tortillas" isn't).
  * - Sides by name (slaw, mashed anything, biscuits, dinner rolls, cornbread,
  * fries, pilaf)
  * can't be lunch or dinner on their own unless the name also names a protein
@@ -105,7 +106,8 @@ public class SlotClassifier {
      * pasta or grain: "Garlic Sauce" isn't a meal, "Chicken in Garlic Sauce" is.
      */
     private static final Pattern TOPPING_NAME = Pattern.compile(
-            "\\b(?:sauce|salsa|pesto|gravy|glaze|chutney|relish|mustard|compote|hummus)s?\\s*$");
+            "\\b(?:sauce|salsa|pesto|gravy|glaze|chutney|relish|mustard|compote|hummus"
+                    + "|tortilla|dough|pie crust|pizza crust|crouton|breadcrumb|bread crumb)s?\\s*$");
     private static final Pattern DISH_WORDS = Pattern.compile(
             "\\b(?:chicken|beef|pork|turkey|sausage|shrimp|salmon|fish|cod|tilapia|tuna|tofu|tempeh|lamb|meatballs?"
                     + "|steak|pasta|spaghetti|noodles?|penne|rice|eggs?|beans|lentils|chickpeas|gnocchi|ravioli)\\b");
